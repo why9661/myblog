@@ -7,13 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Mon, 02 Aug 2021 15:53:42 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 11 Sep 2020 15:53:42 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>一致性哈希</title>
       <link>https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</link>
-      <pubDate>Mon, 02 Aug 2021 15:53:42 +0800</pubDate>
+      <pubDate>Fri, 11 Sep 2020 15:53:42 +0800</pubDate>
       
       <guid>https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>轮询</title>
+      <link>https://why9661.github.io/myblog/posts/algorithm/%E8%BD%AE%E8%AF%A2/</link>
+      <pubDate>Wed, 02 Sep 2020 21:06:08 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/algorithm/%E8%BD%AE%E8%AF%A2/</guid>
       <description></description>
     </item>
     
