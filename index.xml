@@ -6,15 +6,14 @@
     <description>Recent content on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Mon, 02 Aug 2021 14:28:30 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright><atom:link href="https://why9661.github.io/myblog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>一致性哈希</title>
-      <link>https://why9661.github.io/myblog/posts/algorithm/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</link>
-      <pubDate>Mon, 02 Aug 2021 14:28:30 +0800</pubDate>
+      <title></title>
+      <link>https://why9661.github.io/myblog/posts/%E7%AE%97%E6%B3%95/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://why9661.github.io/myblog/posts/algorithm/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</guid>
-      <description>Hello World!</description>
+      <guid>https://why9661.github.io/myblog/posts/%E7%AE%97%E6%B3%95/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</guid>
+      <description>title = &amp;ldquo;一致性哈希&amp;rdquo; description = &amp;quot;&amp;quot; date = 2021-08-02T15:14:23+08:00 comment = true toc = true categories = [ &amp;ldquo;算法&amp;rdquo; ] tags = [ &amp;ldquo;负载均衡&amp;rd</description>
     </item>
     
   </channel>
