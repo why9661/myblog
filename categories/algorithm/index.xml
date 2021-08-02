@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>文章 on why&#39;s blog</title>
-    <link>https://why9661.github.io/myblog/posts/</link>
-    <description>Recent content in 文章 on why&#39;s blog</description>
+    <title>algorithm on why&#39;s blog</title>
+    <link>https://why9661.github.io/myblog/categories/algorithm/</link>
+    <description>Recent content in algorithm on why&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Mon, 02 Aug 2021 15:53:42 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 15:53:42 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>一致性哈希</title>
       <link>https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</link>
