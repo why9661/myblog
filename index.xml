@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo Bootstrap</title>
+    <link>https://why9661.github.io/myblog/</link>
+    <description>Recent content on Hugo Bootstrap</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
+    <lastBuildDate>Mon, 02 Aug 2021 14:28:30 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一致性哈希</title>
+      <link>https://why9661.github.io/myblog/posts/algorithm/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</link>
+      <pubDate>Mon, 02 Aug 2021 14:28:30 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/algorithm/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</guid>
+      <description>Hello World!</description>
+    </item>
+    
+  </channel>
+</rss>

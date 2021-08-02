@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://why9661.github.io/myblog/sitemap.xml
