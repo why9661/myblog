@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Fri, 05 Jun 2020 14:38:29 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 Jul 2020 21:47:33 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Slice</title>
+      <link>https://why9661.github.io/myblog/posts/golang/slice/</link>
+      <pubDate>Sun, 05 Jul 2020 21:47:33 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/slice/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>make和new</title>
       <link>https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/</link>
