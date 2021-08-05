@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on why&#39;s blog</title>
+    <link>https://why9661.github.io/myblog/tags/golang/</link>
+    <description>Recent content in Golang on why&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
+    <lastBuildDate>Fri, 05 Jun 2020 14:38:29 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>make和new</title>
+      <link>https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/</link>
+      <pubDate>Fri, 05 Jun 2020 14:38:29 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
