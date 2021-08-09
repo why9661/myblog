@@ -18,6 +18,15 @@
     </item>
     
     <item>
+      <title>Golang-测试之go test</title>
+      <link>https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%951/</link>
+      <pubDate>Sun, 09 May 2021 14:25:05 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%951/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Docker基本使用</title>
       <link>https://why9661.github.io/myblog/posts/docker/docker%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Sun, 02 May 2021 23:12:10 +0800</pubDate>
@@ -45,7 +54,7 @@
     </item>
     
     <item>
-      <title>Slice</title>
+      <title>Golang-slice</title>
       <link>https://why9661.github.io/myblog/posts/golang/slice/</link>
       <pubDate>Sun, 05 Jul 2020 21:47:33 +0800</pubDate>
       
@@ -54,7 +63,7 @@
     </item>
     
     <item>
-      <title>make和new</title>
+      <title>Golang-make和new</title>
       <link>https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/</link>
       <pubDate>Fri, 05 Jun 2020 14:38:29 +0800</pubDate>
       
