@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>微服务 on why&#39;s blog</title>
+    <link>https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+    <description>Recent content in 微服务 on why&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
+    <lastBuildDate>Sat, 08 May 2021 16:39:19 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RPC系列01</title>
+      <link>https://why9661.github.io/myblog/posts/rpc/rpc01/</link>
+      <pubDate>Sat, 08 May 2021 16:39:19 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/rpc/rpc01/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
