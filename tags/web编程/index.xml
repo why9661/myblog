@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web编程 on why&#39;s blog</title>
+    <link>https://why9661.github.io/myblog/tags/web%E7%BC%96%E7%A8%8B/</link>
+    <description>Recent content in Web编程 on why&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
+    <lastBuildDate>Sat, 10 Apr 2021 14:06:44 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/web%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang-web编程之模板引擎</title>
+      <link>https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/</link>
+      <pubDate>Sat, 10 Apr 2021 14:06:44 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
