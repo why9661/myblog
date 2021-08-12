@@ -5,9 +5,6 @@
     <loc>https://why9661.github.io/myblog/categories/algorithm/</loc>
     <lastmod>2021-07-16T22:51:41+08:00</lastmod>
   </url><url>
-    <loc>https://why9661.github.io/myblog/posts/algorithm/lru/</loc>
-    <lastmod>2021-07-16T22:51:41+08:00</lastmod>
-  </url><url>
     <loc>https://why9661.github.io/myblog/</loc>
     <lastmod>2021-07-16T22:51:41+08:00</lastmod>
   </url><url>
@@ -23,6 +20,9 @@
     <loc>https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</loc>
     <lastmod>2021-07-16T22:51:41+08:00</lastmod>
   </url><url>
+    <loc>https://why9661.github.io/myblog/posts/algorithm/lru/</loc>
+    <lastmod>2021-07-16T22:51:41+08:00</lastmod>
+  </url><url>
     <loc>https://why9661.github.io/myblog/tags/protobuf/</loc>
     <lastmod>2021-06-10T11:28:03+08:00</lastmod>
   </url><url>
@@ -35,7 +35,7 @@
     <loc>https://why9661.github.io/myblog/categories/golang/</loc>
     <lastmod>2021-05-09T14:25:05+08:00</lastmod>
   </url><url>
-    <loc>https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%951/</loc>
+    <loc>https://why9661.github.io/myblog/posts/golang/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</loc>
     <lastmod>2021-05-09T14:25:05+08:00</lastmod>
   </url><url>
     <loc>https://why9661.github.io/myblog/tags/%E6%B5%8B%E8%AF%95/</loc>
@@ -65,10 +65,10 @@
     <loc>https://why9661.github.io/myblog/tags/web%E7%BC%96%E7%A8%8B/</loc>
     <lastmod>2021-04-10T14:06:44+08:00</lastmod>
   </url><url>
-    <loc>https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</loc>
+    <loc>https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</loc>
     <lastmod>2020-09-11T15:53:42+08:00</lastmod>
   </url><url>
-    <loc>https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</loc>
+    <loc>https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</loc>
     <lastmod>2020-09-11T15:53:42+08:00</lastmod>
   </url><url>
     <loc>https://why9661.github.io/myblog/posts/algorithm/%E8%BD%AE%E8%AF%A2/</loc>

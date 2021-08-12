@@ -3,17 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lru - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>缓存淘汰策略-LRU - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
 <meta name="keywords" content="" />
-<meta name="description" content="lru算法实现" /><meta itemprop="name" content="Lru">
+<meta name="description" content="lru算法实现" /><meta itemprop="name" content="缓存淘汰策略-LRU">
 <meta itemprop="description" content="lru算法实现"><meta itemprop="datePublished" content="2021-07-16T22:51:41+08:00" />
 <meta itemprop="dateModified" content="2021-07-16T22:51:41+08:00" />
-<meta itemprop="wordCount" content="650">
-<meta itemprop="keywords" content="缓存淘汰策略," /><meta property="og:title" content="Lru" />
+<meta itemprop="wordCount" content="517">
+<meta itemprop="keywords" content="缓存淘汰策略," /><meta property="og:title" content="缓存淘汰策略-LRU" />
 <meta property="og:description" content="lru算法实现" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://why9661.github.io/myblog/posts/algorithm/lru/" /><meta property="article:section" content="posts" />
@@ -21,7 +21,7 @@
 <meta property="article:modified_time" content="2021-07-16T22:51:41+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Lru"/>
+<meta name="twitter:title" content="缓存淘汰策略-LRU"/>
 <meta name="twitter:description" content="lru算法实现"/>
 <meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
 </head><body><header><nav class="navbar navbar-expand-xl fixed-top">
@@ -148,7 +148,7 @@
       <div class="row content">
 <div class="col-lg-8">
   <div class="container"><nav class="row" aria-label="breadcrumb">
-  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Lru</li></ol>
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">缓存淘汰策略-LRU</li></ol>
 </nav><article class="post row surface"><div class="post-panel-wrapper">
   <div class="post-panel d-flex flex-column">
     <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
@@ -169,7 +169,7 @@
     
   </div>
 </div>
-<h1 class="post-title my-3">Lru
+<h1 class="post-title my-3">缓存淘汰策略-LRU
 </h1><div class="post-meta mb-3">
   <span class="post-date me-2">
     <i class="fas fa-fw fa-calendar-alt"></i>2021-07-16
@@ -177,15 +177,9 @@
   <span class="post-reading-time me-2">
     <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
   </span><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy">#algorithm</a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy">#缓存淘汰策略</a></div>
-<div class="post-content mb-3"><h1 id="fifo">FIFO</h1>
-<p>FIFO即&quot;First In First Out&quot;先进先出，淘汰缓存中“最老”的数据。</p>
-<p>实现：维护一个队列，新增记录添加到队尾，内存不够时淘汰队首。</p>
-<h1 id="lfu">LFU</h1>
-<p>LFU即“Least Frequently Used”最少使用，淘汰缓存中访问频率最低的数据。</p>
-<p>实现：LFU 的实现需要维护一个按照访问次数排序的队列，每次访问，访问次数加1，队列重新排序，淘汰时选择访问次数最少的即可。</p>
-<h1 id="lru">LRU</h1>
-<p>LRU即“Least Recently Used”即最近最少使用。</p>
-<p>实现：LRU 算法的实现非常简单，维护一个队列，如果某条记录被访问了，则移动到队尾，那么队首则是最近最少访问的数据，淘汰该条记录即可。</p>
+<div class="post-content mb-3"><h1 id="lru">LRU</h1>
+<p>LRU（Least Recently Used）即最近最少使用。相较于仅考虑时间因素的 FIFO 和仅考虑访问频率的 LFU，LRU 算法可以认为是相对平衡的一种淘汰算法。</p>
+<p>LRU 算法的实现比较简单，维护一个队列，如果某条记录被访问了，则移动到队尾，那么队首则是最近最少访问的数据，淘汰该条记录即可。</p>
 <p><strong>Golang实现</strong></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">lru</span>
 <span class="ln"> 2</span>
@@ -312,16 +306,16 @@
   </div>
 </div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
   <div class="post-nav w-50"><div class="prev-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf系列01
+      <a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf基础
 </a>
     </div></div>
   <div class="post-nav flex-row-reverse"></div>
 </div><section class="related-posts">
     <h3>相关文章</h3>
-    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf系列01
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%951/">Golang-Go Test
-</a></li><li><a href="https://why9661.github.io/myblog/posts/rpc/rpc01/">RPC系列01
-</a></li><li><a href="https://why9661.github.io/myblog/posts/docker/docker%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">Docker基本使用
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf基础
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Golang-单元测试
+</a></li><li><a href="https://why9661.github.io/myblog/posts/rpc/rpc01/">RPC基础
+</a></li><li><a href="https://why9661.github.io/myblog/posts/docker/docker%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">Docker基础
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-Web编程之模板引擎
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
@@ -342,11 +336,11 @@
   </div>
 </section><section class="recent-posts row surface">
   <h4>最近文章</h4>
-  <ul><li><a href="https://why9661.github.io/myblog/posts/algorithm/lru/">Lru
-</a></li><li><a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf系列01
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%951/">Golang-Go Test
-</a></li><li><a href="https://why9661.github.io/myblog/posts/rpc/rpc01/">RPC系列01
-</a></li><li><a href="https://why9661.github.io/myblog/posts/docker/docker%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">Docker基本使用
+  <ul><li><a href="https://why9661.github.io/myblog/posts/algorithm/lru/">缓存淘汰策略-LRU
+</a></li><li><a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf基础
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Golang-单元测试
+</a></li><li><a href="https://why9661.github.io/myblog/posts/rpc/rpc01/">RPC基础
+</a></li><li><a href="https://why9661.github.io/myblog/posts/docker/docker%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">Docker基础
 </a></li></ul>
 </section><section class="taxonomy-categories row surface">
       <h4>

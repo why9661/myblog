@@ -9,7 +9,7 @@
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 05 Jul 2020 21:47:33 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Golang-slice</title>
+      <title>Golang-切片</title>
       <link>https://why9661.github.io/myblog/posts/golang/slice/</link>
       <pubDate>Sun, 05 Jul 2020 21:47:33 +0800</pubDate>
       
@@ -18,7 +18,7 @@
     </item>
     
     <item>
-      <title>Golang-make和new</title>
+      <title>Golang-内置函数make和new的区别</title>
       <link>https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/</link>
       <pubDate>Fri, 05 Jun 2020 14:38:29 +0800</pubDate>
       

@@ -9,7 +9,7 @@
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
     <lastBuildDate>Fri, 16 Jul 2021 22:51:41 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Lru</title>
+      <title>缓存淘汰策略-LRU</title>
       <link>https://why9661.github.io/myblog/posts/algorithm/lru/</link>
       <pubDate>Fri, 16 Jul 2021 22:51:41 +0800</pubDate>
       
@@ -18,7 +18,7 @@
     </item>
     
     <item>
-      <title>Protobuf系列01</title>
+      <title>Protobuf基础</title>
       <link>https://why9661.github.io/myblog/posts/protobuf/protobuf01/</link>
       <pubDate>Thu, 10 Jun 2021 11:28:03 +0800</pubDate>
       
@@ -27,16 +27,16 @@
     </item>
     
     <item>
-      <title>Golang-go test</title>
-      <link>https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%951/</link>
+      <title>Golang-单元测试</title>
+      <link>https://why9661.github.io/myblog/posts/golang/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</link>
       <pubDate>Sun, 09 May 2021 14:25:05 +0800</pubDate>
       
-      <guid>https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%951/</guid>
+      <guid>https://why9661.github.io/myblog/posts/golang/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>RPC系列01</title>
+      <title>RPC基础</title>
       <link>https://why9661.github.io/myblog/posts/rpc/rpc01/</link>
       <pubDate>Sat, 08 May 2021 16:39:19 +0800</pubDate>
       
@@ -45,7 +45,7 @@
     </item>
     
     <item>
-      <title>Docker基本使用</title>
+      <title>Docker基础</title>
       <link>https://why9661.github.io/myblog/posts/docker/docker%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Sun, 02 May 2021 23:12:10 +0800</pubDate>
       
@@ -63,7 +63,7 @@
     </item>
     
     <item>
-      <title>一致性哈希</title>
+      <title>负载均衡-一致性哈希</title>
       <link>https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</link>
       <pubDate>Fri, 11 Sep 2020 15:53:42 +0800</pubDate>
       
@@ -72,7 +72,7 @@
     </item>
     
     <item>
-      <title>轮询</title>
+      <title>负载均衡-轮询算法</title>
       <link>https://why9661.github.io/myblog/posts/algorithm/%E8%BD%AE%E8%AF%A2/</link>
       <pubDate>Wed, 02 Sep 2020 21:06:08 +0800</pubDate>
       
@@ -81,7 +81,7 @@
     </item>
     
     <item>
-      <title>Golang-slice</title>
+      <title>Golang-切片</title>
       <link>https://why9661.github.io/myblog/posts/golang/slice/</link>
       <pubDate>Sun, 05 Jul 2020 21:47:33 +0800</pubDate>
       
@@ -90,7 +90,7 @@
     </item>
     
     <item>
-      <title>Golang-make和new</title>
+      <title>Golang-内置函数make和new的区别</title>
       <link>https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/</link>
       <pubDate>Fri, 05 Jun 2020 14:38:29 +0800</pubDate>
       
