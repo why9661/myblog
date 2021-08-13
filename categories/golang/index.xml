@@ -27,6 +27,15 @@
     </item>
     
     <item>
+      <title>Golang-defer01</title>
+      <link>https://why9661.github.io/myblog/posts/golang/defer01/</link>
+      <pubDate>Sat, 13 Feb 2021 15:29:02 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/defer01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Golang-切片</title>
       <link>https://why9661.github.io/myblog/posts/golang/slice/</link>
       <pubDate>Sun, 05 Jul 2020 21:47:33 +0800</pubDate>

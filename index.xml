@@ -63,6 +63,15 @@
     </item>
     
     <item>
+      <title>Golang-defer01</title>
+      <link>https://why9661.github.io/myblog/posts/golang/defer01/</link>
+      <pubDate>Sat, 13 Feb 2021 15:29:02 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/defer01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>负载均衡-一致性哈希</title>
       <link>https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/</link>
       <pubDate>Fri, 11 Sep 2020 15:53:42 +0800</pubDate>
