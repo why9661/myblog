@@ -3,26 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Golang-切片 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>Golang-方法 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
 <meta name="keywords" content="" />
-<meta name="description" content="切片" /><meta itemprop="name" content="Golang-切片">
-<meta itemprop="description" content="切片"><meta itemprop="datePublished" content="2020-07-05T21:47:33+08:00" />
-<meta itemprop="dateModified" content="2020-07-05T21:47:33+08:00" />
-<meta itemprop="wordCount" content="828">
-<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-切片" />
-<meta property="og:description" content="切片" />
+<meta name="description" content="" /><meta itemprop="name" content="Golang-方法">
+<meta itemprop="description" content=""><meta itemprop="datePublished" content="2021-04-28T11:03:23+08:00" />
+<meta itemprop="dateModified" content="2021-04-28T11:03:23+08:00" />
+<meta itemprop="wordCount" content="474">
+<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-方法" />
+<meta property="og:description" content="" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/slice/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-07-05T21:47:33+08:00" />
-<meta property="article:modified_time" content="2020-07-05T21:47:33+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/%E6%96%B9%E6%B3%95/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-28T11:03:23+08:00" />
+<meta property="article:modified_time" content="2021-04-28T11:03:23+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Golang-切片"/>
-<meta name="twitter:description" content="切片"/>
+<meta name="twitter:title" content="Golang-方法"/>
+<meta name="twitter:description" content=""/>
 <meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
 </head><body><header><nav class="navbar navbar-expand-xl fixed-top">
   <div class="container">
@@ -148,7 +148,7 @@
       <div class="row content">
 <div class="col-lg-8">
   <div class="container"><nav class="row" aria-label="breadcrumb">
-  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-切片</li></ol>
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-方法</li></ol>
 </nav><article class="post row surface"><div class="post-panel-wrapper">
   <div class="post-panel d-flex flex-column">
     <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
@@ -169,139 +169,105 @@
     
   </div>
 </div>
-<h1 class="post-title my-3">Golang-切片
+<h1 class="post-title my-3">Golang-方法
 </h1><div class="post-meta mb-3">
   <span class="post-date me-2">
-    <i class="fas fa-fw fa-calendar-alt"></i>2020-07-05
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-04-28
   </span>
   <span class="post-reading-time me-2">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
+    <i class="fas fa-fw fa-coffee"></i>1 分钟阅读
   </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
-<div class="post-content mb-3"><p><strong>Slice的底层数据结构</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">type</span> <span class="nx">SliceHeader</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln">2</span>	<span class="nx">Data</span> <span class="kt">uintptr</span> <span class="c1">//指向第一个slice元素对应的底层数组元素的地址
-</span><span class="ln">3</span><span class="c1"></span>	<span class="nx">Len</span>  <span class="kt">int</span>	<span class="c1">//切片长度（slice的元素数目）
-</span><span class="ln">4</span><span class="c1"></span>	<span class="nx">Cap</span>  <span class="kt">int</span>	<span class="c1">//切片容量（从slice的开始位置到底层数据的结尾位置的长度）
-</span><span class="ln">5</span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p>注意以下声明切片的方式：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">var</span> <span class="nx">s1</span> <span class="p">[]</span><span class="kt">int</span>           <span class="c1">//Data=nil Len=Cap=0     没有分配底层数组
-</span><span class="ln">2</span><span class="c1"></span><span class="nx">s2</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>   <span class="c1">//Data!=nil Len=Cap=0    分配底层数组
-</span><span class="ln">3</span><span class="c1"></span><span class="nx">s3</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{}</span>          <span class="c1">//Data!=nil Len=Cap=0	分配底层数组
-</span><span class="ln">4</span><span class="c1"></span><span class="nx">s4</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">([]</span><span class="kt">int</span><span class="p">)</span>       <span class="c1">//指向一个（Data=nil, Len=Cap=0）的slice  没有分配底层数组 
-</span></code></pre></div><p>多个slice可以共享底层数组，因此对一个切片的元素修改会影响也会影响其它切片。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="nx">months</span> <span class="o">:=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s">&#34;January&#34;</span><span class="p">,</span> <span class="cm">/* ... */</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s">&#34;December&#34;</span><span class="p">}</span>
-<span class="ln">2</span><span class="nx">Q2</span> <span class="o">:=</span> <span class="nx">months</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
-<span class="ln">3</span><span class="nx">summer</span> <span class="o">:=</span> <span class="nx">months</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span>
-<span class="ln">4</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">Q2</span><span class="p">)</span>     <span class="c1">// [&#34;April&#34; &#34;May&#34; &#34;June&#34;]
-</span><span class="ln">5</span><span class="c1"></span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">summer</span><span class="p">)</span> <span class="c1">// [&#34;June&#34; &#34;July&#34; &#34;August&#34;]
-</span></code></pre></div><p><img class="img-fluid" src="C:%5cUsers%5chy_wo%5cDesktop%5c%e6%88%aa%e5%9b%be%5cslice.png" alt="slice"  loading="lazy" />
-</p>
-<p><strong>slice比较</strong></p>
-<p>slice不能直接用==比较。</p>
-<p>对于byte类型的slice，可以用标准库的bytes.Equal函数进行比较。</p>
-<p>对于其它类型的slice：</p>
-<ul>
-<li>
-<p>比较两个切片的长度，且两个切片对应下标的值也相等</p>
-</li>
-<li>
-<p>reflect.DeepEqual</p>
-<p>两种方法简单的性能比较：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">genSlice</span><span class="p">(</span><span class="nx">size</span> <span class="kt">int</span><span class="p">)</span> <span class="p">([]</span><span class="kt">uint32</span><span class="p">,</span> <span class="p">[]</span><span class="kt">uint32</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="nx">rand</span><span class="p">.</span><span class="nf">Seed</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">UnixNano</span><span class="p">())</span>
-<span class="ln"> 3</span>	<span class="nx">s1</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">uint32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">size</span><span class="p">)</span>
-<span class="ln"> 4</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln"> 5</span>      <span class="nx">s1</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Uint32</span><span class="p">())</span>
-<span class="ln"> 6</span>	<span class="p">}</span>
-<span class="ln"> 7</span>	<span class="nx">s2</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">uint32</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">s1</span><span class="p">))</span>
-<span class="ln"> 8</span>	<span class="nb">copy</span><span class="p">(</span><span class="nx">s2</span><span class="p">,</span> <span class="nx">s1</span><span class="p">)</span>
-<span class="ln"> 9</span>
-<span class="ln">10</span>	<span class="k">return</span> <span class="nx">s1</span><span class="p">,</span> <span class="nx">s2</span>
+<div class="post-content mb-3"><p>方法本质上是一个函数，方法接收者就是隐含的第一个参数</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">Name</span> <span class="kt">string</span>
+<span class="ln"> 3</span><span class="p">}</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="nx">A</span><span class="p">)</span> <span class="nf">SayHello1</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+<span class="ln"> 6</span>	<span class="k">return</span> <span class="s">&#34;Hello &#34;</span> <span class="o">+</span> <span class="nx">a</span><span class="p">.</span><span class="nx">Name</span>
+<span class="ln"> 7</span><span class="p">}</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="kd">func</span> <span class="nf">SayHello2</span><span class="p">(</span><span class="nx">a</span> <span class="nx">A</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+<span class="ln">10</span>	<span class="k">return</span> <span class="s">&#34;Hello &#34;</span> <span class="o">+</span> <span class="nx">a</span><span class="p">.</span><span class="nx">Name</span>
 <span class="ln">11</span><span class="p">}</span>
 <span class="ln">12</span>
-<span class="ln">13</span><span class="cm">/*
-</span><span class="ln">14</span><span class="cm">func compare(a, b []uint32) bool {
-</span><span class="ln">15</span><span class="cm">	if (a == nil) != (b == nil) {
-</span><span class="ln">16</span><span class="cm">      return false
-</span><span class="ln">17</span><span class="cm">	}
-</span><span class="ln">18</span><span class="cm">
-</span><span class="ln">19</span><span class="cm">	if len(a) != len(b) {
-</span><span class="ln">20</span><span class="cm">      return false
-</span><span class="ln">21</span><span class="cm">	}
-</span><span class="ln">22</span><span class="cm">
-</span><span class="ln">23</span><span class="cm">	for i := range a {
-</span><span class="ln">24</span><span class="cm">      if a[i] != b[i] {
-</span><span class="ln">25</span><span class="cm">          return false
-</span><span class="ln">26</span><span class="cm">      }
-</span><span class="ln">27</span><span class="cm">	}
-</span><span class="ln">28</span><span class="cm">
-</span><span class="ln">29</span><span class="cm">	return true
-</span><span class="ln">30</span><span class="cm">}
-</span><span class="ln">31</span><span class="cm">*/</span>
-<span class="ln">32</span><span class="kd">func</span> <span class="nf">BenchmarkCompare</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">33</span>	<span class="nx">s1</span><span class="p">,</span> <span class="nx">s2</span> <span class="o">:=</span> <span class="nf">genSlice</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-<span class="ln">34</span>	<span class="nx">b</span><span class="p">.</span><span class="nf">ResetTimer</span><span class="p">()</span>
-<span class="ln">35</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln">36</span>      <span class="nx">_</span> <span class="p">=</span> <span class="nf">compare</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span> <span class="nx">s2</span><span class="p">)</span>
-<span class="ln">37</span>	<span class="p">}</span>
-<span class="ln">38</span><span class="p">}</span>
-<span class="ln">39</span>
-<span class="ln">40</span><span class="kd">func</span> <span class="nf">BenchmarkDeepEqual</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">41</span>	<span class="nx">s1</span><span class="p">,</span> <span class="nx">s2</span> <span class="o">:=</span> <span class="nf">genSlice</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-<span class="ln">42</span>	<span class="nx">b</span><span class="p">.</span><span class="nf">ResetTimer</span><span class="p">()</span>
-<span class="ln">43</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln">44</span>      <span class="nx">_</span> <span class="p">=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">DeepEqual</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span> <span class="nx">s2</span><span class="p">)</span>
-<span class="ln">45</span>	<span class="p">}</span>
-<span class="ln">46</span><span class="p">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test -bench=.
-<span class="ln">2</span>BenchmarkCompare-4       1621315               672.8 ns/op
-<span class="ln">3</span>BenchmarkDeepEqual-4       10000            137540 ns/op
-</code></pre></div></li>
-</ul>
-<p>​</p>
-<p><strong>slice扩容</strong></p>
-<ul>
-<li>
-<p>预估扩容后容量</p>
-<ul>
-<li>如果扩容前容量*2&lt;所需容量，那么预估容量=所需容量</li>
-<li>如果扩容前容量*2&gt;所需容量
-<ul>
-<li>如果切片长度&lt;1024，那么预估容量=扩容前容量*2</li>
-<li>否则预估容量=扩容前容量*1.25，直到预估容量&gt;所需容量</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>计算所需的内存</p>
-<p>预估容量*元素类型大小</p>
-</li>
-<li>
-<p>匹配合适的内存规格</p>
-<p>匹配足够大且最接近的规格</p>
-</li>
-<li>
-<p>确定容量</p>
-<p>内存大小/元素类型大小</p>
-</li>
-</ul>
-<p><strong>slice拷贝</strong></p>
-<p>拷贝的长度length=min(len(dst), len(src))</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nb">copy</span><span class="p">(</span><span class="nx">dst</span><span class="p">,</span> <span class="nx">src</span> <span class="p">[]</span><span class="nx">Type</span><span class="p">)</span> <span class="kt">int</span>
-</code></pre></div><p><strong>注意事项</strong></p>
-<ul>
-<li>
-<p>Slice发生扩容时，会重新分配底层数组</p>
-</li>
-<li>
-<p>对没有分配底层数组的slice进行赋值操作会触发panic，可以进行append操作。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">var</span> <span class="nx">ints</span> <span class="p">[]</span><span class="kt">int</span>
-<span class="ln">2</span><span class="nx">ints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">=</span> <span class="mi">1</span> <span class="c1">//panic
-</span><span class="ln">3</span><span class="c1"></span>
-<span class="ln">4</span><span class="nx">ints</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">ints</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">//√
-</span></code></pre></div></li>
-</ul></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<span class="ln">13</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">14</span>	<span class="nx">t1</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">A</span><span class="p">.</span><span class="nx">SayHello1</span><span class="p">)</span>
+<span class="ln">15</span>	<span class="nx">t2</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">SayHello2</span><span class="p">)</span>
+<span class="ln">16</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">t1</span> <span class="o">==</span> <span class="nx">t2</span><span class="p">)</span>  <span class="c1">// true
+</span><span class="ln">17</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>以下是一个常见的方法调用，这其实是一个语法糖，等价于注释行的函数调用。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">Name</span> <span class="kt">string</span>
+<span class="ln"> 3</span><span class="p">}</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="nx">A</span><span class="p">)</span> <span class="nf">SayHello</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+<span class="ln"> 6</span>	<span class="k">return</span> <span class="s">&#34;Hello &#34;</span> <span class="o">+</span> <span class="nx">a</span><span class="p">.</span><span class="nx">Name</span>
+<span class="ln"> 7</span><span class="p">}</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">10</span>	<span class="nx">a</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{</span><span class="s">&#34;why&#34;</span><span class="p">}</span>
+<span class="ln">11</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nf">SayHello</span><span class="p">())</span>
+<span class="ln">12</span>	<span class="c1">//fmt.Println(A.SayHello(a))
+</span><span class="ln">13</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>如果需要通过方法调用来完成对接收者的修改，那么需要使用指针接受者</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">Name</span> <span class="kt">string</span>
+<span class="ln"> 3</span><span class="p">}</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="nx">A</span><span class="p">)</span> <span class="nf">Rename1</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 6</span>	<span class="nx">a</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="nx">name</span>
+<span class="ln"> 7</span><span class="p">}</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">A</span><span class="p">)</span> <span class="nf">Rename2</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">10</span>	<span class="nx">a</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="nx">name</span>
+<span class="ln">11</span><span class="p">}</span>
+<span class="ln">12</span>
+<span class="ln">13</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">14</span>	<span class="nx">a</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{</span><span class="s">&#34;why&#34;</span><span class="p">}</span>
+<span class="ln">15</span>	<span class="nx">b</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{</span><span class="s">&#34;why&#34;</span><span class="p">}</span>
+<span class="ln">16</span>	<span class="nx">a</span><span class="p">.</span><span class="nf">Rename1</span><span class="p">(</span><span class="s">&#34;why123&#34;</span><span class="p">)</span>
+<span class="ln">17</span>	<span class="nx">b</span><span class="p">.</span><span class="nf">Rename2</span><span class="p">(</span><span class="s">&#34;why123&#34;</span><span class="p">)</span>
+<span class="ln">18</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span> <span class="c1">//why
+</span><span class="ln">19</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span> <span class="c1">//why123
+</span><span class="ln">20</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>可以通过值调用指针接受者的方法，也可以通过指针调用值接收者的方法，这也是一种语法糖</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 2</span>   <span class="nx">Name</span> <span class="kt">string</span>
+<span class="ln"> 3</span><span class="p">}</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="nx">A</span><span class="p">)</span> <span class="nf">Rename1</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 6</span>   <span class="nx">a</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="nx">name</span>
+<span class="ln"> 7</span><span class="p">}</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">A</span><span class="p">)</span> <span class="nf">Rename2</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">10</span>   <span class="nx">a</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="nx">name</span>
+<span class="ln">11</span><span class="p">}</span>
+<span class="ln">12</span>
+<span class="ln">13</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">14</span>   <span class="nx">a</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{</span><span class="s">&#34;why&#34;</span><span class="p">}</span>
+<span class="ln">15</span>   <span class="nx">b</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">A</span><span class="p">{</span><span class="s">&#34;why&#34;</span><span class="p">}</span>
+<span class="ln">16</span>   <span class="nx">a</span><span class="p">.</span><span class="nf">Rename2</span><span class="p">(</span><span class="s">&#34;why123&#34;</span><span class="p">)</span> <span class="c1">//在编译阶段会转换为(&amp;a).Rename2(string)
+</span><span class="ln">17</span><span class="c1"></span>   <span class="nx">b</span><span class="p">.</span><span class="nf">Rename1</span><span class="p">(</span><span class="s">&#34;why123&#34;</span><span class="p">)</span> <span class="c1">//在编译阶段会转换为(*b).Rename1(string)
+</span><span class="ln">18</span><span class="c1"></span>   <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span> <span class="c1">// why123
+</span><span class="ln">19</span><span class="c1"></span>   <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span> <span class="c1">// why
+</span><span class="ln">20</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>方法和函数一样可以赋值给变量</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 2</span>   <span class="nx">Name</span> <span class="kt">string</span>
+<span class="ln"> 3</span><span class="p">}</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="nx">A</span><span class="p">)</span> <span class="nf">PrintName</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 6</span>   <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
+<span class="ln"> 7</span><span class="p">}</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">10</span>   <span class="nx">a</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{</span><span class="s">&#34;why&#34;</span><span class="p">}</span>
+<span class="ln">11</span>   <span class="nx">f1</span> <span class="o">:=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">PrintName</span> <span class="c1">//有捕获列表的Function Value
+</span><span class="ln">12</span><span class="c1"></span>   <span class="nx">f2</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">.</span><span class="nx">PrintName</span> <span class="c1">//Function Value
+</span><span class="ln">13</span><span class="c1"></span>   <span class="nf">f1</span><span class="p">()</span>   <span class="c1">//why
+</span><span class="ln">14</span><span class="c1"></span>   <span class="nf">f2</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>  <span class="c1">//why
+</span><span class="ln">15</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
@@ -328,16 +294,20 @@
   </div>
 </div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
   <div class="post-nav w-50"><div class="prev-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/">Golang-内置函数make和new的区别
+      <a href="https://why9661.github.io/myblog/posts/golang/%E9%97%AD%E5%8C%85/">Golang-闭包
 </a>
     </div></div>
   <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/algorithm/%E8%BD%AE%E8%AF%A2/">负载均衡-轮询算法
+      <a href="https://why9661.github.io/myblog/posts/docker/docker%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">Docker基础
 </a>
     </div></div>
 </div><section class="related-posts">
     <h3>相关文章</h3>
-    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/">Golang-内置函数make和new的区别
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%97%AD%E5%8C%85/">Golang-闭包
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer01/">Golang-Defer
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/slice/">Golang-切片
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/">Golang-内置函数make和new的区别
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-Web编程之模板引擎
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"

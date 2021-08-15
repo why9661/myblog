@@ -54,6 +54,15 @@
     </item>
     
     <item>
+      <title>Golang-方法</title>
+      <link>https://why9661.github.io/myblog/posts/golang/%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Wed, 28 Apr 2021 11:03:23 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/%E6%96%B9%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Golang-闭包</title>
       <link>https://why9661.github.io/myblog/posts/golang/%E9%97%AD%E5%8C%85/</link>
       <pubDate>Tue, 27 Apr 2021 12:13:12 +0800</pubDate>
@@ -72,7 +81,7 @@
     </item>
     
     <item>
-      <title>Golang-defer01</title>
+      <title>Golang-defer</title>
       <link>https://why9661.github.io/myblog/posts/golang/defer01/</link>
       <pubDate>Sat, 13 Feb 2021 15:29:02 +0800</pubDate>
       
