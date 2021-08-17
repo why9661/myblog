@@ -3,26 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Golang-defer - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>Golang-逃逸分析 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
 <meta name="keywords" content="" />
-<meta name="description" content="defer常见操作" /><meta itemprop="name" content="Golang-defer">
-<meta itemprop="description" content="defer常见操作"><meta itemprop="datePublished" content="2021-02-13T15:29:02+08:00" />
-<meta itemprop="dateModified" content="2021-02-13T15:29:02+08:00" />
-<meta itemprop="wordCount" content="742">
-<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-defer" />
-<meta property="og:description" content="defer常见操作" />
+<meta name="description" content="逃逸分析" /><meta itemprop="name" content="Golang-逃逸分析">
+<meta itemprop="description" content="逃逸分析"><meta itemprop="datePublished" content="2020-12-02T13:05:16+08:00" />
+<meta itemprop="dateModified" content="2020-12-02T13:05:16+08:00" />
+<meta itemprop="wordCount" content="637">
+<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-逃逸分析" />
+<meta property="og:description" content="逃逸分析" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/defer01/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-02-13T15:29:02+08:00" />
-<meta property="article:modified_time" content="2021-02-13T15:29:02+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-12-02T13:05:16+08:00" />
+<meta property="article:modified_time" content="2020-12-02T13:05:16+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Golang-defer"/>
-<meta name="twitter:description" content="defer常见操作"/>
+<meta name="twitter:title" content="Golang-逃逸分析"/>
+<meta name="twitter:description" content="逃逸分析"/>
 <meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
 </head><body><header><nav class="navbar navbar-expand-xl fixed-top">
   <div class="container">
@@ -148,7 +148,7 @@
       <div class="row content">
 <div class="col-lg-8">
   <div class="container"><nav class="row" aria-label="breadcrumb">
-  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-Defer</li></ol>
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-逃逸分析</li></ol>
 </nav><article class="post row surface"><div class="post-panel-wrapper">
   <div class="post-panel d-flex flex-column">
     <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
@@ -169,96 +169,137 @@
     
   </div>
 </div>
-<h1 class="post-title my-3">Golang-Defer
+<h1 class="post-title my-3">Golang-逃逸分析
 </h1><div class="post-meta mb-3">
   <span class="post-date me-2">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-02-13
+    <i class="fas fa-fw fa-calendar-alt"></i>2020-12-02
   </span>
   <span class="post-reading-time me-2">
     <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
   </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
-<div class="post-content mb-3"><p><code>defer</code>注册的函数会在函数返回前执行。</p>
-<p>以下是<code>defer</code>关键字常见的两个现象：</p>
+<div class="post-content mb-3"><p>Golang中变量分配在栈上还是堆上，取决于变量是否发生了逃逸，逃逸分析是在编译阶段确定的。</p>
+<p><strong>检测逃逸的命令</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="k">go</span> <span class="nx">run</span> <span class="o">-</span><span class="nx">gcflags</span> <span class="s">&#34;-m -l&#34;</span> <span class="nx">main</span><span class="p">.</span><span class="k">go</span>
+</code></pre></div><p><strong>变量逃逸场景</strong></p>
 <ul>
 <li>
-<p><code>defer</code>关键字会立刻拷贝函数中引用的外部参数，即入参的值在使用<code>defer</code>关键字时就已经确定。</p>
-<p><strong>一个例子</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">2</span>   <span class="nx">startTime</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
-<span class="ln">3</span>   <span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Since</span><span class="p">(</span><span class="nx">startTime</span><span class="p">))</span>
-<span class="ln">4</span>   <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
-<span class="ln">5</span><span class="p">}</span>
-<span class="ln">6</span><span class="c1">//输出：
-</span><span class="ln">7</span><span class="c1">//0s
-</span></code></pre></div><p>以上代码并不能实现我们想要统计函数执行时间的需求，因为<code>time.Since(startTime)</code>在传入时值就已经确定。</p>
-<p>可以使用defer+匿名函数来避免这个问题。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">2</span>    <span class="nx">startTime</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
-<span class="ln">3</span>    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Since</span><span class="p">(</span><span class="nx">startTime</span><span class="p">))}()</span>
-<span class="ln">4</span>    <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
-<span class="ln">5</span><span class="p">}</span>
-<span class="ln">6</span><span class="c1">//输出:
-</span><span class="ln">7</span><span class="c1">//10.0119478s
-</span></code></pre></div></li>
+<p>指针逃逸</p>
+<p>这是变量逃逸最普遍的一种场景，即变量在其作用域之外被引用。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">escape</span><span class="p">()</span> <span class="o">*</span><span class="kt">int</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="nx">x</span> <span class="o">:=</span> <span class="mi">10</span>
+<span class="ln">3</span>	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">x</span>
+<span class="ln">4</span><span class="p">}</span>
+<span class="ln">5</span>
+<span class="ln">6</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">7</span>	<span class="nx">_</span> <span class="p">=</span> <span class="nf">escape</span><span class="p">()</span>
+<span class="ln">8</span><span class="p">}</span>
+</code></pre></div><p>运行<code>go run -gcflags &quot;-m -l&quot; main.go</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>.\main.go:4:2: moved to heap: x
+</code></pre></div></li>
 <li>
-<p><code>defer</code>关键字注册的函数会表现为&quot;倒序执行&quot;</p>
-<p><strong>一个例子</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">2</span>	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;1&#34;</span><span class="p">)</span>
-<span class="ln">3</span>	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;2&#34;</span><span class="p">)</span>
-<span class="ln">4</span>	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;3&#34;</span><span class="p">)</span>
-<span class="ln">5</span><span class="p">}</span>
-<span class="ln">6</span><span class="c1">//输出：
-</span><span class="ln">7</span><span class="c1">//3
-</span><span class="ln">8</span><span class="c1">//2
-</span><span class="ln">9</span><span class="c1">//1
-</span></code></pre></div></li>
-</ul>
-<p>除此之外，涉及到<code>defer</code>的还有几种容易搞混的情况：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">A</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="nx">a</span> <span class="o">:=</span> <span class="mi">1</span>
-<span class="ln"> 3</span>	<span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 4</span>		<span class="nx">a</span><span class="o">++</span>
-<span class="ln"> 5</span>	<span class="p">}()</span>
-<span class="ln"> 6</span>	<span class="k">return</span> <span class="nx">a</span>
+<p>闭包引起的变量堆分配</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">closure</span><span class="p">()</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">x</span> <span class="o">:=</span> <span class="mi">10</span>
+<span class="ln"> 3</span>	<span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+<span class="ln"> 4</span>      <span class="nx">x</span><span class="o">++</span>
+<span class="ln"> 5</span>      <span class="k">return</span> <span class="nx">x</span>
+<span class="ln"> 6</span>	<span class="p">}</span>
 <span class="ln"> 7</span><span class="p">}</span>
 <span class="ln"> 8</span>
-<span class="ln"> 9</span><span class="kd">func</span> <span class="nf">B</span><span class="p">()</span> <span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">10</span>	<span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">11</span>		<span class="nx">a</span><span class="o">++</span>
-<span class="ln">12</span>	<span class="p">}()</span>
-<span class="ln">13</span>	<span class="k">return</span> <span class="mi">1</span>
-<span class="ln">14</span><span class="p">}</span>
-<span class="ln">15</span>
-<span class="ln">16</span><span class="kd">func</span> <span class="nf">C</span><span class="p">()</span> <span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">17</span>	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">18</span>		<span class="nx">a</span><span class="o">++</span>
-<span class="ln">19</span>	<span class="p">}(</span><span class="nx">a</span><span class="p">)</span>
-<span class="ln">20</span>	<span class="k">return</span> <span class="mi">1</span>
-<span class="ln">21</span><span class="p">}</span>
-<span class="ln">22</span>
-<span class="ln">23</span><span class="kd">func</span> <span class="nf">D</span><span class="p">()</span> <span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">24</span>	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">25</span>		<span class="o">*</span><span class="nx">a</span><span class="o">++</span>
-<span class="ln">26</span>	<span class="p">}(</span><span class="o">&amp;</span><span class="nx">a</span><span class="p">)</span>
-<span class="ln">27</span>	<span class="k">return</span> <span class="mi">1</span>
-<span class="ln">28</span><span class="p">}</span>
-<span class="ln">29</span>
-<span class="ln">30</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">31</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">A</span><span class="p">())</span> <span class="c1">//1
-</span><span class="ln">32</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">B</span><span class="p">())</span> <span class="c1">//2
-</span><span class="ln">33</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">C</span><span class="p">())</span> <span class="c1">//1
-</span><span class="ln">34</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">D</span><span class="p">())</span> <span class="c1">//2
-</span><span class="ln">35</span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p>首先需要明白<code>return</code>并不是一个原子操作，函数执行到<code>return</code>时：</p>
-<p>1、返回值赋值</p>
-<p>2、如果有注册的<code>defer</code>函数则执行<code>defer</code>函数</p>
-<p>3、<code>ret</code>指令返回</p>
-<p>其次，在Go中函数传参都是值传递。</p>
-<p>在第一种情况中，<code>return a</code>会先将局部变量a的值1赋给返回值，接着执行<code>defer</code>函数，其中a++操作的对象还是局部变量a而不是返回值。</p>
-<p>在第二种情况中，<code>return 1</code>会先将值1赋给返回值a，接着执行<code>defer</code>函数，其中a++操作的对象是返回值a。</p>
-<p>在第三种情况中，<code>return 1</code>会先将值1赋给返回值a，接着执行<code>defer</code>函数，其中传参的值是返回值a的副本，因此修改的a非返回值a。</p>
-<p>在第四种情况中，<code>return 1</code>会先将值1赋给返回值a，接着执行<code>defer</code>函数，其中传参的值是返回值a的地址，因此修改对返回值a有效。</p></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<span class="ln"> 9</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">10</span>	<span class="nx">_</span> <span class="p">=</span> <span class="nf">closure</span><span class="p">()</span>
+<span class="ln">11</span><span class="p">}</span>
+</code></pre></div><p>运行<code>go run -gcflags &quot;-m -l&quot; main.go</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>.\main.go:4:2: moved to heap: x
+<span class="ln">2</span>.\main.go:5:9: func literal escapes to heap
+</code></pre></div></li>
+<li>
+<p>interface{}类型在编译阶段无法确定具体类型，发生逃逸。</p>
+<p>interface{}类型的值部分在堆上分配</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="nx">x</span> <span class="o">:=</span> <span class="mi">10</span>
+<span class="ln">3</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v&#34;</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
+<span class="ln">4</span><span class="p">}</span>
+</code></pre></div><p>运行<code>go run -gcflags &quot;-m -l&quot; main.go</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>.\main.go:7:12: ... argument does not escape
+<span class="ln">2</span>.\main.go:7:13: x escapes to heap
+<span class="ln">3</span>10
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="nx">x</span> <span class="o">:=</span> <span class="mi">10</span>
+<span class="ln">3</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">x</span><span class="p">)</span>
+<span class="ln">4</span><span class="p">}</span>
+</code></pre></div><p>运行<code>go run -gcflags &quot;-m -l&quot; main.go</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>.\main.go:6:2: moved to heap: x
+<span class="ln">2</span>.\main.go:7:12: ... argument does not escape
+<span class="ln">3</span>0xc00000a0a8
+</code></pre></div></li>
+<li>
+<p>变量太大</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">generate8191</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">nums</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">8191</span><span class="p">)</span> <span class="c1">// &lt; 64KB
+</span><span class="ln"> 3</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">8191</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln"> 4</span>      <span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Int</span><span class="p">()</span>
+<span class="ln"> 5</span>	<span class="p">}</span>
+<span class="ln"> 6</span><span class="p">}</span>
+<span class="ln"> 7</span>
+<span class="ln"> 8</span><span class="kd">func</span> <span class="nf">generate8192</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 9</span>	<span class="nx">nums</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">8192</span><span class="p">)</span> <span class="c1">// = 64KB
+</span><span class="ln">10</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">8192</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln">11</span>      <span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Int</span><span class="p">()</span>
+<span class="ln">12</span>	<span class="p">}</span>
+<span class="ln">13</span><span class="p">}</span>
+<span class="ln">14</span>
+<span class="ln">15</span><span class="kd">func</span> <span class="nf">generate</span><span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">16</span>	<span class="nx">nums</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> <span class="c1">// 不确定大小
+</span><span class="ln">17</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">n</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln">18</span>      <span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Int</span><span class="p">()</span>
+<span class="ln">19</span>	<span class="p">}</span>
+<span class="ln">20</span><span class="p">}</span>
+<span class="ln">21</span>
+<span class="ln">22</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">23</span>	<span class="nf">generate8191</span><span class="p">()</span>
+<span class="ln">24</span>    <span class="nf">generate8192</span><span class="p">()</span>
+<span class="ln">25</span>    <span class="nf">generate</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="ln">26</span><span class="p">}</span>
+</code></pre></div><p>运行<code>go run -gcflags &quot;-m -l&quot; main.go</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>.\main.go:6:14: make([]int, 8191) does not escape
+<span class="ln">2</span>.\main.go:13:14: make([]int, 8192) escapes to heap
+<span class="ln">3</span>.\main.go:20:14: make([]int, n) escapes to heap
+</code></pre></div></li>
+</ul>
+<p><strong>一个例子</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span><span class="p">{}</span>
+<span class="ln">2</span>
+<span class="ln">3</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">4</span>	<span class="nx">a</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Person</span><span class="p">{}</span>
+<span class="ln">5</span>	<span class="nx">b</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Person</span><span class="p">{}</span>
+<span class="ln">6</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span> <span class="o">==</span> <span class="nx">b</span><span class="p">)</span> <span class="c1">//false 很合理，栈上两个不同变量的地址
+</span><span class="ln">7</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span><span class="p">{}</span>
+<span class="ln">2</span>
+<span class="ln">3</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">4</span>	<span class="nx">a</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Person</span><span class="p">{}</span>
+<span class="ln">5</span>	<span class="nx">b</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Person</span><span class="p">{}</span>
+<span class="ln">6</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%p\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+<span class="ln">7</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%p\n&#34;</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+<span class="ln">8</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span> <span class="o">==</span> <span class="nx">b</span><span class="p">)</span> <span class="c1">//true ？？？
+</span><span class="ln">9</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>原因：</p>
+<p>1、fmt标准库的Printf的方法导致原本分配在栈上的变量a、b逃逸到了堆上</p>
+<p>2、runtime的一个优化细节：0字节在堆上分配时都会指向<code>zerobase</code>这一个地址</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// base address for all 0-byte allocations
+</span><span class="ln">2</span><span class="c1"></span><span class="kd">var</span> <span class="nx">zerobase</span> <span class="kt">uintptr</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span><span class="p">{}</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kd">type</span> <span class="nx">Animal</span> <span class="kd">struct</span><span class="p">{}</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 6</span>	<span class="nx">a</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Person</span><span class="p">{}</span>
+<span class="ln"> 7</span>	<span class="nx">b</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Animal</span><span class="p">{}</span>
+<span class="ln"> 8</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%p\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="c1">//0xb8c578
+</span><span class="ln"> 9</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%p\n&#34;</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="c1">//0xb8c578
+</span><span class="ln">10</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
@@ -285,20 +326,19 @@
   </div>
 </div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
   <div class="post-nav w-50"><div class="prev-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/mysql/%E7%BB%83%E4%B9%A0%E9%A2%98/">MySQL-基础练习题01
+      <a href="https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/">负载均衡-一致性哈希
 </a>
     </div></div>
   <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-Web编程之模板引擎
+      <a href="https://why9661.github.io/myblog/posts/mysql/%E7%BB%83%E4%B9%A0%E9%A2%98/">MySQL-基础练习题01
 </a>
     </div></div>
 </div><section class="related-posts">
     <h3>相关文章</h3>
-    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/slice/">Golang-切片
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/slice/">Golang-切片
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/">Golang-内置函数make和new的区别
-</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E7%BB%83%E4%B9%A0%E9%A2%98/">MySQL-基础练习题01
 </a></li><li><a href="https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/">负载均衡-一致性哈希
+</a></li><li><a href="https://why9661.github.io/myblog/posts/algorithm/%E8%BD%AE%E8%AF%A2/">负载均衡-轮询算法
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
