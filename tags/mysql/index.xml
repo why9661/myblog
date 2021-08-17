@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Fri, 12 Feb 2021 16:09:50 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 22 Feb 2021 14:40:37 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL-索引</title>
+      <link>https://why9661.github.io/myblog/posts/mysql/%E7%B4%A2%E5%BC%95/</link>
+      <pubDate>Mon, 22 Feb 2021 14:40:37 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/mysql/%E7%B4%A2%E5%BC%95/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>MySQL-基础练习题01</title>
       <link>https://why9661.github.io/myblog/posts/mysql/%E7%BB%83%E4%B9%A0%E9%A2%98/</link>

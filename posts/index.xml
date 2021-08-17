@@ -81,6 +81,15 @@
     </item>
     
     <item>
+      <title>MySQL-索引</title>
+      <link>https://why9661.github.io/myblog/posts/mysql/%E7%B4%A2%E5%BC%95/</link>
+      <pubDate>Mon, 22 Feb 2021 14:40:37 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/mysql/%E7%B4%A2%E5%BC%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Golang-defer</title>
       <link>https://why9661.github.io/myblog/posts/golang/defer01/</link>
       <pubDate>Sat, 13 Feb 2021 15:29:02 +0800</pubDate>
