@@ -516,23 +516,21 @@
 <p>systemctl daemon-reload</p>
 <p>systemctl restart docker</p>
 <h1 id="网络">网络</h1>
-<ul>
-<li>docker network</li>
-</ul>
+<p>docker network</p>
 <h2 id="bridge模式默认">bridge模式（默认）</h2>
 <p>Docker守护进程会在宿主机上创建一个名为docker0的虚拟网桥，此主机上启动的Docker容器会连接到这个虚拟网桥上。虚拟网桥的工作方式和物理交换机类似，这样主机上的所有容器就通过交换机连在了一个二层网络中。</p>
 <p>从docker0子网中分配一个IP给容器使用，并设置docker0的IP地址为容器的默认网关。在主机上创建一对虚拟网卡veth pair设备，Docker将veth pair设备的一端放在新创建的容器中，并命名为eth0（容器的网卡），另一端放在主机中，以vethxxx这样类似的名字命名，并将这个网络设备加入到docker0网桥中。</p>
-<p><img class="img-fluid" src="C:%5cUsers%5chy_wo%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210606104549867.png" alt="image-20210606104549867"  loading="lazy" />
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/docker-bridge.png" alt=""  loading="lazy" />
 </p>
 <h2 id="host模式">host模式</h2>
 <p>docker run &ndash;network host</p>
 <p>如果启动容器的时候使用host模式，那么这个容器将不会获得一个独立的Network Namespace，而是和宿主机共用一个Network Namespace。容器将不会虚拟出自己的网卡，配置自己的IP等，而是使用宿主机的IP和端口。但是，容器的其他方面，如文件系统、进程列表等还是和宿主机隔离的。</p>
-<p><img class="img-fluid" src="C:%5cUsers%5chy_wo%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210606105433294.png" alt="image-20210606105433294"  loading="lazy" />
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/docker-host.png" alt=""  loading="lazy" />
 </p>
 <h2 id="container模式">container模式</h2>
 <p>docker run &ndash;network container:容器</p>
 <p>这个模式指定新创建的容器和已经存在的一个容器共享一个 Network Namespace，而不是和宿主机共享。新创建的容器不会创建自己的网卡，配置自己的 IP，而是和一个指定的容器共享 IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过 lo 网卡设备通信。</p>
-<p><img class="img-fluid" src="C:%5cUsers%5chy_wo%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210606110010349.png" alt="image-20210606110010349"  loading="lazy" />
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/docker-container.png" alt=""  loading="lazy" />
 </p>
 <h2 id="none模式">none模式</h2>
 <p>docuer run &ndash;network none</p>
@@ -579,7 +577,7 @@
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%97%AD%E5%8C%85/">Golang-闭包
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-Web编程之模板引擎
 </a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E7%B4%A2%E5%BC%95/">MySQL-索引
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer01/">Golang-Defer
+</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">MySQL-主从复制
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
@@ -614,7 +612,7 @@
         </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
           algorithm <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
-          MySQL <span class="badge rounded-pill">2</span>
+          MySQL <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/categories/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
           Docker <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/categories/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
@@ -629,7 +627,7 @@
       <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
           Golang <span class="badge rounded-pill">6</span>
         </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
-          MySQL <span class="badge rounded-pill">2</span>
+          MySQL <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="负载均衡">
           负载均衡 <span class="badge rounded-pill">2</span>
         </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
