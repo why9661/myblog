@@ -117,6 +117,15 @@
     </item>
     
     <item>
+      <title>MySQL-事务隔离级别</title>
+      <link>https://why9661.github.io/myblog/posts/mysql/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</link>
+      <pubDate>Wed, 20 Jan 2021 10:37:56 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/mysql/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Golang-逃逸分析</title>
       <link>https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/</link>
       <pubDate>Wed, 02 Dec 2020 13:05:16 +0800</pubDate>

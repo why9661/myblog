@@ -12,7 +12,7 @@
 <meta name="description" content="MySQL索引介绍" /><meta itemprop="name" content="MySQL-索引">
 <meta itemprop="description" content="MySQL索引介绍"><meta itemprop="datePublished" content="2021-02-22T14:40:37+08:00" />
 <meta itemprop="dateModified" content="2021-02-22T14:40:37+08:00" />
-<meta itemprop="wordCount" content="1562">
+<meta itemprop="wordCount" content="1736">
 <meta itemprop="keywords" content="MySQL," /><meta property="og:title" content="MySQL-索引" />
 <meta property="og:description" content="MySQL索引介绍" />
 <meta property="og:type" content="article" />
@@ -195,7 +195,7 @@
         <li><a href="#innodb">InnoDB</a></li>
       </ul>
     </li>
-    <li><a href="#联合索引最左匹配">联合索引&amp;最左匹配</a></li>
+    <li><a href="#联合索引最左匹配索引下推">联合索引&amp;最左匹配&amp;索引下推</a></li>
     <li><a href="#回表覆盖索引">回表&amp;覆盖索引</a></li>
   </ul>
 </nav>
@@ -215,20 +215,11 @@
 </li>
 <li>
 <p>平衡二叉树</p>
-<ul>
-<li>
-<p>AVL树</p>
-<p>AVL树是严格的平衡二叉树（不会出现极端情况下退化成链表地情况），但随着数据量的增大树的高度还是会很高（磁盘IO次数增多），而且在插入、删除操作密集的场景中，AVL树需要频繁地rebalance，增加性能开销。</p>
-</li>
-<li>
-<p>红黑树</p>
-<p>红黑树不是严格意义的平衡二叉树，但随着数据量的增大树的高度还是会很高（磁盘IO次数增多）。</p>
-</li>
-</ul>
+<p>平衡二叉树不会出现极端情况下退化成链表地情况，但随着数据量的增大树的高度还是会很高（磁盘IO次数增多），而且在插入、删除操作密集的场景中，平衡二叉树需要频繁地rebalance，增加性能开销。</p>
 </li>
 <li>
 <p>B树</p>
-<p>MySQL的数据文件是存储在磁盘上的，而磁盘的IO速度慢开销大，因此降低磁盘IO的次数能很大程度提高MySQL的性能。访问二叉树的每个节点就会发生一次IO，如果想要减少磁盘IO操作，就需要尽量降低树的高度，因此需要每个节点多存储元素。</p>
+<p>MySQL的数据文件是存储在磁盘上的，而磁盘的IO速度慢开销大，因此降低磁盘IO的次数能很大程度提高MySQL的性能。树越高，磁盘IO操作次数就会越多，因此需要尽量降低树的高度，这就要每个节点多存储元素。</p>
 <p>B树就是一种多叉平衡查找树。</p>
 <p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/B%E6%A0%91.png" alt=""  loading="lazy" />
 </p>
@@ -263,7 +254,7 @@
 <li>当表没有定义primary ket时，InnoDB会选择第一个not null的unique列用作聚簇索引</li>
 <li>否则InnoDB会创建一个隐藏的row-id用作聚簇索引</li>
 </ul>
-<h2 id="联合索引最左匹配">联合索引&amp;最左匹配</h2>
+<h2 id="联合索引最左匹配索引下推">联合索引&amp;最左匹配&amp;索引下推</h2>
 <p>联合索引是指多个字段联合组成一个索引，也是一种辅助索引（叶子节点会存主键值）。</p>
 <p>联合索引的存储方式：按联合索引的第一列排序，在前面列相等的情况下进行局部排序。</p>
 <p>联合索引的检索方式：和存储方式一样，先比较第一列，在前面列相等的情况下比较后面的列。</p>
@@ -282,6 +273,11 @@
 <p>如果建立的索引顺序是 （a，b）那么直接采用 where b = 5 这种查询条件是无法利用到索引的，这一条最能体现最左匹配的特性。</p>
 </li>
 </ul>
+<p>索引下推：</p>
+<p>例如现在有一个联合索引(name,age)，需求是查出表中“姓王的10岁男孩”</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="ln">1</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;王%&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">age</span><span class="o">=</span><span class="mi">10</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ismale</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></code></pre></div><p>在这个查询中，能够使用到索引name。在MySQL5.6之前，找到name满足条件的主键后会一个一个回表，在主键索引上找到数据行，然后比对age和ismale的字段值。</p>
+<p>索引下推可以在索引遍历过程中，对索引包含的字段先做判断，过滤掉不满足条件的记录，减少回表次数。</p>
 <h2 id="回表覆盖索引">回表&amp;覆盖索引</h2>
 <p>回表是指在使用辅助索引时，拿到主键值后还需要回到主键索引中查找需要的数据。</p>
 <p>覆盖索引是一种优化手段可以避免回表。</p>
@@ -326,9 +322,9 @@
     <h3>相关文章</h3>
     <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">MySQL-主从复制
 </a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E7%BB%83%E4%B9%A0%E9%A2%98/">MySQL-基础练习题01
+</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">MySQL-事务隔离级别
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer01/">Golang-Defer
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
-</a></li><li><a href="https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/">负载均衡-一致性哈希
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
@@ -360,10 +356,10 @@
       </h4>
       <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
           Golang <span class="badge rounded-pill">8</span>
+        </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">4</span>
         </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
           algorithm <span class="badge rounded-pill">3</span>
-        </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
-          MySQL <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/categories/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
           Docker <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/categories/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
@@ -378,7 +374,7 @@
       <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
           Golang <span class="badge rounded-pill">6</span>
         </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
-          MySQL <span class="badge rounded-pill">3</span>
+          MySQL <span class="badge rounded-pill">4</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="负载均衡">
           负载均衡 <span class="badge rounded-pill">2</span>
         </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">

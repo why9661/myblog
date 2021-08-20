@@ -3,26 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Golang-闭包 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>MySQL-事务隔离级别 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
 <meta name="keywords" content="" />
-<meta name="description" content="闭包" /><meta itemprop="name" content="Golang-闭包">
-<meta itemprop="description" content="闭包"><meta itemprop="datePublished" content="2021-04-27T12:13:12+08:00" />
-<meta itemprop="dateModified" content="2021-04-27T12:13:12+08:00" />
-<meta itemprop="wordCount" content="912">
-<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-闭包" />
-<meta property="og:description" content="闭包" />
+<meta name="description" content="" /><meta itemprop="name" content="MySQL-事务隔离级别">
+<meta itemprop="description" content=""><meta itemprop="datePublished" content="2021-01-20T10:37:56+08:00" />
+<meta itemprop="dateModified" content="2021-01-20T10:37:56+08:00" />
+<meta itemprop="wordCount" content="2412">
+<meta itemprop="keywords" content="MySQL," /><meta property="og:title" content="MySQL-事务隔离级别" />
+<meta property="og:description" content="" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/%E9%97%AD%E5%8C%85/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-04-27T12:13:12+08:00" />
-<meta property="article:modified_time" content="2021-04-27T12:13:12+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/mysql/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-01-20T10:37:56+08:00" />
+<meta property="article:modified_time" content="2021-01-20T10:37:56+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Golang-闭包"/>
-<meta name="twitter:description" content="闭包"/>
+<meta name="twitter:title" content="MySQL-事务隔离级别"/>
+<meta name="twitter:description" content=""/>
 <meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
 </head><body><header><nav class="navbar navbar-expand-xl fixed-top">
   <div class="container">
@@ -148,7 +148,7 @@
       <div class="row content">
 <div class="col-lg-8">
   <div class="container"><nav class="row" aria-label="breadcrumb">
-  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-闭包</li></ol>
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">MySQL-事务隔离级别</li></ol>
 </nav><article class="post row surface"><div class="post-panel-wrapper">
   <div class="post-panel d-flex flex-column">
     <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
@@ -169,108 +169,160 @@
     
   </div>
 </div>
-<h1 class="post-title my-3">Golang-闭包
+<h1 class="post-title my-3">MySQL-事务隔离级别
 </h1><div class="post-meta mb-3">
   <span class="post-date me-2">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-04-27
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-01-20
   </span>
   <span class="post-reading-time me-2">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
-<div class="post-content mb-3"><h1 id="function-value">Function Value</h1>
-<p>在Go语言中，函数是头等对象，可以作为参数传递，可以作为返回值返回，也可赋值给变量。Go语言称这样的参数、返回值、变量为Function Value。</p>
-<p>Function Value是一个指针，指向一个<code>runtime.funcval</code>结构体：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">type</span> <span class="nx">funcval</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln">2</span>	<span class="nx">fn</span> <span class="kt">uintptr</span> 
-<span class="ln">3</span><span class="p">}</span>
-</code></pre></div><p>这个结构体持有一个指针fn，指向函数指令入口。</p>
+    <i class="fas fa-fw fa-coffee"></i>5 分钟阅读
+  </span><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy">#MySQL</a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy">#MySQL</a></div>
+<div class="post-content mb-3"><p>当数据库中有多个事务并发执行的时候，就可能会出现以下问题：</p>
+<p><strong>脏读</strong>：A事务还未提交，B事务就读到了A事务的结果。</p>
+<p><strong>不可重复读</strong>：A事务在本次事务中，对某行多次读取，结果出现了前后不一致的情况。</p>
+<p><strong>幻读</strong>：一个事务在前后两次查询同一范围的时候，后一次查询看到了前一次查询没有看到的行。</p>
+<p>为了解决上面的问题，就有了“隔离级别”的概念。</p>
+<p>事务的四个隔离级别</p>
+<ul>
+<li>
+<p><strong>读未提交</strong>（read uncommitted）</p>
+<p>一个事务还未提交它做的变更就可以被另一个事务读取到。</p>
+</li>
+<li>
+<p><strong>读已提交</strong>（read committed）</p>
+<p>一个事务提交后它做的变更才可以被另一个事务读取到。</p>
+</li>
+<li>
+<p><strong>可重复读</strong>（repeatable read）</p>
+<p>一个事务执行过程中看到的数据总是跟这个事务在启动时看到的数据是一直的。</p>
+</li>
+<li>
+<p><strong>串行化</strong>（serializable）</p>
+<p>对同一行记录，写会加“写锁”，读会加“读锁”。当出现读写冲突时，后来的事务必须等前一个事务执行完成才能继续执行。</p>
+</li>
+</ul>
+<p>InnoDB默认的隔离级别是RR，默认开启事务自动提交（autocommit=on）。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="ln">1</span><span class="k">show</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;transaction_isolation&#39;</span><span class="p">;</span><span class="w">
+</span><span class="ln">2</span><span class="w"></span><span class="k">show</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;autocommit&#39;</span><span class="p">;</span><span class="w">
+</span></code></pre></div><p>事务的开启与提交有以下两种情况：</p>
+<p>1、若参数autocommit=off，事务在用户本次对数据进行操作时自动开启，在用户执行commit命令时提交，用户本次对数据库开始进行操作到用户执行commit命令之间的一系列操作为一个完整的事务周期。若不执行commit命令，系统则默认事务rollback。</p>
+<p>2、若参数autocommit=on，事务的开启与提交又分为两种状态：</p>
+<p>①当用户执行start transaction（begin）命令时，手动开启一个事务，当用户执行commit命令时当前事务提交。从用户开启事务到用户提交事务之间的一系列操作为一个完整的事务周期。若不执行commit命令，系统则默认事务rollback。</p>
+<p>②如果用户未执行start transaction（begin）命令而对数据库进行了操作，系统则默认用户对数据库的每一个操作为一个孤立的事务（除了select），也就是说用户每进行一次操作系都会即时提交。这种情况下用户的每一个操作都是一个完整的事务周期。</p>
+<p>InnoDB的行数据有多个版本，每个数据版本有自己的row trx_id，每个事务或者语句有自己的一致性视图，<strong>普通查询语句是一致性读（快照读）</strong>，会根据row trx_id和一致性视图来确定数据版本的可见性。而<strong>更新数据都是先读后写的，这个读是当前读（读取当前数据的最新版本）</strong>，此外<strong>加锁的查询语句（for update/lock in share mode）也是当前读</strong>。</p>
+<p>&ldquo;可重复读&quot;的一致性视图是在事务开始时创建的，而“读提交”的一致性视图是在每一个语句执行前创建的。需要说明的是，<code>start transaction/begin</code>并不是一个事务的开始，而是在执行第一个操作表的语句时事务才会真正启动，要想立马启动一个事务，可以用使用<code>start transaction with consistent snapshot</code>这个命令。</p>
+<p>接下来详细介绍数据版本的可见性是怎么确定的：</p>
+<p>InnoDB里面每个事务有一个唯一的事务ID，它是在事务开始前向InnoDB事务系统申请的，这个ID是按申请顺序严格递增的。</p>
+<p>InnoDB里每行数据也都是有多个版本的，每次事务更新数据的时候，都会生成一个新的数据版本，并且把事务ID赋给这个数据版本，记为row trx_id，同时旧的数据版本要保留，并且在新的数据版本中，能够有信息可以拿到它（回滚指针+undo log）。</p>
+<p>InnoDB为每个事务构造了一个数组，用来保存在这个事务启动瞬间，当前系统中&quot;活跃&quot;的所有事务ID（启动了但还未提交）。数组里面事务ID的最小值记为低水位，当前系统里面已经创建过的事务ID的最大值加1记为高水位。这个视图数组和高水位就组成了当前事务的一致性视图，而数据版本的可见性规则就是基于数据的row trx_id和这个一致性视图对比得到的。</p>
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/%E8%A7%86%E5%9B%BE%E6%95%B0%E7%BB%84.png" alt=""  loading="lazy" />
+</p>
+<p>对于当前事务的启动瞬间，一个数据版本的row trx_id就有以下几种情况：</p>
+<p>1、如果落在绿色部分，表示这个版本是已提交的事务，可见</p>
+<p>2、如果落在红色部分，表示这个版本是由将来启动的事务生成的，不可见</p>
+<p>3、如果落在黄色部分，那就包括两种情况：</p>
+<p>​	  a.若row trx_id在数组中，表示这个版本是由还没提交的事务生成的，不可见</p>
+<p>​	  b.若row trx_id不在数组中，表示这个版本是由已提交的事务生成的，可见</p>
+<p>更清晰明了的判断方式：</p>
+<p>1、一个事务的更新对自己本身总是可见的</p>
+<p>2、版本未提交，不可见；</p>
+<p>3、版本已提交，但是是在视图创建后提交的，不可见</p>
+<p>4、版本已提交，是在视图创建前提交的，可见</p>
 <p><strong>例子</strong></p>
-<p>函数A被赋值给变量f1和f2。</p>
-<p>编译器会做出优化，在只读数据段分配一个<code>funcval</code>结构体，f1和f2共用这个结构体，结构体中的fn指向函数A的指令入口。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">A</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span>
-<span class="ln"> 3</span>	<span class="k">return</span> <span class="nx">i</span>
-<span class="ln"> 4</span><span class="p">}</span>
-<span class="ln"> 5</span>
-<span class="ln"> 6</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 7</span>	<span class="nx">f1</span> <span class="o">:=</span> <span class="nx">A</span>
-<span class="ln"> 8</span>	<span class="nx">f2</span> <span class="o">:=</span> <span class="nx">A</span>
-<span class="ln"> 9</span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f1</span><span class="p">())</span>
-<span class="ln">10</span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f2</span><span class="p">())</span>
-<span class="ln">11</span><span class="p">}</span>
-</code></pre></div><h1 id="闭包">闭包</h1>
-<p>闭包可以简单理解为：函数+引用环境。</p>
-<p><strong>例子</strong></p>
-<p>返回的匿名函数引用了外部的局部变量x，因此返回的这个函数就是一个闭包。</p>
-<p>闭包是有捕获列表的Function Value。</p>
-<p>执行到<code>f1:=A()</code>时，函数A会在堆上分配一个<code>funcval</code>结构体，同时拷贝x的值到捕获列表，再将这个<code>funcval</code>的起始地址返回给f1。</p>
-<p>执行到<code>f2:=A()</code>时，函数A会在堆上再分配一个<code>funcval</code>结构体，同时拷贝x的值到捕获列表，再将这个<code>funcval</code>的起始地址返回给f2。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">A</span><span class="p">()</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="nx">x</span> <span class="o">:=</span> <span class="mi">1</span>
-<span class="ln"> 3</span>	<span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span> <span class="c1">//闭包
-</span><span class="ln"> 4</span><span class="c1"></span>		<span class="k">return</span> <span class="nx">x</span>
-<span class="ln"> 5</span>	<span class="p">}</span>
-<span class="ln"> 6</span><span class="p">}</span>
-<span class="ln"> 7</span>
-<span class="ln"> 8</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 9</span>	<span class="nx">f1</span> <span class="o">:=</span> <span class="nf">A</span><span class="p">()</span>
-<span class="ln">10</span>	<span class="nx">f2</span> <span class="o">:=</span> <span class="nf">A</span><span class="p">()</span>
-<span class="ln">11</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f1</span><span class="p">())</span> <span class="c1">//1
-</span><span class="ln">12</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f2</span><span class="p">())</span> <span class="c1">//1
-</span><span class="ln">13</span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p>以上是被捕获的变量不会被修改的情况，直接拷贝值到捕获列表就ok。</p>
-<p>接下来看被捕获的变量会被修改的情况：</p>
-<p><strong>捕获局部变量</strong>。</p>
-<p>执行到<code>f1:=A()</code>时，函数A会在堆上分配一个<code>funcval</code>结构体，由于被捕获的变量被外部引用且被修改，x会逃逸到堆上，并且捕获列表存x的地址，然后将这个<code>funcval</code>的起始地址返回给f1。</p>
-<p>执行到<code>f2:=A()</code>时，函数A会在堆上再分配一个<code>funcval</code>结构体，由于被捕获的变量被外部引用且被修改，x会逃逸到堆上，并且捕获列表存x的地址，然后将这个<code>funcval</code>的起始地址返回给f2。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">A</span><span class="p">()</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="nx">x</span> <span class="o">:=</span> <span class="mi">1</span>
-<span class="ln"> 3</span>	<span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span> <span class="c1">//闭包
-</span><span class="ln"> 4</span><span class="c1"></span>		<span class="nx">x</span><span class="o">++</span>
-<span class="ln"> 5</span>		<span class="k">return</span> <span class="nx">x</span>
-<span class="ln"> 6</span>	<span class="p">}</span>
-<span class="ln"> 7</span><span class="p">}</span>
-<span class="ln"> 8</span>
-<span class="ln"> 9</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">10</span>	<span class="nx">f1</span> <span class="o">:=</span> <span class="nf">A</span><span class="p">()</span>
-<span class="ln">11</span>	<span class="nx">f2</span> <span class="o">:=</span> <span class="nf">A</span><span class="p">()</span>
-<span class="ln">12</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f1</span><span class="p">())</span> <span class="c1">//2
-</span><span class="ln">13</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f2</span><span class="p">())</span> <span class="c1">//2
-</span><span class="ln">14</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f1</span><span class="p">())</span> <span class="c1">//3
-</span><span class="ln">15</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f2</span><span class="p">())</span> <span class="c1">//3
-</span><span class="ln">16</span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p><strong>闭包引起的一些问题</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln"> 3</span>		<span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 4</span>			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
-<span class="ln"> 5</span>		<span class="p">}()</span>
-<span class="ln"> 6</span>	<span class="p">}</span>
-<span class="ln"> 7</span><span class="p">}</span>
-<span class="ln"> 8</span><span class="c1">//输出
-</span><span class="ln"> 9</span><span class="c1">//5
-</span><span class="ln">10</span><span class="c1">//5
-</span><span class="ln">11</span><span class="c1">//5
-</span><span class="ln">12</span><span class="c1">//5
-</span><span class="ln">13</span><span class="c1">//5
-</span></code></pre></div><p>解决方法：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln"> 3</span>        <span class="nx">x</span> <span class="o">:=</span> <span class="nx">i</span>
-<span class="ln"> 4</span>		<span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 5</span>			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
-<span class="ln"> 6</span>		<span class="p">}()</span>
-<span class="ln"> 7</span>	<span class="p">}</span>
-<span class="ln"> 8</span><span class="p">}</span>
-<span class="ln"> 9</span>
-<span class="ln">10</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">11</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln">12</span>		<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="nx">x</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">13</span>			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
-<span class="ln">14</span>		<span class="p">}(</span><span class="nx">i</span><span class="p">)</span>
-<span class="ln">15</span>	<span class="p">}</span>
-<span class="ln">16</span><span class="p">}</span>
-</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="ln">1</span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span><span class="ln">2</span><span class="w">	</span><span class="n">id</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="n">auto_increment</span><span class="p">,</span><span class="w">
+</span><span class="ln">3</span><span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="nb">int</span><span class="w">
+</span><span class="ln">4</span><span class="w"></span><span class="p">);</span><span class="w">
+</span><span class="ln">5</span><span class="w"></span><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w">
+</span></code></pre></div><table>
+<thead>
+<tr>
+<th style="text-align:center">事务A</th>
+<th style="text-align:center">事务B</th>
+<th style="text-align:center">事务C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">start transaction with consistent snapshot;</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">start transaction with consistent snapshot;</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">update t set age=age+1 where id =1;</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">update t set age=age+1 where id=1;<!-- raw HTML omitted -->select age from t where id=1;</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">select age from t where id=1;<!-- raw HTML omitted -->commit;</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">commit;</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>下面来看事务A的查询结果，事务A的一致性视图是最先创建的</p>
+<p>事务B更新后的(1,12)还未提交，不可见；</p>
+<p>事务C更新后的(1,11)提交了但是是在事务A视图创建后提交的，不可见；</p>
+<p>(1,10)是在事务A视图创建前提交的，可见；</p>
+<p>所以事务A查询到的结果是10。</p>
+<p>接下来看一下更新逻辑，需要注意的是更新逻辑是&quot;先读后写&rdquo;，这个读是当前读即读到的是这个数据最新的版本。</p>
+<p>所以对于事务B的查询结果：</p>
+<p>更新语句会先读，读到的是事务C更新后的(1,11)；</p>
+<p>然后写变为(1,12)；</p>
+<p>事务内的更新对自己总是可见的，因此查询B的查询结果是12。</p>
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B501.png" alt=""  loading="lazy" />
+</p>
+<p>把上面的例子修改一下</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">事务B</th>
+<th style="text-align:center">事务C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">start transaction with consistent snapshot;</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">start transaction with consistent snapshot;<!-- raw HTML omitted -->update t set age=age+1 where id=1;</td>
+</tr>
+<tr>
+<td style="text-align:center">update t set age=age+1 where id=1;<!-- raw HTML omitted -->&ndash;阻塞<!-- raw HTML omitted -->select age from t where id=1;</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">commit;</td>
+</tr>
+<tr>
+<td style="text-align:center">commit;</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>再来看下更新逻辑：</p>
+<p>事务C更新后数据的最新版本为(1,11)，但还未提交；</p>
+<p>根据<strong>两阶段锁</strong>，事务C会一直持有id=1这行记录的写锁，直到事务C提交释放锁，因此事务B会先阻塞直至事务C提交；</p>
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B502.png" alt=""  loading="lazy" />
+</p></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
@@ -297,20 +349,20 @@
   </div>
 </div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
   <div class="post-nav w-50"><div class="prev-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-Web编程之模板引擎
+      <a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
 </a>
     </div></div>
   <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/golang/%E6%96%B9%E6%B3%95/">Golang-方法
+      <a href="https://why9661.github.io/myblog/posts/mysql/%E7%BB%83%E4%B9%A0%E9%A2%98/">MySQL-基础练习题01
 </a>
     </div></div>
 </div><section class="related-posts">
     <h3>相关文章</h3>
-    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/defer01/">Golang-Defer
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
+</a></li><li><a href="https://why9661.github.io/myblog/posts/algorithm/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C/">负载均衡-一致性哈希
+</a></li><li><a href="https://why9661.github.io/myblog/posts/algorithm/%E8%BD%AE%E8%AF%A2/">负载均衡-轮询算法
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/slice/">Golang-切片
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/">Golang-内置函数make和new的区别
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-Web编程之模板引擎
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
