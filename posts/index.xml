@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Fri, 16 Jul 2021 22:51:41 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Aug 2021 16:08:32 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang-GC</title>
+      <link>https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</link>
+      <pubDate>Mon, 30 Aug 2021 16:08:32 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>缓存淘汰策略-LRU</title>
       <link>https://why9661.github.io/myblog/posts/algorithm/lru/</link>

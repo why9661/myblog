@@ -7,22 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Fri, 16 Jul 2021 22:51:41 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Aug 2021 16:08:32 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang</title>
+      <link>https://why9661.github.io/myblog/tags/golang/</link>
+      <pubDate>Mon, 30 Aug 2021 16:08:32 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/tags/golang/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>缓存淘汰策略</title>
       <link>https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</link>
       <pubDate>Fri, 16 Jul 2021 22:51:41 +0800</pubDate>
       
       <guid>https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Golang</title>
-      <link>https://why9661.github.io/myblog/tags/golang/</link>
-      <pubDate>Thu, 08 Jul 2021 21:19:36 +0800</pubDate>
-      
-      <guid>https://why9661.github.io/myblog/tags/golang/</guid>
       <description></description>
     </item>
     
