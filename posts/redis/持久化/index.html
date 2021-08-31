@@ -3,26 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MySQL-索引 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>Redis-持久化 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
 <meta name="keywords" content="" />
-<meta name="description" content="MySQL索引介绍" /><meta itemprop="name" content="MySQL-索引">
-<meta itemprop="description" content="MySQL索引介绍"><meta itemprop="datePublished" content="2021-02-22T14:40:37+08:00" />
-<meta itemprop="dateModified" content="2021-02-22T14:40:37+08:00" />
-<meta itemprop="wordCount" content="1736">
-<meta itemprop="keywords" content="MySQL," /><meta property="og:title" content="MySQL-索引" />
-<meta property="og:description" content="MySQL索引介绍" />
+<meta name="description" content="redis持久化" /><meta itemprop="name" content="Redis-持久化">
+<meta itemprop="description" content="redis持久化"><meta itemprop="datePublished" content="2021-08-28T09:44:22+08:00" />
+<meta itemprop="dateModified" content="2021-08-28T09:44:22+08:00" />
+<meta itemprop="wordCount" content="2492">
+<meta itemprop="keywords" content="Redis," /><meta property="og:title" content="Redis-持久化" />
+<meta property="og:description" content="redis持久化" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://why9661.github.io/myblog/posts/mysql/%E7%B4%A2%E5%BC%95/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-02-22T14:40:37+08:00" />
-<meta property="article:modified_time" content="2021-02-22T14:40:37+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-28T09:44:22+08:00" />
+<meta property="article:modified_time" content="2021-08-28T09:44:22+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="MySQL-索引"/>
-<meta name="twitter:description" content="MySQL索引介绍"/>
+<meta name="twitter:title" content="Redis-持久化"/>
+<meta name="twitter:description" content="redis持久化"/>
 <meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
 </head><body><header><nav class="navbar navbar-expand-xl fixed-top">
   <div class="container">
@@ -148,7 +148,7 @@
       <div class="row content">
 <div class="col-lg-8">
   <div class="container"><nav class="row" aria-label="breadcrumb">
-  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">MySQL-索引</li></ol>
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Redis-持久化</li></ol>
 </nav><article class="post row surface"><div class="post-panel-wrapper">
   <div class="post-panel d-flex flex-column">
     <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
@@ -170,14 +170,14 @@
 </a>
   </div>
 </div>
-<h1 class="post-title my-3">MySQL-索引
+<h1 class="post-title my-3">Redis-持久化
 </h1><div class="post-meta mb-3">
   <span class="post-date me-2">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-02-22
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-08-28
   </span>
   <span class="post-reading-time me-2">
-    <i class="fas fa-fw fa-coffee"></i>4 分钟阅读
-  </span><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy">#MySQL</a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy">#MySQL</a></div>
+    <i class="fas fa-fw fa-coffee"></i>5 分钟阅读
+  </span><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy">#Redis</a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy">#Redis</a></div>
 <div class="offcanvas offcanvas-end surface" tabindex="-1" id="offcanvasTOC" aria-labelledby="offcanvasTOCLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasTOCLabel">目录</h5>
@@ -188,103 +188,133 @@
   <div class="offcanvas-body">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#数据结构">数据结构</a></li>
-    <li><a href="#不同存储引擎的实现">不同存储引擎的实现</a>
-      <ul>
-        <li><a href="#myisam">MyISAM</a></li>
-        <li><a href="#innodb">InnoDB</a></li>
-      </ul>
-    </li>
-    <li><a href="#联合索引最左匹配索引下推">联合索引&amp;最左匹配&amp;索引下推</a></li>
-    <li><a href="#回表覆盖索引">回表&amp;覆盖索引</a></li>
+    <li><a href="#配置">配置</a></li>
+    <li><a href="#过程">过程</a></li>
+    <li><a href="#触发">触发</a></li>
+    <li><a href="#优缺点">优缺点</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#配置-1">配置</a></li>
+    <li><a href="#重写">重写</a></li>
+    <li><a href="#优缺点-1">优缺点</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#配置-2">配置</a></li>
   </ul>
 </nav>
   </div>
-</div><div class="post-content mb-3"><p>索引是帮助MySQL高效获取数据的数据结构。不过索引本身也很大，会占据不少的磁盘空间；索引还会降低表的更新效率，因为每创建一个索引，就会对应生成一个索引文件，在表数据更新时，需要更新这些索引文件。</p>
-<h2 id="数据结构">数据结构</h2>
+</div><div class="post-content mb-3"><p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/redis%E6%8C%81%E4%B9%85%E5%8C%96.png" alt=""  loading="lazy" />
+</p>
+<h1 id="rdb">RDB</h1>
+<p>RDB做全量持久化，把数据以快照的形式保存在磁盘上，恢复时是将快照文件直接读到内存里。</p>
+<p>RDB保存的文件默认为dump.rdb。</p>
+<h2 id="配置">配置</h2>
+<p><strong>SNAPSHOTTING</strong></p>
 <ul>
+<li>用来配置触发 Redis的持久化条件，也就是什么时候将内存中的数据保存到硬盘,如果只是用Redis的缓存功能，不需要持久化，那么可以注释掉所有的 save 行来停用保存功能。默认如下配置：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>save 900 1：表示900 秒内如果至少有 1 个 key 的值变化，则保存
+<span class="ln">2</span>save 300 10：表示300 秒内如果至少有 10 个 key 的值变化，则保存
+<span class="ln">3</span>save 60 10000：表示60 秒内如果至少有 10000 个 key 的值变化，则保存
+</code></pre></div><ul>
 <li>
-<p>哈希表</p>
-<p>可以使用key存储索引，value存储行记录或者行所在磁盘地址。</p>
-<p>精确查找速度快，但不支持范围查找。</p>
+<p>stop-writes-on-bgsave-error ：最新的一次后台存储如果失败了,那么Redis是否停止接收新的写入。</p>
 </li>
 <li>
-<p>二叉搜索树</p>
-<p>支持范围查找，查找效率也还不错。</p>
-<p>但在极端条件下会退化成链表。</p>
+<p>rdbcompression ；默认值是yes。对于存储到磁盘中的快照，可以设置是否进行压缩存储。如果是的话，redis会采用LZF算法进行压缩。如果你不想消耗CPU来进行压缩的话，可以设置为关闭此功能，但是存储在磁盘上的快照会比较大。</p>
 </li>
 <li>
-<p>平衡二叉树</p>
-<p>平衡二叉树不会出现极端情况下退化成链表地情况，但随着数据量的增大树的高度还是会很高（磁盘IO次数增多），而且在插入、删除操作密集的场景中，平衡二叉树需要频繁地rebalance，增加性能开销。</p>
+<p>rdbchecksum ：默认值是yes。在存储快照后，我们还可以让redis使用CRC64算法来进行数据校验，但是这样做会增加大约10%的性能消耗，如果希望获取到最大的性能提升，可以关闭此功能。</p>
 </li>
 <li>
-<p>B树</p>
-<p>MySQL的数据文件是存储在磁盘上的，而磁盘的IO速度慢开销大，因此降低磁盘IO的次数能很大程度提高MySQL的性能。树越高，磁盘IO操作次数就会越多，因此需要尽量降低树的高度，这就要每个节点多存储元素。</p>
-<p>B树就是一种多叉平衡查找树。</p>
-<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/B%E6%A0%91.png" alt=""  loading="lazy" />
-</p>
-<p>为了降低树的高度，需要让每个节点尽可能多的存储索引，因此就有了B+树。</p>
+<p>dbfilename ：设置快照的文件名，默认是 dump.rdb。</p>
 </li>
 <li>
-<p>B+树</p>
-<p>B+树与B树的区别在于B树的非叶子节点和叶子节点都会存储数据，而B+树的非叶子节点只存储索引，叶子节点存储数据，并且叶子节点之间使用双向指针连接。</p>
-<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/B%2B%E6%A0%91.png" alt=""  loading="lazy" />
-</p>
-<p>范围查询</p>
-<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/B%2B%E6%A0%91%EF%BC%88%E8%8C%83%E5%9B%B4%E6%9F%A5%E8%AF%A2%EF%BC%89.png" alt=""  loading="lazy" />
-</p>
+<p>dir：设置快照文件的存放路径(目录名)。</p>
 </li>
 </ul>
-<h2 id="不同存储引擎的实现">不同存储引擎的实现</h2>
-<h3 id="myisam">MyISAM</h3>
-<p>MyISAM的索引文件和数据文件分开存储，索引文件存储在.MYI文件中，数据文件存储在.MYD文件中。</p>
-<p>MyISAM的主键索引和辅助索引的叶子节点都是存储的索引+索引所在行的磁盘地址（非行数据），属于<strong>非聚簇索引</strong>。</p>
-<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/MyISAM%E7%B4%A2%E5%BC%95.png" alt=""  loading="lazy" />
-</p>
-<h3 id="innodb">InnoDB</h3>
-<p>InnoDB的索引和数据存储在.ibd文件中。</p>
-<p>主键索引的叶子节点会存储索引+索引所在行的数据，属于<strong>聚簇索引</strong>；</p>
-<p>辅助索引的叶子节点会存储索引+索引所在行的主键值，属于<strong>非聚簇索引</strong>。</p>
-<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/InnoDB%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95png.png" alt=""  loading="lazy" />
-</p>
-<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/InnoDB%E8%BE%85%E5%8A%A9%E7%B4%A2%E5%BC%95.png" alt=""  loading="lazy" />
-</p>
-<ul>
-<li>当表定义了primary key时，InnoDB将primary key用作聚簇索引</li>
-<li>当表没有定义primary ket时，InnoDB会选择第一个not null的unique列用作聚簇索引</li>
-<li>否则InnoDB会创建一个隐藏的row-id用作聚簇索引</li>
-</ul>
-<h2 id="联合索引最左匹配索引下推">联合索引&amp;最左匹配&amp;索引下推</h2>
-<p>联合索引是指多个字段联合组成一个索引，也是一种辅助索引（叶子节点会存主键值）。</p>
-<p>联合索引的存储方式：按联合索引的第一列排序，在前面列相等的情况下进行局部排序。</p>
-<p>联合索引的检索方式：和存储方式一样，先比较第一列，在前面列相等的情况下比较后面的列。</p>
-<p>向下面这种创建了联合索引(a,b,c)相当于创建了3个索引:(a)、(a,b)、(a,b,c)</p>
-<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95.png" alt=""  loading="lazy" />
-</p>
-<p>最左前缀匹配：</p>
+<h2 id="过程">过程</h2>
+<p>Redis 使用操作系统的多进程 cow(Copy On Write) 机制来实现RDB快照持久化</p>
+<ol>
+<li>执行bgsave命令的时候，Redis主进程会检查是否有子进程在执行RDB/AOF持久化任务，如果有的话，直接返回。</li>
+<li>Redis主进程会fork一个子进程来执行执行RDB操作，fork操作会对主进程造成阻塞（影响Redis的读写），fork操作完成后会发消息给主进程，从而不再阻塞主进程。（阻塞仅指主进程fork子进程的过程，后续子进程执行操作时不会阻塞）。</li>
+<li>RDB子进程会根据Redis主进程的内存生成临时的快照文件，持久化完成后会使用临时快照文件替换掉原来的RDB文件。（该过程中主进程的读写不受影响，但Redis的写操作不会同步到主进程的主内存中，而是会写到一个临时的内存区域作为一个副本）。</li>
+<li>子进程完成RDB持久化后会发消息给主进程，通知RDB持久化完成（将上阶段内存副本中的增量写数据同步到主内存）。</li>
+</ol>
+<h2 id="触发">触发</h2>
 <ul>
 <li>
-<p>mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。</p>
+<p>手动触发</p>
+<p><strong>save</strong>命令</p>
+<p>同步，在主线程中保存快照；阻塞当前Redis服务器，直到RDB过程完成为止，对于内存比较大的实例会造成长时间阻塞，线上环境不建议使用。</p>
+<p><strong>bgsave</strong>命令</p>
+<p>异步，Redis进程执行fork操作创建子进程，RDB持久化过程由子进程负责，完成后自动结束。阻塞只发生在fork阶段，一般时间很短；BGSAVE命令是针对SAVE堵塞问题做的优化。因此Redis内部所有的设计RDB的操作都采用BGSAVE的方式，而save命令已经废弃。</p>
 </li>
 <li>
-<p>a = 1 and b = 2 and c = 3 建立(a,b,c)索引时可以任意顺序，mysql的查询优化器会优化成索引可以识别的形式</p>
+<p>自动触发</p>
+<p>根据配置文件的策略自动触发bgsave。</p>
 </li>
 <li>
-<p>如果建立的索引顺序是 （a，b）那么直接采用 where b = 5 这种查询条件是无法利用到索引的，这一条最能体现最左匹配的特性。</p>
+<p>其它触发</p>
+<ol>
+<li>如果从节点执行全量复制操作，主节点自动执行BGSAVE生成RDB文件并发送给从节点。</li>
+<li>默认情况下执行shutdown命令时，如果没有开启AOF持久化功能则自动执行BGSAVE。</li>
+</ol>
 </li>
 </ul>
-<p>索引下推：</p>
-<p>例如现在有一个联合索引(name,age)，需求是查出表中“姓王的10岁男孩”</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="ln">1</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;王%&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">age</span><span class="o">=</span><span class="mi">10</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ismale</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w">
-</span></code></pre></div><p>在这个查询中，能够使用到索引name。在MySQL5.6之前，找到name满足条件的主键后会一个一个回表，在主键索引上找到数据行，然后比对age和ismale的字段值。</p>
-<p>索引下推可以在索引遍历过程中，对索引包含的字段先做判断，过滤掉不满足条件的记录，减少回表次数。</p>
-<h2 id="回表覆盖索引">回表&amp;覆盖索引</h2>
-<p>回表是指在使用辅助索引时，拿到主键值后还需要回到主键索引中查找需要的数据。</p>
-<p>覆盖索引是一种优化手段可以避免回表。</p>
-<p>eg：</p>
-<p>主键为a,辅助索引为(b,c)，需要查询的数据为(a,b,c,d)</p>
-<p>在这种情况下，使用辅助索引查找时，需要先在辅助索引中找到主键a，再回到主键索引中找到记录a,b,c,d</p>
-<p>如果我们定义辅助索引为(b,c,d)，那么使用辅助索引查找到主键a即可得到a,b,c,d返回，不需要再进行回表查询。</p></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<h2 id="优缺点">优缺点</h2>
+<ul>
+<li>
+<p>优点</p>
+<p>适合定时备份和灾难恢复,在恢复大数据集的时候比AOF的速度快。</p>
+</li>
+<li>
+<p>缺点</p>
+<p>会丢失数据。</p>
+</li>
+</ul>
+<h1 id="aof">AOF</h1>
+<p>全量备份总是耗时的，AOF是一种更高效的方式，与RDB持久化通过保存数据库中的键值对来记录数据库状态不同，AOF持久化是增量持久化，通过保存Redis所执行的写命令来记录数据库状态的。redis会将每一个收到的写命令都通过write函数追加到文件中(默认文件appendonly.aof)。</p>
+<h2 id="配置-1">配置</h2>
+<p><strong>APPEND ONLY MODE</strong></p>
+<ul>
+<li>appendonly yes: 是否启用aof持久化方式。</li>
+<li>appendfsync always: 每次收到写命令就立即强制写入磁盘，最慢的，但是保证完全的持久化，不推荐使用。</li>
+<li>appendfsync everysec: 每秒钟强制写入磁盘一次，在性能和持久化方面做了很好的折中，推荐。</li>
+<li>appendfsync no: 完全依赖os，性能最好,持久化没保证。</li>
+<li>auto-aof-rewrite-percentage 100: 默认值为100。aof自动重写配置，当目前aof文件大小超过上一次重写的aof文件大小的百分之多少进行重写，即当aof文件增长到一定大小的时候，Redis能够调用bgrewriteaof对日志文件进行重写。当前AOF文件大小是上次日志重写得到AOF文件大小的一倍（设置为100）时，自动启动新的日志重写过程。</li>
+<li>auto-aof-rewrite-min-size 64mb: 设置允许重写的最小aof文件大小，避免了达到约定百分比但尺寸仍然很小的情况还要重写。</li>
+</ul>
+<h2 id="重写">重写</h2>
+<p>由于AOF持久化是Redis不断将写命令记录到 AOF 文件中，随着Redis不断的进行，AOF 的文件会越来越大，文件越大，占用服务器内存越大以及 AOF 恢复要求时间越长。为了解决这个问题，Redis新增了重写机制，当AOF文件的大小超过所设定的阈值时，Redis就会启动AOF文件的内容压缩，只保留可以恢复数据的最小指令集。</p>
+<p>重写过程可手动触发（redis-cli -h ip -p port bgrewriteaof）或自动触发（配置文件）。</p>
+<p>过程如下：</p>
+<p>①redis调用fork创建，现在有父子两个进程</p>
+<p>②子进程根据内存中的数据库快照，往临时文件中写入重建数据库状态的命令</p>
+<p>③父进程继续处理client请求，除了把写命令写入到原来的aof文件中。同时把收到的写命令缓存起来。这样就能保证如果子进程重写失败的话并不会出问题。</p>
+<p>④当子进程把快照内容写入已命令方式写到临时文件中后，子进程发信号通知父进程。然后父进程把缓存的写命令也写入到临时文件。</p>
+<p>⑤现在父进程可以使用临时文件替换老的aof文件，并重命名，后面收到的写命令也开始往新的aof文件中追加。</p>
+<p>需要注意重写aof文件的操作，并没有读取旧的aof文件，而是将整个内存中的数据库内容用命令的方式重写了一个新的aof文件。</p>
+<h2 id="优缺点-1">优缺点</h2>
+<ul>
+<li>
+<p>优点</p>
+<p>保证数据完整性更好。</p>
+</li>
+<li>
+<p>缺点</p>
+<p>数据文件通常比RDB大,性能不如RDB。</p>
+</li>
+</ul>
+<h1 id="混合持久化">混合持久化</h1>
+<p>当开启混合持久化时，主进程先fork出子进程将现有内存副本全量以RDB方式写入aof文件中，然后将缓冲区中的增量命令以AOF方式写入aof文件中，写入完成后通知主进程更新相关信息，并将新的含有 RDB和AOF两种格式的aof文件替换旧的aof文件。</p>
+<p>简单来说：混合持久化方式产生的文件一部分是RDB格式，一部分是AOF格式。</p>
+<h2 id="配置-2">配置</h2>
+<ul>
+<li>aof-use-rdb-preamble:yes表示开启，设置为no表示禁用。</li>
+</ul></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
@@ -311,20 +341,20 @@
   </div>
 </div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
   <div class="post-nav w-50"><div class="prev-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/mysql/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">MySQL-主从复制
+      <a href="https://why9661.github.io/myblog/posts/algorithm/lru/">缓存淘汰策略-LRU
 </a>
     </div></div>
   <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">Golang-内存分配
+      <a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">Golang-GC
 </a>
     </div></div>
 </div><section class="related-posts">
     <h3>相关文章</h3>
-    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">MySQL-主从复制
-</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E7%BB%83%E4%B9%A0%E9%A2%98/">MySQL-基础练习题01
-</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">MySQL-事务隔离级别
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer01/">Golang-Defer
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/algorithm/lru/">缓存淘汰策略-LRU
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/gpm%E8%B0%83%E5%BA%A6/">Golang-GPM调度
+</a></li><li><a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf基础
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Golang-单元测试
+</a></li><li><a href="https://why9661.github.io/myblog/posts/rpc/rpc01/">RPC基础
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"

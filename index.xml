@@ -18,6 +18,15 @@
     </item>
     
     <item>
+      <title>Redis-持久化</title>
+      <link>https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/</link>
+      <pubDate>Sat, 28 Aug 2021 09:44:22 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>缓存淘汰策略-LRU</title>
       <link>https://why9661.github.io/myblog/posts/algorithm/lru/</link>
       <pubDate>Fri, 16 Jul 2021 22:51:41 +0800</pubDate>

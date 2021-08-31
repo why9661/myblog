@@ -18,6 +18,15 @@
     </item>
     
     <item>
+      <title>Redis</title>
+      <link>https://why9661.github.io/myblog/tags/redis/</link>
+      <pubDate>Sat, 28 Aug 2021 09:44:22 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/tags/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>缓存淘汰策略</title>
       <link>https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</link>
       <pubDate>Fri, 16 Jul 2021 22:51:41 +0800</pubDate>
