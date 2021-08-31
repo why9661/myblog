@@ -17,5 +17,23 @@
       <description></description>
     </item>
     
+    <item>
+      <title>Redis-哨兵模式</title>
+      <link>https://why9661.github.io/myblog/posts/redis/%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Thu, 12 Aug 2021 15:19:57 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/redis/%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis-主从模式</title>
+      <link>https://why9661.github.io/myblog/posts/redis/%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Wed, 11 Aug 2021 11:27:10 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/redis/%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

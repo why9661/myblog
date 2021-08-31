@@ -3,22 +3,27 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>RPC - 分类 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>Redis-主从模式 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
-<meta name="keywords" content="Hugo, Bootstrap, 博客主题" />
-<meta name="description" content="why&#39;s blog" /><meta itemprop="name" content="RPC">
-<meta itemprop="description" content="why&#39;s blog"><meta property="og:title" content="RPC" />
-<meta property="og:description" content="why&#39;s blog" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://why9661.github.io/myblog/categories/rpc/" /><meta property="og:site_name" content="why&#39;s blog" />
+<meta name="keywords" content="" />
+<meta name="description" content="redis主从模式" /><meta itemprop="name" content="Redis-主从模式">
+<meta itemprop="description" content="redis主从模式"><meta itemprop="datePublished" content="2021-08-11T11:27:10+08:00" />
+<meta itemprop="dateModified" content="2021-08-11T11:27:10+08:00" />
+<meta itemprop="wordCount" content="956">
+<meta itemprop="keywords" content="Redis," /><meta property="og:title" content="Redis-主从模式" />
+<meta property="og:description" content="redis主从模式" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/redis/%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-11T11:27:10+08:00" />
+<meta property="article:modified_time" content="2021-08-11T11:27:10+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="RPC"/>
-<meta name="twitter:description" content="why&#39;s blog"/>
-<link rel="alternate" type="application/rss+xml" href="https://why9661.github.io/myblog/categories/rpc/index.xml" title="why's blog" /><meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
+<meta name="twitter:title" content="Redis-主从模式"/>
+<meta name="twitter:description" content="redis主从模式"/>
+<meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
 </head><body><header><nav class="navbar navbar-expand-xl fixed-top">
   <div class="container">
     <a class="navbar-brand" href="https://why9661.github.io/myblog">
@@ -143,24 +148,178 @@
       <div class="row content">
 <div class="col-lg-8">
   <div class="container"><nav class="row" aria-label="breadcrumb">
-  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/categories/">分类</a></li><li class="breadcrumb-item active">RPC</li></ol>
-</nav><div class="posts mb-4"><article class="post row surface"><div class="post-body">
-        <h2 class="post-title mb-4"><a href="https://why9661.github.io/myblog/posts/rpc/rpc01/">RPC基础
-</a></h2><div class="post-meta mb-3">
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Redis-主从模式</li></ol>
+</nav><article class="post row surface"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-alt fa-rotate-45"></i>
+</a>
+  
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-medal"></i>
+</a>
+    <a class="action" data-bs-container="body" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom"
+  data-bs-trigger="focus" tabindex="0"
+  data-bs-content="&lt;a target=&#34;_blank&#34; rel=&#34;license&#34; href=&#34;https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh&#34;&gt;CC BY-NC-ND 4.0 &lt;i class=&#34;fab fa-fw fa-creative-commons&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-by&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nc&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nd&#34;&gt;&lt;/i&gt;&lt;/a&gt;
+">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a id="btnTOC" class="fas fa-fw fa-list-alt" data-bs-toggle="offcanvas" href="#offcanvasTOC" aria-controls="offcanvasTOC" role="button">
+</a>
+  </div>
+</div>
+<h1 class="post-title my-3">Redis-主从模式
+</h1><div class="post-meta mb-3">
   <span class="post-date me-2">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-05-08
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-08-11
   </span>
   <span class="post-reading-time me-2">
     <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="https://why9661.github.io/myblog/categories/rpc/" class="post-taxonomy">#RPC</a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy">#微服务</a></div>
-<div class="post-summary mb-3">
-          
-        </div>
+  </span><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy">#Redis</a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy">#Redis</a></div>
+<div class="offcanvas offcanvas-end surface" tabindex="-1" id="offcanvasTOC" aria-labelledby="offcanvasTOCLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasTOCLabel">目录</h5>
+    <a role="button" data-bs-dismiss="offcanvas" aria-label="Close">
+      <span class="fas fa-2x fa-fw fa-times"></span>
+    </a>
+  </div>
+  <div class="offcanvas-body">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#过程">过程</a></li>
+    <li><a href="#配置">配置</a></li>
+    <li><a href="#例子">例子</a></li>
+  </ul>
+</nav>
+  </div>
+</div><div class="post-content mb-3"><h1 id="主从模式">主从模式</h1>
+<p>主从模式可降低读写压力，Master以写为主，Slave以读为主，Master节点更新后根据配置自动同步到Slave节点。</p>
+<h2 id="过程">过程</h2>
+<ul>
+<li>
+<p>全量复制</p>
+<p>Redis全量复制一般发生在Slave初始化阶段，这时Slave需要将Master上的所有数据都复制一份。具体步骤如下：</p>
+<p>　　1）从服务器连接主服务器，发送SYNC命令；</p>
+<p>　　2）主服务器接收到SYNC命令后，开始执行BGSAVE命令生成RDB文件并使用缓冲区记录此后执行的所有写命令；</p>
+<p>　　3）主服务器BGSAVE执行完后，向所有从服务器发送快照文件，并在发送期间继续记录被执行的写命令；</p>
+<p>　　4）从服务器收到快照文件后丢弃所有旧数据，载入收到的快照；</p>
+<p>　　5）主服务器快照发送完毕后开始向从服务器发送缓冲区中的写命令；</p>
+<p>　　6）从服务器完成对快照的载入，开始接收命令请求，并执行来自主服务器缓冲区的写命令；</p>
+</li>
+<li>
+<p>增量复制</p>
+<p>Redis增量复制是指Slave初始化后开始正常工作时主服务器发生的写操作同步到从服务器的过程。</p>
+<p>增量复制的过程主要是主服务器每执行一个写命令就会向从服务器发送相同的写命令，从服务器接收并执行收到的写命令。</p>
+</li>
+</ul>
+<h2 id="配置">配置</h2>
+<p><strong>REPLICATION</strong></p>
+<ul>
+<li>
+<p>replicaof <!-- raw HTML omitted --> <!-- raw HTML omitted -->：添加Master节点的ip和端口。</p>
+</li>
+<li>
+<p>slave-serve-stale-data：默认值为yes。当一个 slave 与 master 失去联系，或者复制正在进行的时候，slave 可能会有两种表现：</p>
+<ul>
+<li>如果为 yes ，slave 仍然会应答客户端请求，但返回的数据可能是过时，或者数据可能是空的在第一次同步的时候</li>
+<li>如果为 no ，在你执行除了 info he salveof 之外的其他命令时，slave 都将返回一个 &ldquo;SYNC with master in progress&rdquo; 的错误</li>
+</ul>
+</li>
+<li>
+<p>slave-read-only：配置Redis的Slave实例是否接受写操作，即Slave是否为只读Redis。默认值为yes。</p>
+</li>
+</ul>
+<p>除此之外，还需配置<code>端口port</code>、<code>pid文件pidfile</code>、<code>log文件logfile</code>、<code>持久化文件路径dir</code>等选项。</p>
+<h2 id="例子">例子</h2>
+<p><strong>主节点6379配置</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>port 6379
+<span class="ln">2</span>daemonize yes
+<span class="ln">3</span>pidfile /var/run/redis_6379.pid
+<span class="ln">4</span>logfile &#34;6379.log&#34;
+<span class="ln">5</span>dir ./
+</code></pre></div><p><strong>从节点6380配置</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>port 6380
+<span class="ln">2</span>daemonize yes
+<span class="ln">3</span>pidfile /var/run/redis_6380.pid
+<span class="ln">4</span>logfile &#34;6380.log&#34;
+<span class="ln">5</span>dir ./
+<span class="ln">6</span>replicaof 127.0.0.1 6379
+</code></pre></div><p><strong>从节点6381配置</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>port 6381
+<span class="ln">2</span>daemonize yes
+<span class="ln">3</span>pidfile /var/run/redis_6381.pid
+<span class="ln">4</span>logfile &#34;6381.log&#34;
+<span class="ln">5</span>dir ./
+<span class="ln">6</span>replicaof 127.0.0.1 6379
+</code></pre></div><p><strong>分别启动</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>redis-server /usr/local/redis/master6379/redis.conf 
+<span class="ln">2</span>redis-server /usr/local/redis/slave6380/redis.conf 
+<span class="ln">3</span>redis-server /usr/local/redis/slave6381/redis.conf 
+</code></pre></div><p><strong>查看节点状态</strong></p>
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/redis/redis%E4%B8%BB%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81.png" alt=""  loading="lazy" />
+</p>
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/redis/redis%E4%BB%8E%E8%8A%82%E7%82%B91%E7%8A%B6%E6%80%81.png" alt=""  loading="lazy" />
+</p>
+<p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/redis/redis%E4%BB%8E%E8%8A%82%E7%82%B92%E7%8A%B6%E6%80%81.png" alt=""  loading="lazy" />
+</p>
+<p><strong>一些测试(就不截图了)</strong></p>
+<ul>
+<li>增量复制：主从节点启动后，主节点写，看从节点是否同步</li>
+<li>全量复制：主节点先写入一些数据，启动从节点看是否同步</li>
+<li>从节点只读</li>
+<li>主节点宕机：主节点宕机后从节点角色还是slave，主节点恢复后还是master；</li>
+</ul></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-medal"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-fw fa-times"></i></a>
       </div>
-    </article></div><div class="row table-responsive mb-3"></div>
-</div>
-
-
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/alipay.png" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/wechat.png" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
+  <div class="post-nav w-50"><div class="prev-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/algorithm/lru/">缓存淘汰策略-LRU
+</a>
+    </div></div>
+  <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/redis/%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F/">Redis-哨兵模式
+</a>
+    </div></div>
+</div><section class="related-posts">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/algorithm/lru/">缓存淘汰策略-LRU
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/gpm%E8%B0%83%E5%BA%A6/">Golang-GPM调度
+</a></li><li><a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf基础
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Golang-单元测试
+</a></li><li><a href="https://why9661.github.io/myblog/posts/rpc/rpc01/">RPC基础
+</a></li></ul>
+  </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label=""
+  theme="github-dark"
+  crossorigin="anonymous"
+  async>
+</script></div></div>
 </div><aside class="col-lg-4 sidebar d-flex">
   <div class="container"><section class="profile surface row text-center">
   <div class="col-12 d-flex align-items-center justify-content-center">
@@ -232,11 +391,7 @@
       <a class="nav-link social-link" target="_blank" href="https://github.com/why9661" title="GitHub">
         <i class="fa-fw fa-2x fab fa-github"></i>
       </a>
-    </li><li class="nav-item">
-    <a class="nav-link social-link" target="_blank" href="https://why9661.github.io/myblog/categories/rpc/index.xml" title="RSS">
-      <i class="fas fa-fw fa-2x fa-rss"></i>
-    </a>
-  </li></nav>
+    </li></nav>
 <div class="copyright mb-2">
   Copyright © 2016-2021 why. All Rights Reserved.
 </div>
