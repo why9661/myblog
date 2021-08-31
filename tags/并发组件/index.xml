@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>并发组件 on why&#39;s blog</title>
+    <link>https://why9661.github.io/myblog/tags/%E5%B9%B6%E5%8F%91%E7%BB%84%E4%BB%B6/</link>
+    <description>Recent content in 并发组件 on why&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
+    <lastBuildDate>Tue, 16 Feb 2021 20:52:24 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/%E5%B9%B6%E5%8F%91%E7%BB%84%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang-channel</title>
+      <link>https://why9661.github.io/myblog/posts/golang/channel/</link>
+      <pubDate>Tue, 16 Feb 2021 20:52:24 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/channel/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
