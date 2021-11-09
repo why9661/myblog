@@ -12,7 +12,7 @@
 <meta name="description" content="MySQL索引介绍" /><meta itemprop="name" content="MySQL-索引">
 <meta itemprop="description" content="MySQL索引介绍"><meta itemprop="datePublished" content="2021-02-22T14:40:37+08:00" />
 <meta itemprop="dateModified" content="2021-02-22T14:40:37+08:00" />
-<meta itemprop="wordCount" content="1736">
+<meta itemprop="wordCount" content="1754">
 <meta itemprop="keywords" content="MySQL," /><meta property="og:title" content="MySQL-索引" />
 <meta property="og:description" content="MySQL索引介绍" />
 <meta property="og:type" content="article" />
@@ -188,7 +188,7 @@
   <div class="offcanvas-body">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#数据结构">数据结构</a></li>
+    <li><a href="#数据结构选择">数据结构选择</a></li>
     <li><a href="#不同存储引擎的实现">不同存储引擎的实现</a>
       <ul>
         <li><a href="#myisam">MyISAM</a></li>
@@ -201,7 +201,7 @@
 </nav>
   </div>
 </div><div class="post-content mb-3"><p>索引是帮助MySQL高效获取数据的数据结构。不过索引本身也很大，会占据不少的磁盘空间；索引还会降低表的更新效率，因为每创建一个索引，就会对应生成一个索引文件，在表数据更新时，需要更新这些索引文件。</p>
-<h2 id="数据结构">数据结构</h2>
+<h2 id="数据结构选择">数据结构选择</h2>
 <ul>
 <li>
 <p>哈希表</p>
@@ -284,7 +284,11 @@
 <p>eg：</p>
 <p>主键为a,辅助索引为(b,c)，需要查询的数据为(a,b,c,d)</p>
 <p>在这种情况下，使用辅助索引查找时，需要先在辅助索引中找到主键a，再回到主键索引中找到记录a,b,c,d</p>
-<p>如果我们定义辅助索引为(b,c,d)，那么使用辅助索引查找到主键a即可得到a,b,c,d返回，不需要再进行回表查询。</p></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<p>如果我们定义辅助索引为(b,c,d)，那么使用辅助索引查找到主键a即可得到a,b,c,d返回，不需要再进行回表查询。</p>
+<p>参考：</p>
+<p><a href="https://blog.csdn.net/qq_35190492/article/details/109257302" target="_blank">https://blog.csdn.net/qq_35190492/article/details/109257302</a>
+</p>
+<p>《MySQL实战45讲》</p></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
