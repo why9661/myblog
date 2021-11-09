@@ -9,7 +9,7 @@
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
     <lastBuildDate>Wed, 01 Sep 2021 10:52:17 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Golang-Web编程之内置Handler</title>
+      <title>Golang-内置Handler</title>
       <link>https://why9661.github.io/myblog/posts/golang/web/%E5%86%85%E7%BD%AEhandler/</link>
       <pubDate>Wed, 01 Sep 2021 10:52:17 +0800</pubDate>
       
