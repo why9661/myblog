@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Golang-锁 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
+<meta name="keywords" content="" />
+<meta name="description" content="锁" /><meta itemprop="name" content="Golang-锁">
+<meta itemprop="description" content="锁"><meta itemprop="datePublished" content="2021-04-10T06:55:21+08:00" />
+<meta itemprop="dateModified" content="2021-04-10T06:55:21+08:00" />
+<meta itemprop="wordCount" content="1040">
+<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-锁" />
+<meta property="og:description" content="锁" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/%E9%94%81/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-10T06:55:21+08:00" />
+<meta property="article:modified_time" content="2021-04-10T06:55:21+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang-锁"/>
+<meta name="twitter:description" content="锁"/>
+<meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
+</head><body><header><nav class="navbar navbar-expand-xl fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="https://why9661.github.io/myblog">
+      <img class="logo" alt="Logo" src="https://why9661.github.io/myblog/images/logo.webp" loading="lazy">BOOTSTRAP</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-1 mb-2 mb-lg-0"><form class="search-bar d-flex ms-1" action="https://why9661.github.io/myblog/search">
+  <div class="input-group input-group-sm">
+    <button class="btn btn-search disabled position-absolute left-0" type="submit"><i class="fas fa-fw fa-search"></i></button>
+    <input class="form-control rounded-pill" id="searchQuery" name="q" type="search" aria-label="Search">
+  </div>
+</form></ul><ul class="navbar-nav me-1 mb-2 mb-lg-0 me-1 ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item dropdown">
+          <a class="nav-link" id="navbarDropdown-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-fw fa-chevron-circle-down"></i>下拉菜单
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown-dropdown"><li>
+              <a class="dropdown-item"
+                href="https://github.com/why9661" target="_blank">
+                Github
+              </a>
+            </li></ul>
+        </li><li class="nav-item">
+  <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasSettings" role="button"
+    aria-controls="offcanvasSettings">
+    <i class="fas fa-fw fa-sliders-h"></i> 设置
+  </a>
+</li>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings"
+  aria-labelledby="offcanvasSettingsLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" w id="offcanvasSettingsLabel"><i class="fas fa-fw fa-sliders-h"></i> 设置</h5>
+    <a role="button" data-bs-dismiss="offcanvas" aria-label="Close">
+      <span class="fas fa-2x fa-fw fa-times"></span>
+    </a>
+  </div>
+  <div class="offcanvas-body"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <span id="btnPalette" class="btn btn-sm"><i class="fas fa-eye-dropper"></i></span>
+    </div>
+  </form>
+  <div class="container mt-2 visually-hidden" id="palettePicker">
+    <div class="btn-group"><button type="button" id="palette-blue" title="蓝色" 
+          class="btn btn-sm palette bg-blue d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-blue-gray" title="蓝灰色" 
+          class="btn btn-sm palette bg-blue-gray d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-brown" title="棕色" 
+          class="btn btn-sm palette bg-brown d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-cyan" title="青色" 
+          class="btn btn-sm palette bg-cyan d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-green" title="绿色" 
+          class="btn btn-sm palette bg-green d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-indigo" title="靛青色" 
+          class="btn btn-sm palette bg-indigo d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-orange" title="橙色" 
+          class="btn btn-sm palette bg-orange d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-pink" title="粉色" 
+          class="btn btn-sm palette bg-pink d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-purple" title="紫色" 
+          class="btn btn-sm palette bg-purple d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-red" title="红色" 
+          class="btn btn-sm palette bg-red d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-teal" title="蓝绿色" 
+          class="btn btn-sm palette bg-teal d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-yellow" title="黄色" 
+          class="btn btn-sm palette bg-yellow d-flex align-items-center justify-content-center">
+        </button></button>
+    </div>
+  </div>
+</section></div>
+</div></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row" aria-label="breadcrumb">
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-锁</li></ol>
+</nav><article class="post row surface"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-alt fa-rotate-45"></i>
+</a>
+  
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-medal"></i>
+</a>
+    <a class="action" data-bs-container="body" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom"
+  data-bs-trigger="focus" tabindex="0"
+  data-bs-content="&lt;a target=&#34;_blank&#34; rel=&#34;license&#34; href=&#34;https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh&#34;&gt;CC BY-NC-ND 4.0 &lt;i class=&#34;fab fa-fw fa-creative-commons&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-by&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nc&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nd&#34;&gt;&lt;/i&gt;&lt;/a&gt;
+">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+  </div>
+</div>
+<h1 class="post-title my-3">Golang-锁
+</h1><div class="post-meta mb-3">
+  <span class="post-date me-2">
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-04-10
+  </span>
+  <span class="post-reading-time me-2">
+    <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
+  </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
+<div class="post-content mb-3"><h1 id="原子操作">原子操作</h1>
+<p><strong>原子操作与锁</strong></p>
+<ul>
+<li>
+<p>原子操作趋于乐观，总是假设被操作的值未曾被改变，并一旦确认这个假设的真实性就立即进行值替换，那么在被操作值被频繁变更的情况下，<code>CAS</code>操作并不那么容易成功。</p>
+<p>锁趋于悲观，总假设会有并发的操作要修改被操作的值，并使用锁将相关操作放入临界区中加以保护。</p>
+</li>
+<li>
+<p>原子操作比锁更轻量，多线程竞争的情况下，频繁的加解锁会导致很多的上下文切换和调度延时，性能会很差。</p>
+</li>
+</ul>
+<p><code>sync/atomic</code>包提供了五种原子操作：</p>
+<ul>
+<li>Add 加减</li>
+<li>Load 读取</li>
+<li>Store 存储</li>
+<li>CompareAndSwap（CAS）比较并交换</li>
+<li>Swap 交换</li>
+</ul>
+<p><strong>通过CAS操作和for循环可以实现一个简单的自旋锁</strong>。</p>
+<h1 id="数据结构">数据结构</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">type</span> <span class="nx">Mutex</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln">2</span>    <span class="c1">//互斥锁的状态
+</span><span class="ln">3</span><span class="c1"></span>	<span class="nx">state</span> <span class="kt">int32</span> 
+<span class="ln">4</span>    <span class="c1">//信号量，用作等待队列
+</span><span class="ln">5</span><span class="c1"></span>    <span class="c1">//runtime使用一个大小为251的semaTable来管理semaphore
+</span><span class="ln">6</span><span class="c1"></span>    <span class="c1">//semaTable存储的是251棵平衡树的树根
+</span><span class="ln">7</span><span class="c1"></span>    <span class="c1">//根据sema变量的地址计算映射到semaTable中的一棵树上，找到对应结点就找到该信号量对应的等待队列
+</span><span class="ln">8</span><span class="c1"></span>	<span class="nx">sema</span>  <span class="kt">uint32</span>
+<span class="ln">9</span><span class="p">}</span>
+</code></pre></div><p>state的第一位用来表示是否已加锁；</p>
+<p>state的第二位用来表示是否已有goroutine被唤醒；</p>
+<p>state的第三位用来表示Mutex的工作模式；</p>
+<p>除了低3位的其余位数用来记录有多少个等待者在排队</p>
+<p>对应以下常量:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">const</span> <span class="p">(</span>
+<span class="ln">2</span>	<span class="nx">mutexLocked</span> <span class="p">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="kc">iota</span> 
+<span class="ln">3</span>	<span class="nx">mutexWoken</span>
+<span class="ln">4</span>	<span class="nx">mutexStarving</span>
+<span class="ln">5</span>    <span class="nx">mutexWaiterShift</span> <span class="p">=</span> <span class="kc">iota</span> 
+<span class="ln">6</span>    <span class="nx">starvationThresholdNs</span> <span class="p">=</span> <span class="mf">1e6</span> <span class="c1">//饥饿阈值 1ms
+</span><span class="ln">7</span><span class="c1"></span><span class="p">)</span>
+</code></pre></div><p>加锁</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="k">if</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">CompareAndSwapInt32</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">mutexLocked</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">3</span>		<span class="o">...</span>
+<span class="ln">4</span>		<span class="k">return</span>
+<span class="ln">5</span>	<span class="p">}</span>
+<span class="ln">6</span>    
+<span class="ln">7</span>	<span class="nx">m</span><span class="p">.</span><span class="nf">lockSlow</span><span class="p">()</span>
+<span class="ln">8</span><span class="p">}</span>
+</code></pre></div><p>解锁</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="o">...</span>
+<span class="ln">3</span>
+<span class="ln">4</span>	<span class="nx">new</span> <span class="o">:=</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">AddInt32</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="o">-</span><span class="nx">mutexLocked</span><span class="p">)</span>
+<span class="ln">5</span>	<span class="k">if</span> <span class="nx">new</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">6</span>		<span class="nx">m</span><span class="p">.</span><span class="nf">unlockSlow</span><span class="p">(</span><span class="nx">new</span><span class="p">)</span>
+<span class="ln">7</span>	<span class="p">}</span>
+<span class="ln">8</span><span class="p">}</span>
+</code></pre></div><h1 id="正常模式饥饿模式">正常模式&amp;饥饿模式</h1>
+<p>在正常模式下，一个goroutine若尝试加锁失败，那么会先自旋几次，继续尝试通过原子操作获得锁，若几次自旋后仍不能获得锁，则通过信号量排队等待，所有的等待者会按照FIFO的顺序排队。当锁被释放，第一个等待者被唤醒后不会直接拥有锁，而是需要和后来者竞争，也就是那些处于自旋状态尚未排队等待的goroutine，这种情况下后来者更有优势（正在CPU上运行，数量多），所以被唤醒的goroutine大概率拿不到锁，这种情况下它会被重新插入队列的头部，而当goroutine本次加锁等待的时间超过1ms后，它会把当前Mutex从正常模式切换到饥饿模式。</p>
+<p>在饥饿模式下，Mutex的所有权从unlock的goroutine直接传递给等待队列中的第一个goroutine，后来者不会自旋也不会尝试获得锁，它们会直接进入队列尾部排队。当一个等待者获得锁的时候，会在以下两种情况将Mutex切换回正常模式：1、它的等待时间小于1ms 。2、它是最后一个等待者。</p></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-medal"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-fw fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/alipay.png" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/wechat.png" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
+  <div class="post-nav w-50"><div class="prev-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">Golang-内存分配
+</a>
+    </div></div>
+  <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/golang/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-模板引擎
+</a>
+    </div></div>
+</div><section class="related-posts">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">Golang-内存分配
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/channel/">Golang-Channel
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer/">Golang-Defer
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/string/">Golang-String
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
+</a></li></ul>
+  </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label=""
+  theme="github-dark"
+  crossorigin="anonymous"
+  async>
+</script></div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container"><section class="profile surface row text-center">
+  <div class="col-12 d-flex align-items-center justify-content-center">
+    <img class="profile-avatar rounded-circle" src="https://why9661.github.io/myblog/images/profile.webp" alt="why" loading="lazy">
+  </div>
+  <div class="col-12">
+    <h5 class="profile-name my-2">why</h5><div class="profile-bio mb-2">Gopher</div><div class="profile-meta"><span class="profile-company"><i class="fas fa-fw fa-building"></i>Null</span><span class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>Hubei</span></div>
+  </div>
+</section><section class="recent-posts row surface">
+  <h4>最近文章</h4>
+  <ul><li><a href="https://why9661.github.io/myblog/posts/golang/unsafe%E5%8C%85/">Golang-Unsafe包
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E8%81%94/">Golang-内联
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">Golang-GC
+</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/">Redis-持久化
+</a></li></ul>
+</section><section class="taxonomy-categories row surface">
+      <h4>
+        <a href="https://why9661.github.io/myblog/categories">分类</a>
+      </h4>
+      <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
+          Golang <span class="badge rounded-pill">18</span>
+        </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">4</span>
+        </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
+          algorithm <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
+          Redis <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/categories/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
+          Docker <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/categories/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
+          Protobuf <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/categories/rpc/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="RPC">
+          RPC <span class="badge rounded-pill">1</span>
+        </a></div>
+    </section><section class="taxonomy-tags row surface">
+      <h4>
+        <a href="https://why9661.github.io/myblog/tags">标签</a>
+      </h4>
+      <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
+          Golang <span class="badge rounded-pill">18</span>
+        </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">4</span>
+        </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
+          Redis <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="负载均衡">
+          负载均衡 <span class="badge rounded-pill">2</span>
+        </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
+          Protobuf <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="容器化">
+          容器化 <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="微服务">
+          微服务 <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="缓存淘汰策略">
+          缓存淘汰策略 <span class="badge rounded-pill">1</span>
+        </a></div>
+    </section></div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"><li class="nav-item">
+    <a class="nav-link social-link" href="mailto:hy_world@126.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a>
+  </li><li class="nav-item">
+      <a class="nav-link social-link" target="_blank" href="https://github.com/why9661" title="GitHub">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a>
+    </li></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2021 why. All Rights Reserved.
+</div>
+<div class="powered-by mb-2">
+  Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> and the <a href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank">Bootstrap</a> theme.
+</div></footer>
+<a id="btnScrollToTop" class="btn-scroll-to-top">
+  <i class="fas fa-fw fa-chevron-circle-up fa-2x"></i>
+</a>
+</body>
+</html>

@@ -12,7 +12,7 @@
 <meta name="description" content="没写完..." /><meta itemprop="name" content="Golang-GPM调度">
 <meta itemprop="description" content="没写完..."><meta itemprop="datePublished" content="2021-07-08T21:19:36+08:00" />
 <meta itemprop="dateModified" content="2021-07-08T21:19:36+08:00" />
-<meta itemprop="wordCount" content="2769">
+<meta itemprop="wordCount" content="2930">
 <meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-GPM调度" />
 <meta property="og:description" content="没写完..." />
 <meta property="og:type" content="article" />
@@ -166,7 +166,8 @@
 ">
   <i class="fas fa-fw fa-copyright"></i>
 </a>
-    
+    <a id="btnTOC" class="fas fa-fw fa-list-alt" data-bs-toggle="offcanvas" href="#offcanvasTOC" aria-controls="offcanvasTOC" role="button">
+</a>
   </div>
 </div>
 <h1 class="post-title my-3">Golang-GPM调度
@@ -177,11 +178,26 @@
   <span class="post-reading-time me-2">
     <i class="fas fa-fw fa-coffee"></i>6 分钟阅读
   </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
-<div class="post-content mb-3"><h1 id="gpm简介">GPM简介</h1>
+<div class="offcanvas offcanvas-end surface" tabindex="-1" id="offcanvasTOC" aria-labelledby="offcanvasTOCLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasTOCLabel">目录</h5>
+    <a role="button" data-bs-dismiss="offcanvas" aria-label="Close">
+      <span class="fas fa-2x fa-fw fa-times"></span>
+    </a>
+  </div>
+  <div class="offcanvas-body">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#初始化结构体">初始化结构体</a></li>
+    <li><a href="#运行队列">运行队列</a></li>
+  </ul>
+</nav>
+  </div>
+</div><div class="post-content mb-3"><h1 id="gpm简介">GPM简介</h1>
 <p>G表示Goroutine，是Go语言调度的基本单位，可以认为是一种用户态的线程，与普通线程相比，Goroutine上下文切换在用户态可以减少开销，同时Goroutine本身是KB级别，而普通线程是MB级别。</p>
 <p>P表示处理器，可以认为是运行在线程上的本地调度器。P的数量由环境变量<code>GOMAXPROCS</code>决定，在程序初始化时创建。</p>
-<p>M表示操作系统线程，由操作系统的调度器调度和管理。最多可以创建10000个线程，但是同时只能有最多<code>GOMAXPROCS</code>个活跃线程能够正常运行。</p>
-<p><code>g0</code>是一个特殊的Goroutine，会深度参与到运行时的调度。</p>
+<p>M表示操作系统线程，由操作系统的调度器调度和管理。最多可以创建10000个线程，但是同时只能有最多<code>GOMAXPROCS</code>个活跃线程能够正常运行。在大多数情况下，我们都会使用 Go 的默认设置，也就是线程数等于 CPU 数，默认的设置不会频繁触发操作系统的线程调度和上下文切换，所有的调度都会发生在用户态，由 Go 语言调度器触发，能够减少很多额外开销。</p>
+<p><code>g0</code>是一个特殊的Goroutine，会深度参与到运行时的调度，包括 Goroutine 的创建、大内存分配和 CGO 函数的执行。</p>
 <p><code>m0</code>是主线程对应的M，调度器初始化时时<code>m0</code>会与<code>allp[0]</code>绑定，程序一开始<code>m0</code>上执行的就是<code>g0</code>。</p>
 <p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/GPM%E8%B0%83%E5%BA%A6.png" alt=""  loading="lazy" />
 </p>
@@ -268,23 +284,26 @@
 <h1 id="程序初始化">程序初始化</h1>
 <p>在程序初始化过程中，会进行调度器初始化，此时会根据<code>GOMAXPROCS</code>这个环境变量决定创建多少个P，并将<code>m0</code>和<code>allp[0]</code>关联起来。此后会创建<code>main goroutine</code>，然后开启调度循环。当<code>main goroutine</code>被调度执行时，会以<code>runtime.main</code>作为执行入口，执行创建监控线程(sysmon)、包初始化(init)等工作，然后会调用用户编写的main.main。</p>
 <h1 id="goroutine创建">Goroutine创建</h1>
+<h2 id="初始化结构体">初始化结构体</h2>
 <p>启动一个新的Goroutine需要使用<code>go</code>关键字，编译器会将<code>go</code>关键字转化为<code>newproc</code>函数调用。<code>newproc</code>函数首先会调用<code>newproc1</code>函数获取Goroutine结构体，在<code>newproc1</code>函数中：</p>
-<p>1、从当前G所在p的<code>gFree</code>列表或者调度器<code>sched</code>的<code>gFree</code>列表获取Goroutine:</p>
-<p>​		①当处理器的Goroutine列表为空时，会将调度器持有的空闲Goroutine转移到当前处理器上，直到<code>gFree</code> 			列表中的 Goroutine 数量达到 32；</p>
-<p>​        ②当处理器的Gorontine数量充足时，会从列表头部返回一个新的Goroutine。</p>
-<p>2、当调度器的<code>gFree</code>和处理器的<code>gFree</code>列表都不存在结构体时，会调用<code>runtime.malg</code>创建一个新的<code>runtime.g</code>并追加到全局的G列表<code>allgs</code>中，<strong>此时这个Goroutine的状态是_Gdead</strong>。</p>
+<p>1、从当前G所在p的<code>gFree</code>列表或者调度器<code>sched</code>的<code>gFree</code>列表获取<code>runtime.g</code>:</p>
+<p>​		①当P的<code>gFree</code>列表为空时，会将调度器持有的空闲Goroutine转移到当前P上，直到<code>gFree</code> 列表中的 Goroutine 数量达到 32；</p>
+<p>​        ②当P的Gorontine数量充足时，会从列表头部返回一个新的Goroutine。</p>
+<p>2、当调度器的<code>gFree</code>和处理器的<code>gFree</code>列表都不存在结构体时，会调用<code>runtime.malg</code>创建一个新的<code>runtime.g</code>分配2KB的栈空间，并追加到全局的G列表<code>allgs</code>中，此时这个Goroutine的状态是_Gdead。</p>
 <p>3、<code>newproc1</code>会<strong>将Goroutine置为_Grunnable状态并赋goid</strong>。</p>
+<h2 id="运行队列">运行队列</h2>
 <p><code>newproc</code>会调用<code>runtime.runqput</code>将G放到运行队列中。G会优先加入到P的本地队列，如果P的本地队列已满，会将本地队列中前一半的G和新创建的G打乱顺序添加到全局队列中。如果此时系统中有空闲的P并且没有自旋状态的M，那么会启动一个M并置为spinning状态与空闲的P关联开始调度循环寻找G执行。</p>
-<h1 id="调度循环">调度循环</h1>
+<p>P的本地运行队列是一个使用数组构成的环形链表，最多可以存储256个待执行任务。</p>
+<h1 id="正常调度循环">正常调度循环</h1>
 <p>函数<code>runtime.schedule</code>负责调度的逻辑：</p>
 <p>1、当全局运行队列中有待执行的G时，有较小的概率会从全局队列中获取G</p>
 <p>2、从p的本地队列获取G</p>
-<p>3、如果1、2都没有获取到G，那么会通过<code>runtime.findrunnable</code>寻找G，直到获取到带运行的G才会返回：</p>
+<p>3、如果1、2都没有获取到G，那么会通过<code>runtime.findrunnable</code>寻找G，直到获取到待运行的G才会返回：</p>
 <p>​	  ①从本地队列获取</p>
 <p>​	  ②从全局队列获取</p>
-<p>​      ③轮询查找是否有G等待运行（IO事件就绪）</p>
+<p>​      ③从网络轮询器中查找是否有G等待运行（IO事件就绪）</p>
 <p>​      ④从其它P的本地队列中窃取一半的G</p>
-<p>获取到G后开始执行，当G中的函数返回时会执行<code>runtime.goexit</code>，最终会在当前m的g0栈上执行<code>goexit0</code>函数，该函数会将G转换为<code>_Gdead</code>状态、清理其中的字段、移除G和线程的关联并调用<code>runtime.gfput</code>重新加入处理器的G空闲列表<code>gFree</code>。在最后<code>runtime.goexit0</code>会重新调用<code>runtime.schedule</code>触发新一轮的调度。</p>
+<p>获取到G后开始执行，当G中的函数返回时会执行<code>runtime.goexit</code>，最终会在当前m的g0栈上执行<code>goexit0</code>函数，该函数会将G转换为<code>_Gdead</code>状态、清理其中的字段、移除G和线程的关联并调用<code>runtime.gfput</code>重新加入P的<code>gFree</code>列表。<strong>在最后<code>runtime.goexit0</code>会重新调用<code>runtime.schedule</code>触发新一轮的调度</strong>。</p>
 <h1 id="触发调度时机">触发调度时机</h1>
 <ul>
 <li>
@@ -299,7 +318,7 @@
 <ul>
 <li>
 <p>主动挂起</p>
-<p>如time.Sleep、channel阻塞，这些操作最终调用<code>gopark</code>函数最终将Goroutine从<code>_Grunning</code>切换至<code>_Gwaiting</code>，移除当前线程和G的关联，并触发一次新的调度循环。</p>
+<p>如time.Sleep、channel阻塞，这些操作最终调用<code>gopark</code>函数将Goroutine从<code>_Grunning</code>切换至<code>_Gwaiting</code>，移除当前线程和G的关联，并触发一次新的调度循环。</p>
 <p>当Goroutine等待的特定条件满足后，将Goroutine唤醒并将准备就绪的Goroutine切换至<code>_Grunnable</code>，加入运行队列等待调度。</p>
 </li>
 <li>
@@ -310,7 +329,7 @@
 </ul>
 <ul>
 <li>
-<p>GC之后</p>
+<p>GC</p>
 <p>STW之后，会重新选择G开始执行。</p>
 </li>
 </ul>
@@ -334,7 +353,7 @@
 </li>
 <li>
 <p>基于信号的抢占式调度</p>
-<p>基于信号的抢占式调度在Go1.4中引入。</p>
+<p>基于信号的抢占式调度在Go1.14中引入。</p>
 <p><strong>未完待续&hellip;</strong></p>
 </li>
 </ul></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
@@ -373,11 +392,11 @@
     </div></div>
 </div><section class="related-posts">
     <h3>相关文章</h3>
-    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%96%B9%E6%B3%95/">Golang-方法
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%8E%A5%E5%8F%A3/">Golang-接口
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%95/">Golang-测试
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%96%B9%E6%B3%95/">Golang-方法
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%97%AD%E5%8C%85/">Golang-闭包
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">Golang-内存分配
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer01/">Golang-Defer
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-模板引擎
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
@@ -397,18 +416,18 @@
   </div>
 </section><section class="recent-posts row surface">
   <h4>最近文章</h4>
-  <ul><li><a href="https://why9661.github.io/myblog/posts/golang/web/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
+  <ul><li><a href="https://why9661.github.io/myblog/posts/golang/unsafe%E5%8C%85/">Golang-Unsafe包
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E8%81%94/">Golang-内联
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">Golang-GC
 </a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/">Redis-持久化
-</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F/">Redis-哨兵模式
-</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F/">Redis-主从模式
 </a></li></ul>
 </section><section class="taxonomy-categories row surface">
       <h4>
         <a href="https://why9661.github.io/myblog/categories">分类</a>
       </h4>
       <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
-          Golang <span class="badge rounded-pill">13</span>
+          Golang <span class="badge rounded-pill">18</span>
         </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
           MySQL <span class="badge rounded-pill">4</span>
         </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
@@ -427,7 +446,7 @@
         <a href="https://why9661.github.io/myblog/tags">标签</a>
       </h4>
       <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
-          Golang <span class="badge rounded-pill">10</span>
+          Golang <span class="badge rounded-pill">18</span>
         </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
           MySQL <span class="badge rounded-pill">4</span>
         </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
@@ -436,16 +455,12 @@
           负载均衡 <span class="badge rounded-pill">2</span>
         </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
           Protobuf <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/web%E7%BC%96%E7%A8%8B/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Web编程">
-          Web编程 <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="容器化">
           容器化 <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E5%B9%B6%E5%8F%91%E7%BB%84%E4%BB%B6/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="并发组件">
-          并发组件 <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="微服务">
           微服务 <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E6%B5%8B%E8%AF%95/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="测试">
-          测试 <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="缓存淘汰策略">
+          缓存淘汰策略 <span class="badge rounded-pill">1</span>
         </a></div>
     </section></div>
 </aside>

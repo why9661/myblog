@@ -12,7 +12,7 @@
 <meta name="description" content="闭包" /><meta itemprop="name" content="Golang-闭包">
 <meta itemprop="description" content="闭包"><meta itemprop="datePublished" content="2021-04-27T12:13:12+08:00" />
 <meta itemprop="dateModified" content="2021-04-27T12:13:12+08:00" />
-<meta itemprop="wordCount" content="912">
+<meta itemprop="wordCount" content="916">
 <meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-闭包" />
 <meta property="og:description" content="闭包" />
 <meta property="og:type" content="article" />
@@ -178,8 +178,8 @@
     <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
   </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
 <div class="post-content mb-3"><h1 id="function-value">Function Value</h1>
-<p>在Go语言中，函数是头等对象，可以作为参数传递，可以作为返回值返回，也可赋值给变量。Go语言称这样的参数、返回值、变量为Function Value。</p>
-<p>Function Value是一个指针，指向一个<code>runtime.funcval</code>结构体：</p>
+<p>在Go语言中，函数是头等对象，可以作为参数传递，可以作为返回值返回，也可绑定给变量。Go语言称这样的参数、返回值、变量为Function Value。</p>
+<p>Function Value本质上是一个指针，指向一个<code>runtime.funcval</code>结构体：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">type</span> <span class="nx">funcval</span> <span class="kd">struct</span> <span class="p">{</span>
 <span class="ln">2</span>	<span class="nx">fn</span> <span class="kt">uintptr</span> 
 <span class="ln">3</span><span class="p">}</span>
@@ -195,14 +195,13 @@
 <span class="ln"> 6</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 <span class="ln"> 7</span>	<span class="nx">f1</span> <span class="o">:=</span> <span class="nx">A</span>
 <span class="ln"> 8</span>	<span class="nx">f2</span> <span class="o">:=</span> <span class="nx">A</span>
-<span class="ln"> 9</span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f1</span><span class="p">())</span>
-<span class="ln">10</span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f2</span><span class="p">())</span>
-<span class="ln">11</span><span class="p">}</span>
+<span class="ln"> 9</span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f1</span><span class="p">())</span> <span class="c1">//1
+</span><span class="ln">10</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f2</span><span class="p">())</span> <span class="c1">//1
+</span><span class="ln">11</span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><h1 id="闭包">闭包</h1>
-<p>闭包可以简单理解为：函数+引用环境。</p>
+<p>闭包可以简单理解为函数+引用环境，或者说闭包是有捕获列表的function value。</p>
 <p><strong>例子</strong></p>
-<p>返回的匿名函数引用了外部的局部变量x，因此返回的这个函数就是一个闭包。</p>
-<p>闭包是有捕获列表的Function Value。</p>
+<p>返回的匿名函数引用了外部的局部变量x，返回的这个函数就是一个闭包。</p>
 <p>执行到<code>f1:=A()</code>时，函数A会在堆上分配一个<code>funcval</code>结构体，同时拷贝x的值到捕获列表，再将这个<code>funcval</code>的起始地址返回给f1。</p>
 <p>执行到<code>f2:=A()</code>时，函数A会在堆上再分配一个<code>funcval</code>结构体，同时拷贝x的值到捕获列表，再将这个<code>funcval</code>的起始地址返回给f2。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">A</span><span class="p">()</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
@@ -218,9 +217,9 @@
 <span class="ln">11</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f1</span><span class="p">())</span> <span class="c1">//1
 </span><span class="ln">12</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f2</span><span class="p">())</span> <span class="c1">//1
 </span><span class="ln">13</span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p>以上是被捕获的变量不会被修改的情况，直接拷贝值到捕获列表就ok。</p>
+</code></pre></div><p>以上是<strong>被捕获的变量不会被修改的情况</strong>，直接拷贝值到捕获列表就ok。</p>
 <p>接下来看被捕获的变量会被修改的情况：</p>
-<p><strong>捕获局部变量</strong>。</p>
+<p><strong>捕获局部变量</strong></p>
 <p>执行到<code>f1:=A()</code>时，函数A会在堆上分配一个<code>funcval</code>结构体，由于被捕获的变量被外部引用且被修改，x会逃逸到堆上，并且捕获列表存x的地址，然后将这个<code>funcval</code>的起始地址返回给f1。</p>
 <p>执行到<code>f2:=A()</code>时，函数A会在堆上再分配一个<code>funcval</code>结构体，由于被捕获的变量被外部引用且被修改，x会逃逸到堆上，并且捕获列表存x的地址，然后将这个<code>funcval</code>的起始地址返回给f2。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">A</span><span class="p">()</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
@@ -297,7 +296,7 @@
   </div>
 </div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
   <div class="post-nav w-50"><div class="prev-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/golang/web/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-Web编程之模板引擎
+      <a href="https://why9661.github.io/myblog/posts/golang/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-模板引擎
 </a>
     </div></div>
   <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
@@ -306,11 +305,11 @@
     </div></div>
 </div><section class="related-posts">
     <h3>相关文章</h3>
-    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">Golang-内存分配
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer01/">Golang-Defer
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/slice/">Golang-切片
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/make%E5%92%8Cnew/">Golang-内置函数make和new的区别
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-模板引擎
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%94%81/">Golang-锁
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">Golang-内存分配
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/channel/">Golang-Channel
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer/">Golang-Defer
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
@@ -330,18 +329,18 @@
   </div>
 </section><section class="recent-posts row surface">
   <h4>最近文章</h4>
-  <ul><li><a href="https://why9661.github.io/myblog/posts/golang/web/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
+  <ul><li><a href="https://why9661.github.io/myblog/posts/golang/unsafe%E5%8C%85/">Golang-Unsafe包
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E8%81%94/">Golang-内联
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">Golang-GC
 </a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/">Redis-持久化
-</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F/">Redis-哨兵模式
-</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F/">Redis-主从模式
 </a></li></ul>
 </section><section class="taxonomy-categories row surface">
       <h4>
         <a href="https://why9661.github.io/myblog/categories">分类</a>
       </h4>
       <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
-          Golang <span class="badge rounded-pill">13</span>
+          Golang <span class="badge rounded-pill">18</span>
         </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
           MySQL <span class="badge rounded-pill">4</span>
         </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
@@ -360,7 +359,7 @@
         <a href="https://why9661.github.io/myblog/tags">标签</a>
       </h4>
       <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
-          Golang <span class="badge rounded-pill">10</span>
+          Golang <span class="badge rounded-pill">18</span>
         </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
           MySQL <span class="badge rounded-pill">4</span>
         </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
@@ -369,16 +368,12 @@
           负载均衡 <span class="badge rounded-pill">2</span>
         </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
           Protobuf <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/web%E7%BC%96%E7%A8%8B/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Web编程">
-          Web编程 <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="容器化">
           容器化 <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E5%B9%B6%E5%8F%91%E7%BB%84%E4%BB%B6/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="并发组件">
-          并发组件 <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="微服务">
           微服务 <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E6%B5%8B%E8%AF%95/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="测试">
-          测试 <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="缓存淘汰策略">
+          缓存淘汰策略 <span class="badge rounded-pill">1</span>
         </a></div>
     </section></div>
 </aside>

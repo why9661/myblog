@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Golang-测试 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
+<meta name="keywords" content="" />
+<meta name="description" content="测试" /><meta itemprop="name" content="Golang-测试">
+<meta itemprop="description" content="测试"><meta itemprop="datePublished" content="2021-05-09T14:25:05+08:00" />
+<meta itemprop="dateModified" content="2021-05-09T14:25:05+08:00" />
+<meta itemprop="wordCount" content="2073">
+<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-测试" />
+<meta property="og:description" content="测试" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%95/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-05-09T14:25:05+08:00" />
+<meta property="article:modified_time" content="2021-05-09T14:25:05+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang-测试"/>
+<meta name="twitter:description" content="测试"/>
+<meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
+</head><body><header><nav class="navbar navbar-expand-xl fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="https://why9661.github.io/myblog">
+      <img class="logo" alt="Logo" src="https://why9661.github.io/myblog/images/logo.webp" loading="lazy">BOOTSTRAP</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-1 mb-2 mb-lg-0"><form class="search-bar d-flex ms-1" action="https://why9661.github.io/myblog/search">
+  <div class="input-group input-group-sm">
+    <button class="btn btn-search disabled position-absolute left-0" type="submit"><i class="fas fa-fw fa-search"></i></button>
+    <input class="form-control rounded-pill" id="searchQuery" name="q" type="search" aria-label="Search">
+  </div>
+</form></ul><ul class="navbar-nav me-1 mb-2 mb-lg-0 me-1 ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item dropdown">
+          <a class="nav-link" id="navbarDropdown-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-fw fa-chevron-circle-down"></i>下拉菜单
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown-dropdown"><li>
+              <a class="dropdown-item"
+                href="https://github.com/why9661" target="_blank">
+                Github
+              </a>
+            </li></ul>
+        </li><li class="nav-item">
+  <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasSettings" role="button"
+    aria-controls="offcanvasSettings">
+    <i class="fas fa-fw fa-sliders-h"></i> 设置
+  </a>
+</li>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings"
+  aria-labelledby="offcanvasSettingsLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" w id="offcanvasSettingsLabel"><i class="fas fa-fw fa-sliders-h"></i> 设置</h5>
+    <a role="button" data-bs-dismiss="offcanvas" aria-label="Close">
+      <span class="fas fa-2x fa-fw fa-times"></span>
+    </a>
+  </div>
+  <div class="offcanvas-body"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <span id="btnPalette" class="btn btn-sm"><i class="fas fa-eye-dropper"></i></span>
+    </div>
+  </form>
+  <div class="container mt-2 visually-hidden" id="palettePicker">
+    <div class="btn-group"><button type="button" id="palette-blue" title="蓝色" 
+          class="btn btn-sm palette bg-blue d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-blue-gray" title="蓝灰色" 
+          class="btn btn-sm palette bg-blue-gray d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-brown" title="棕色" 
+          class="btn btn-sm palette bg-brown d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-cyan" title="青色" 
+          class="btn btn-sm palette bg-cyan d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-green" title="绿色" 
+          class="btn btn-sm palette bg-green d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-indigo" title="靛青色" 
+          class="btn btn-sm palette bg-indigo d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-orange" title="橙色" 
+          class="btn btn-sm palette bg-orange d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-pink" title="粉色" 
+          class="btn btn-sm palette bg-pink d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-purple" title="紫色" 
+          class="btn btn-sm palette bg-purple d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-red" title="红色" 
+          class="btn btn-sm palette bg-red d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-teal" title="蓝绿色" 
+          class="btn btn-sm palette bg-teal d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-yellow" title="黄色" 
+          class="btn btn-sm palette bg-yellow d-flex align-items-center justify-content-center">
+        </button></button>
+    </div>
+  </div>
+</section></div>
+</div></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row" aria-label="breadcrumb">
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-测试</li></ol>
+</nav><article class="post row surface"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-alt fa-rotate-45"></i>
+</a>
+  
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-medal"></i>
+</a>
+    <a class="action" data-bs-container="body" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom"
+  data-bs-trigger="focus" tabindex="0"
+  data-bs-content="&lt;a target=&#34;_blank&#34; rel=&#34;license&#34; href=&#34;https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh&#34;&gt;CC BY-NC-ND 4.0 &lt;i class=&#34;fab fa-fw fa-creative-commons&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-by&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nc&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nd&#34;&gt;&lt;/i&gt;&lt;/a&gt;
+">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+  </div>
+</div>
+<h1 class="post-title my-3">Golang-测试
+</h1><div class="post-meta mb-3">
+  <span class="post-date me-2">
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-05-09
+  </span>
+  <span class="post-reading-time me-2">
+    <i class="fas fa-fw fa-coffee"></i>5 分钟阅读
+  </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
+<div class="post-content mb-3"><h1 id="简介">简介</h1>
+<p><code>go test</code>命令是一个按照一定的约定和组织的测试代码的驱动程序。在包目录内，所有以<code>_test.go</code>为后缀名的源文件并不是<code>go build</code>构建包的一部分，它们是<code>go test</code>测试的一部分。</p>
+<p>在<code>*_test.go</code>文件中，有三种类型的函数：<strong>测试函数</strong>、<strong>基准测试函数</strong>、<strong>示例函数</strong>。一个测试函数是以Test为函数名前缀的函数，用于测试程序的一些逻辑行为是否正确；<code>go test</code>命令会调用这些测试函数并报告测试结果是PASS或FAIL。基准测试函数是以Benchmark为函数名前缀的函数，它们用于衡量一些函数的性能；go test命令会多次运行基准函数以计算一个平均的执行时间。示例函数是以Example为函数名前缀的函数，提供一个由编译器保证正确性的示例文档。</p>
+<p><code>go test</code>命令会遍历所有的<code>*_test.go</code>文件中符合上述命名规则的函数，然后生成一个临时的main包用于调用相应的测试函数，然后构建并运行、报告测试结果，最后清理测试中生成的临时文件。</p>
+<h1 id="测试函数">测试函数</h1>
+<p>每个测试函数必须导入 testing 包。测试函数签名如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">TestName</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="c1">// ...
+</span><span class="ln">3</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>测试函数的名字必须以Test开头, 可选的后缀名必须以大写字母开头。</p>
+<p><strong>一个例子</strong></p>
+<p><code>calc.go</code>文件如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
+<span class="ln">3</span><span class="p">}</span>
+<span class="ln">4</span>
+<span class="ln">5</span><span class="kd">func</span> <span class="nf">Sub</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+<span class="ln">6</span>	<span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span>
+<span class="ln">7</span><span class="p">}</span>
+</code></pre></div><p><code>calc_test.go</code>文件如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">TestAdd</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="k">if</span> <span class="nx">result</span> <span class="o">:=</span> <span class="nf">Add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="nx">result</span> <span class="o">!=</span> <span class="mi">5</span> <span class="p">{</span>
+<span class="ln"> 3</span>		<span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;Result: %d, Expected result: 5\n&#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+<span class="ln"> 4</span>	<span class="p">}</span>
+<span class="ln"> 5</span><span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="kd">func</span> <span class="nf">TestSub</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 8</span>	<span class="k">if</span> <span class="nx">result</span> <span class="o">:=</span> <span class="nf">Sub</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="nx">result</span> <span class="o">!=</span> <span class="mi">1</span> <span class="p">{</span>
+<span class="ln"> 9</span>		<span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;Result: %d, Expected result: 1\n&#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+<span class="ln">10</span>	<span class="p">}</span>
+<span class="ln">11</span><span class="p">}</span>
+</code></pre></div><p>执行<code>go test</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>PASS
+<span class="ln">2</span>ok      go_test/testexample     0.125s
+</code></pre></div><p>参数 <code>-v</code> 用于打印每个测试函数的名字和运行时间</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test -v
+<span class="ln">2</span>=== RUN   TestAdd
+<span class="ln">3</span>--- PASS: TestAdd (0.00s)
+<span class="ln">4</span>=== RUN   TestSub
+<span class="ln">5</span>--- PASS: TestSub (0.00s)
+<span class="ln">6</span>PASS
+<span class="ln">7</span>ok      go_test/testexample     0.121s
+</code></pre></div><p>参数 <code>-run</code> 是一个正则表达式, 只有测试函数名被它正确匹配的测试函数才会被 <code>go test</code> 运行。</p>
+<p><code>go test</code>默认会执行单元测试，可以使用<code>-run=none</code>禁止运行单元测试。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test -run TestAdd -v
+<span class="ln">2</span>=== RUN   TestAdd
+<span class="ln">3</span>--- PASS: TestAdd (0.00s)
+<span class="ln">4</span>PASS
+<span class="ln">5</span>ok      go_test/testexample     0.106s
+</code></pre></div><p><strong>子测试</strong></p>
+<p>使用<code>t.Run</code>创建不同的子测试用例</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">TestAdd</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 2</span>   <span class="nx">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;pos&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 3</span>      <span class="k">if</span> <span class="nx">result</span> <span class="o">:=</span> <span class="nf">Add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="nx">result</span> <span class="o">!=</span> <span class="mi">5</span> <span class="p">{</span>
+<span class="ln"> 4</span>         <span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;Result: %d, Expected result: 5\n&#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+<span class="ln"> 5</span>      <span class="p">}</span>
+<span class="ln"> 6</span>   <span class="p">})</span>
+<span class="ln"> 7</span>
+<span class="ln"> 8</span>   <span class="nx">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;neg&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 9</span>      <span class="k">if</span> <span class="nx">result</span> <span class="o">:=</span> <span class="nf">Add</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">);</span> <span class="nx">result</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">5</span> <span class="p">{</span>
+<span class="ln">10</span>         <span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;Result: %d, Expected result: 05\n&#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+<span class="ln">11</span>      <span class="p">}</span>
+<span class="ln">12</span>   <span class="p">})</span>
+<span class="ln">13</span><span class="p">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test -run TestAdd/neg -v
+<span class="ln">2</span>=== RUN   TestAdd
+<span class="ln">3</span>=== RUN   TestAdd/neg
+<span class="ln">4</span>--- PASS: TestAdd (0.00s)
+<span class="ln">5</span>    --- PASS: TestAdd/neg (0.00s)
+<span class="ln">6</span>PASS
+<span class="ln">7</span>ok      go_test/testexample     0.111s
+</code></pre></div><p><strong>表格驱动测试</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">TestAdd</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 2</span>   <span class="nx">testcases</span> <span class="o">:=</span> <span class="p">[]</span><span class="kd">struct</span><span class="p">{</span>
+<span class="ln"> 3</span>      <span class="nx">inputA</span> <span class="kt">int</span>
+<span class="ln"> 4</span>      <span class="nx">inputB</span> <span class="kt">int</span>
+<span class="ln"> 5</span>      <span class="nx">expected</span> <span class="kt">int</span>
+<span class="ln"> 6</span>   <span class="p">}{</span>
+<span class="ln"> 7</span>      <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
+<span class="ln"> 8</span>      <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">},</span>
+<span class="ln"> 9</span>      <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span>
+<span class="ln">10</span>   <span class="p">}</span>
+<span class="ln">11</span>
+<span class="ln">12</span>   <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">testcases</span> <span class="p">{</span>
+<span class="ln">13</span>      <span class="k">if</span> <span class="nx">result</span> <span class="o">:=</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">inputA</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">inputB</span><span class="p">);</span> <span class="nx">result</span> <span class="o">!=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">expected</span> <span class="p">{</span>
+<span class="ln">14</span>         <span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;Result: %d Expected result: %d&#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">expected</span><span class="p">)</span>
+<span class="ln">15</span>      <span class="p">}</span>
+<span class="ln">16</span>   <span class="p">}</span>
+<span class="ln">17</span><span class="p">}</span>
+</code></pre></div><p>这种测试方式可以<strong>方便的添加测试用例，并且输出的测试报告易于阅读</strong>。</p>
+<p><strong>帮助函数</strong></p>
+<p>对一些重复的逻辑，抽取出来作为公共的帮助函数(helpers)，可以增加测试代码的可读性和可维护性。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">testexample</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kn">import</span> <span class="s">&#34;testing&#34;</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="kd">type</span> <span class="nx">testcase</span> <span class="kd">struct</span><span class="p">{</span><span class="nx">A</span><span class="p">,</span> <span class="nx">B</span><span class="p">,</span> <span class="nx">Expected</span> <span class="kt">int</span><span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="kd">func</span> <span class="nf">createAddTestcase</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">,</span> <span class="nx">c</span> <span class="o">*</span><span class="nx">testcase</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 8</span>	<span class="c1">//t.Helper()
+</span><span class="ln"> 9</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">result</span> <span class="o">:=</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">A</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">B</span><span class="p">);</span> <span class="nx">result</span> <span class="o">!=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Expected</span> <span class="p">{</span>
+<span class="ln">10</span>		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;Result: %d Expected: %d\n&#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Expected</span><span class="p">)</span>
+<span class="ln">11</span>	<span class="p">}</span>
+<span class="ln">12</span><span class="p">}</span>
+<span class="ln">13</span>
+<span class="ln">14</span><span class="kd">func</span> <span class="nf">TestAdd</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">15</span>	<span class="nf">createAddTestcase</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">testcase</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">})</span>
+<span class="ln">16</span>	<span class="nf">createAddTestcase</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">testcase</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">})</span> <span class="c1">//wrong
+</span><span class="ln">17</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>这里添加了一个错误的测试用例，运行<code>go test</code>会报告在帮助函数内部即代码的第10行发生错误，但代码的第15、16行都调用了该方法，不能根据错误信息直接定位问题。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test
+<span class="ln">2</span>--- FAIL: TestAdd (0.00s)
+<span class="ln">3</span>    calc_test.go:10: Result: 4 Expected: 3
+<span class="ln">4</span>FAIL
+<span class="ln">5</span>exit status 1
+<span class="ln">6</span>FAIL    go_test/testexample     0.140s
+</code></pre></div><p>使用<code>t.Helper()</code>函数，会准确的定位到第16行代码发生错误。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test
+<span class="ln">2</span>--- FAIL: TestAdd (0.00s)
+<span class="ln">3</span>    calc_test.go:16: Result: 4 Expected: 3
+<span class="ln">4</span>FAIL
+<span class="ln">5</span>exit status 1
+<span class="ln">6</span>FAIL    go_test/testexample     0.141s
+</code></pre></div><p><strong>网络测试</strong></p>
+<p>假设需要测试某个 API 接口的 handler 能够正常工作，例如 helloHandler</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">helloHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="nx">w</span><span class="p">.</span><span class="nf">Write</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;hello world&#34;</span><span class="p">))</span>
+<span class="ln">3</span><span class="p">}</span>
+</code></pre></div><p>那我们可以创建真实的网络连接进行测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">helloHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">w</span><span class="p">.</span><span class="nf">Write</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;Hello World!&#34;</span><span class="p">))</span>
+<span class="ln"> 3</span><span class="p">}</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="kd">func</span> <span class="nf">handleError</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 6</span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Helper</span><span class="p">()</span>
+<span class="ln"> 7</span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 8</span>		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;failed&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+<span class="ln"> 9</span>	<span class="p">}</span>
+<span class="ln">10</span><span class="p">}</span>
+<span class="ln">11</span>
+<span class="ln">12</span><span class="kd">func</span> <span class="nf">TestConn</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">13</span>	<span class="nx">ln</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">net</span><span class="p">.</span><span class="nf">Listen</span><span class="p">(</span><span class="s">&#34;tcp&#34;</span><span class="p">,</span> <span class="s">&#34;127.0.0.1:8000&#34;</span><span class="p">)</span>
+<span class="ln">14</span>	<span class="nf">handleError</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+<span class="ln">15</span>	<span class="k">defer</span> <span class="nx">ln</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+<span class="ln">16</span>
+<span class="ln">17</span>	<span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="nx">helloHandler</span><span class="p">)</span>
+<span class="ln">18</span>	<span class="k">go</span> <span class="nx">http</span><span class="p">.</span><span class="nf">Serve</span><span class="p">(</span><span class="nx">ln</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="ln">19</span>
+<span class="ln">20</span>	<span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;http://&#34;</span> <span class="o">+</span> <span class="nx">ln</span><span class="p">.</span><span class="nf">Addr</span><span class="p">().</span><span class="nf">String</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;/hello&#34;</span><span class="p">)</span>
+<span class="ln">21</span>	<span class="nf">handleError</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+<span class="ln">22</span>	<span class="k">defer</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+<span class="ln">23</span>
+<span class="ln">24</span>	<span class="nx">body</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+<span class="ln">25</span>	<span class="nf">handleError</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+<span class="ln">26</span>
+<span class="ln">27</span>	<span class="k">if</span> <span class="nb">string</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span> <span class="o">!=</span> <span class="s">&#34;Hello World!&#34;</span> <span class="p">{</span>
+<span class="ln">28</span>		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;expected hello world, but got&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">body</span><span class="p">))</span>
+<span class="ln">29</span>	<span class="p">}</span>
+<span class="ln">30</span><span class="p">}</span>
+</code></pre></div><p>执行<code>go test -run=TestConn</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>PASS
+<span class="ln">2</span>ok      go_test/testexample     0.223s
+</code></pre></div><p>针对 http 开发的场景，使用标准库 <code>net/http/httptest</code> 进行测试更为高效。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">TestConn</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">2</span>   <span class="nx">req</span> <span class="o">:=</span> <span class="nx">httptest</span><span class="p">.</span><span class="nf">NewRequest</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;http://example.com/foo&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="ln">3</span>   <span class="nx">w</span> <span class="o">:=</span> <span class="nx">httptest</span><span class="p">.</span><span class="nf">NewRecorder</span><span class="p">()</span>
+<span class="ln">4</span>   <span class="nf">helloHandler</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span>
+<span class="ln">5</span>   <span class="nx">bytes</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">w</span><span class="p">.</span><span class="nf">Result</span><span class="p">().</span><span class="nx">Body</span><span class="p">)</span>
+<span class="ln">6</span>   <span class="k">if</span> <span class="nb">string</span><span class="p">(</span><span class="nx">bytes</span><span class="p">)</span> <span class="o">!=</span> <span class="s">&#34;hello world&#34;</span> <span class="p">{</span>
+<span class="ln">7</span>      <span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;expected hello world, but got&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">bytes</span><span class="p">))</span>
+<span class="ln">8</span>   <span class="p">}</span>
+<span class="ln">9</span><span class="p">}</span>
+</code></pre></div><h1 id="基准测试">基准测试</h1>
+<p>基准测试是测量一个程序在固定工作负载下的性能. 在Go语言中, 基准测试函数和普通测试函数类似, 但是以Benchmark为前缀名, 并且带有一个 <code>*testing.B</code> 类型的参数; <code>*testing.B</code> 除了提供和 <code>*testing.T</code> 类似的方法, 还有额外一些和性能测量相关的方法. 它提供了一个整数N, 用于指定操作执行的循环次数。</p>
+<p>和普通测试不同的是, <code>go test</code>默认情况下不运行任何基准测试，需要通过 <code>-bench</code> 命令行标志参数手动指定要运行的基准测试函数. 该参数是一个正则表达式, 用于匹配要执行的基准测试函数的名字, 默认值是空的. 其中 ‘‘.’’ 模式可以匹配所有基准测试函数。</p>
+<p><strong>一个例子</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">BenchmarkSprintf</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">num</span> <span class="o">:=</span> <span class="mi">123</span>
+<span class="ln"> 3</span>	<span class="nx">b</span><span class="p">.</span><span class="nf">ResetTimer</span><span class="p">()</span>
+<span class="ln"> 4</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln"> 5</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="nx">num</span><span class="p">)</span>
+<span class="ln"> 6</span>	<span class="p">}</span>
+<span class="ln"> 7</span><span class="p">}</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="kd">func</span> <span class="nf">BenchmarkFormat</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">10</span>	<span class="nx">num</span> <span class="o">:=</span> <span class="nb">int64</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="ln">11</span>	<span class="nx">b</span><span class="p">.</span><span class="nf">ResetTimer</span><span class="p">()</span>
+<span class="ln">12</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln">13</span>		<span class="nx">strconv</span><span class="p">.</span><span class="nf">FormatInt</span><span class="p">(</span><span class="nx">num</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="ln">14</span>	<span class="p">}</span>
+<span class="ln">15</span><span class="p">}</span>
+<span class="ln">16</span>
+<span class="ln">17</span><span class="kd">func</span> <span class="nf">BenchmarkItoa</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">18</span>	<span class="nx">num</span> <span class="o">:=</span> <span class="mi">123</span>
+<span class="ln">19</span>	<span class="nx">b</span><span class="p">.</span><span class="nf">ResetTimer</span><span class="p">()</span>
+<span class="ln">20</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln">21</span>		<span class="nx">strconv</span><span class="p">.</span><span class="nf">Itoa</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span>
+<span class="ln">22</span>	<span class="p">}</span>
+<span class="ln">23</span><span class="p">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test -bench=.
+<span class="ln">2</span>...
+<span class="ln">3</span>BenchmarkSprintf-4       7685479               155.8 ns/op
+<span class="ln">4</span>BenchmarkFormat-4       25729987                46.18 ns/op
+<span class="ln">5</span>BenchmarkItoa-4         25522030                46.91 ns/op
+<span class="ln">6</span>PASS
+<span class="ln">7</span>ok      go_test/testexample     5.922s
+</code></pre></div><p>基准测试名的数字后缀表示运行时<code>GOMAXPROCS</code>的值。报告显示每次调用Sprintf函数花费155.8纳秒，是执行7685479次的平均时间。</p>
+<p><code>b.ResetTimer</code>重置计时器，可以在真正的测试代码前调用以避免其它代码干扰。</p>
+<p>测试时间默认是1s，可以使用<code>-benchtime</code>指定运行时间</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test -bench=. -benchtime=3s
+<span class="ln">2</span>...
+<span class="ln">3</span>BenchmarkSprintf-4      21998582               164.9 ns/op
+<span class="ln">4</span>BenchmarkFormat-4       61516693                52.66 ns/op
+<span class="ln">5</span>BenchmarkItoa-4         63125335                55.21 ns/op
+<span class="ln">6</span>PASS
+<span class="ln">7</span>ok      go_test/testexample     10.820s
+</code></pre></div><p><code>-benchmem</code>可以显示每次分配内存的次数，以及每次分配内存的大小</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go test -bench=. -benchmem
+<span class="ln">2</span>...
+<span class="ln">3</span>BenchmarkSprintf-4       8621544               134.9 ns/op             3 B/op          1 allocs/op
+<span class="ln">4</span>BenchmarkFormat-4       26064914                45.87 ns/op            3 B/op          1 allocs/op
+<span class="ln">5</span>BenchmarkItoa-4         25207171                47.30 ns/op            3 B/op          1 allocs/op
+<span class="ln">6</span>PASS
+<span class="ln">7</span>ok      go_test/testexample     3.932s
+</code></pre></div><h1 id="示例函数">示例函数</h1>
+<p>第三种 <code>go test</code> 特别处理的函数是示例函数, 以 Example 为函数名开头. 示例函数没有函数参数和返回值。</p>
+<p>参考：</p>
+<p>《The Go Programming Language》</p></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-medal"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-fw fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/alipay.png" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/wechat.png" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
+  <div class="post-nav w-50"><div class="prev-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/rpc/rpc01/">RPC基础
+</a>
+    </div></div>
+  <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/golang/%E6%8E%A5%E5%8F%A3/">Golang-接口
+</a>
+    </div></div>
+</div><section class="related-posts">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%96%B9%E6%B3%95/">Golang-方法
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%97%AD%E5%8C%85/">Golang-闭包
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/">Golang-模板引擎
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%94%81/">Golang-锁
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">Golang-内存分配
+</a></li></ul>
+  </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label=""
+  theme="github-dark"
+  crossorigin="anonymous"
+  async>
+</script></div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container"><section class="profile surface row text-center">
+  <div class="col-12 d-flex align-items-center justify-content-center">
+    <img class="profile-avatar rounded-circle" src="https://why9661.github.io/myblog/images/profile.webp" alt="why" loading="lazy">
+  </div>
+  <div class="col-12">
+    <h5 class="profile-name my-2">why</h5><div class="profile-bio mb-2">Gopher</div><div class="profile-meta"><span class="profile-company"><i class="fas fa-fw fa-building"></i>Null</span><span class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>Hubei</span></div>
+  </div>
+</section><section class="recent-posts row surface">
+  <h4>最近文章</h4>
+  <ul><li><a href="https://why9661.github.io/myblog/posts/golang/unsafe%E5%8C%85/">Golang-Unsafe包
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E8%81%94/">Golang-内联
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">Golang-GC
+</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/">Redis-持久化
+</a></li></ul>
+</section><section class="taxonomy-categories row surface">
+      <h4>
+        <a href="https://why9661.github.io/myblog/categories">分类</a>
+      </h4>
+      <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
+          Golang <span class="badge rounded-pill">18</span>
+        </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">4</span>
+        </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
+          algorithm <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
+          Redis <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/categories/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
+          Docker <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/categories/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
+          Protobuf <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/categories/rpc/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="RPC">
+          RPC <span class="badge rounded-pill">1</span>
+        </a></div>
+    </section><section class="taxonomy-tags row surface">
+      <h4>
+        <a href="https://why9661.github.io/myblog/tags">标签</a>
+      </h4>
+      <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
+          Golang <span class="badge rounded-pill">18</span>
+        </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">4</span>
+        </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
+          Redis <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="负载均衡">
+          负载均衡 <span class="badge rounded-pill">2</span>
+        </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
+          Protobuf <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="容器化">
+          容器化 <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="微服务">
+          微服务 <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="缓存淘汰策略">
+          缓存淘汰策略 <span class="badge rounded-pill">1</span>
+        </a></div>
+    </section></div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"><li class="nav-item">
+    <a class="nav-link social-link" href="mailto:hy_world@126.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a>
+  </li><li class="nav-item">
+      <a class="nav-link social-link" target="_blank" href="https://github.com/why9661" title="GitHub">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a>
+    </li></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2021 why. All Rights Reserved.
+</div>
+<div class="powered-by mb-2">
+  Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> and the <a href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank">Bootstrap</a> theme.
+</div></footer>
+<a id="btnScrollToTop" class="btn-scroll-to-top">
+  <i class="fas fa-fw fa-chevron-circle-up fa-2x"></i>
+</a>
+</body>
+</html>

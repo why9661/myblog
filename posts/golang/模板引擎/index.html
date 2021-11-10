@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Golang-模板引擎 - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
+<meta name="keywords" content="" />
+<meta name="description" content="模板引擎" /><meta itemprop="name" content="Golang-模板引擎">
+<meta itemprop="description" content="模板引擎"><meta itemprop="datePublished" content="2021-04-10T14:06:44+08:00" />
+<meta itemprop="dateModified" content="2021-04-10T14:06:44+08:00" />
+<meta itemprop="wordCount" content="669">
+<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-模板引擎" />
+<meta property="og:description" content="模板引擎" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-10T14:06:44+08:00" />
+<meta property="article:modified_time" content="2021-04-10T14:06:44+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang-模板引擎"/>
+<meta name="twitter:description" content="模板引擎"/>
+<meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
+</head><body><header><nav class="navbar navbar-expand-xl fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="https://why9661.github.io/myblog">
+      <img class="logo" alt="Logo" src="https://why9661.github.io/myblog/images/logo.webp" loading="lazy">BOOTSTRAP</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-1 mb-2 mb-lg-0"><form class="search-bar d-flex ms-1" action="https://why9661.github.io/myblog/search">
+  <div class="input-group input-group-sm">
+    <button class="btn btn-search disabled position-absolute left-0" type="submit"><i class="fas fa-fw fa-search"></i></button>
+    <input class="form-control rounded-pill" id="searchQuery" name="q" type="search" aria-label="Search">
+  </div>
+</form></ul><ul class="navbar-nav me-1 mb-2 mb-lg-0 me-1 ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item dropdown">
+          <a class="nav-link" id="navbarDropdown-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-fw fa-chevron-circle-down"></i>下拉菜单
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown-dropdown"><li>
+              <a class="dropdown-item"
+                href="https://github.com/why9661" target="_blank">
+                Github
+              </a>
+            </li></ul>
+        </li><li class="nav-item">
+  <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasSettings" role="button"
+    aria-controls="offcanvasSettings">
+    <i class="fas fa-fw fa-sliders-h"></i> 设置
+  </a>
+</li>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings"
+  aria-labelledby="offcanvasSettingsLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" w id="offcanvasSettingsLabel"><i class="fas fa-fw fa-sliders-h"></i> 设置</h5>
+    <a role="button" data-bs-dismiss="offcanvas" aria-label="Close">
+      <span class="fas fa-2x fa-fw fa-times"></span>
+    </a>
+  </div>
+  <div class="offcanvas-body"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <span id="btnPalette" class="btn btn-sm"><i class="fas fa-eye-dropper"></i></span>
+    </div>
+  </form>
+  <div class="container mt-2 visually-hidden" id="palettePicker">
+    <div class="btn-group"><button type="button" id="palette-blue" title="蓝色" 
+          class="btn btn-sm palette bg-blue d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-blue-gray" title="蓝灰色" 
+          class="btn btn-sm palette bg-blue-gray d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-brown" title="棕色" 
+          class="btn btn-sm palette bg-brown d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-cyan" title="青色" 
+          class="btn btn-sm palette bg-cyan d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-green" title="绿色" 
+          class="btn btn-sm palette bg-green d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-indigo" title="靛青色" 
+          class="btn btn-sm palette bg-indigo d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-orange" title="橙色" 
+          class="btn btn-sm palette bg-orange d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-pink" title="粉色" 
+          class="btn btn-sm palette bg-pink d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-purple" title="紫色" 
+          class="btn btn-sm palette bg-purple d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-red" title="红色" 
+          class="btn btn-sm palette bg-red d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-teal" title="蓝绿色" 
+          class="btn btn-sm palette bg-teal d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-yellow" title="黄色" 
+          class="btn btn-sm palette bg-yellow d-flex align-items-center justify-content-center">
+        </button></button>
+    </div>
+  </div>
+</section></div>
+</div></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row" aria-label="breadcrumb">
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-模板引擎</li></ol>
+</nav><article class="post row surface"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-alt fa-rotate-45"></i>
+</a>
+  
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-medal"></i>
+</a>
+    <a class="action" data-bs-container="body" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom"
+  data-bs-trigger="focus" tabindex="0"
+  data-bs-content="&lt;a target=&#34;_blank&#34; rel=&#34;license&#34; href=&#34;https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh&#34;&gt;CC BY-NC-ND 4.0 &lt;i class=&#34;fab fa-fw fa-creative-commons&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-by&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nc&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nd&#34;&gt;&lt;/i&gt;&lt;/a&gt;
+">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+  </div>
+</div>
+<h1 class="post-title my-3">Golang-模板引擎
+</h1><div class="post-meta mb-3">
+  <span class="post-date me-2">
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-04-10
+  </span>
+  <span class="post-reading-time me-2">
+    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
+  </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
+<div class="post-content mb-3"><p>标准库中的 <code>text/template</code>包是 Go 语言内置的文本模板引擎。</p>
+<p>而<code>html/template</code>是对<code>text/template</code>的封装，用法大同小异。</p>
+<p><strong>常用方法</strong></p>
+<p>解析模板</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">//创建一个模板对象
+</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">func</span> <span class="nf">New</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Template</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="ln"> 3</span>
+<span class="ln"> 4</span><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">Template</span><span class="p">)</span> <span class="nf">Parse</span><span class="p">(</span><span class="nx">text</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Template</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="ln"> 5</span><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">Template</span><span class="p">)</span> <span class="nf">ParseFiles</span><span class="p">(</span><span class="nx">filenames</span> <span class="o">...</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Template</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="ln"> 6</span><span class="c1">//支持模式匹配 如：&#34;*.html&#34;
+</span><span class="ln"> 7</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">Template</span><span class="p">)</span> <span class="nf">ParseGlob</span><span class="p">(</span><span class="nx">pattern</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Template</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="kd">func</span> <span class="nf">ParseFiles</span><span class="p">(</span><span class="nx">filenames</span> <span class="o">...</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Template</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="ln">10</span><span class="kd">func</span> <span class="nf">ParseGlob</span><span class="p">(</span><span class="nx">pattern</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Template</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+</code></pre></div><p>执行模板</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">//Execute方法用于渲染模板，该方法接受两个参数：输出对象和指定根对象
+</span><span class="ln">2</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">Template</span><span class="p">)</span> <span class="nf">Execute</span><span class="p">(</span><span class="nx">wr</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Writer</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="ln">3</span><span class="c1">//当加载了多个模板文件时，使用ExecuteTemplate方法指定渲染某一个模板文件
+</span><span class="ln">4</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">Template</span><span class="p">)</span> <span class="nf">ExecuteTemplate</span><span class="p">(</span><span class="nx">wr</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Writer</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+</code></pre></div><p>给模板添加自定义函数</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">//除了内置的模板函数外，可以通过Funcs方法增加自定义模板函数
+</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">Template</span><span class="p">)</span> <span class="nf">Funcs</span><span class="p">(</span><span class="nx">funcMap</span> <span class="nx">FuncMap</span><span class="p">)</span> <span class="o">*</span><span class="nx">Template</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="ln"> 3</span>
+<span class="ln"> 4</span><span class="c1">//eg:
+</span><span class="ln"> 5</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 6</span>	<span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 7</span>		<span class="nx">temp</span> <span class="o">:=</span> <span class="nx">template</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">Funcs</span><span class="p">(</span><span class="nx">template</span><span class="p">.</span><span class="nx">FuncMap</span><span class="p">{</span>
+<span class="ln"> 8</span>			<span class="s">&#34;area&#34;</span><span class="p">:</span> <span class="kd">func</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+<span class="ln"> 9</span>				<span class="k">return</span> <span class="nx">a</span> <span class="o">*</span> <span class="nx">b</span>
+<span class="ln">10</span>			<span class="p">},</span>
+<span class="ln">11</span>		<span class="p">})</span>
+<span class="ln">12</span>
+<span class="ln">13</span>		<span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">temp</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="s">`
+</span><span class="ln">14</span><span class="s">Area: </span><span class="cp">{{</span><span class="nx">area</span><span class="w"> </span><span class="nx">1</span><span class="w"> </span><span class="nx">2</span><span class="cp">}}</span><span class="s">
+</span><span class="ln">15</span><span class="s">`</span><span class="p">)</span>
+<span class="ln">16</span>
+<span class="ln">17</span>		<span class="nx">temp</span><span class="p">.</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="ln">18</span>	<span class="p">})</span>
+<span class="ln">19</span>
+<span class="ln">20</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Starting HTTP server...&#34;</span><span class="p">)</span>
+<span class="ln">21</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;localhost:4000&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+<span class="ln">22</span><span class="p">}</span>
+</code></pre></div><p><strong>模板中的Action（赋值、逻辑控制、函数等等）需要使用{{}}包裹，除Action之外的内容会原封不动的进行输出</strong>。</p>
+<p><strong>{{.}}操作符默认指向根对象</strong>。</p>
+<p><strong>注释的语法和 Go 语言程序代码中的块注释语法相同，即使用 <code>/*</code> 和 <code>*/</code> 将注释内容包括起来，例如：<code>{{/* 这是注释内容 */}}</code></strong>。</p>
+<p><strong>{{- 用于剔除模板左侧多余的空格， -}}用于剔除模板中右侧多余的空格</strong></p>
+<p><strong>示例</strong></p>
+<p>直接渲染文本</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 3</span>		<span class="nx">temp</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">template</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">Parse</span><span class="p">(</span><span class="s">&#34;hello template&#34;</span><span class="p">)</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span>		<span class="nx">_</span> <span class="p">=</span> <span class="nx">temp</span><span class="p">.</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="ln"> 6</span>	<span class="p">})</span>
+<span class="ln"> 7</span>
+<span class="ln"> 8</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Starting HTTP server...&#34;</span><span class="p">)</span>
+<span class="ln"> 9</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;localhost:4000&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+<span class="ln">10</span><span class="p">}</span>
+</code></pre></div><p>在模板中引用根对象</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">type</span> <span class="nx">Rect</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">Width</span> <span class="kt">int</span>
+<span class="ln"> 3</span>	<span class="nx">Height</span> <span class="kt">int</span>
+<span class="ln"> 4</span><span class="p">}</span>
+<span class="ln"> 5</span>
+<span class="ln"> 6</span><span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">Rect</span><span class="p">)</span> <span class="nf">Area</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+<span class="ln"> 7</span>	<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Width</span> <span class="o">*</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Height</span>
+<span class="ln"> 8</span><span class="p">}</span>
+<span class="ln"> 9</span>
+<span class="ln">10</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">11</span>	<span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">12</span>		<span class="nx">temp</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">template</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">Parse</span><span class="p">(</span><span class="s">`Rect
+</span><span class="ln">13</span><span class="s">Width: </span><span class="cp">{{</span><span class="na">.Width</span><span class="cp">}}</span><span class="s">
+</span><span class="ln">14</span><span class="s">Height: </span><span class="cp">{{</span><span class="na">.Height</span><span class="cp">}}</span><span class="s">
+</span><span class="ln">15</span><span class="s">Area: </span><span class="cp">{{</span><span class="na">.Area</span><span class="cp">}}</span><span class="s">
+</span><span class="ln">16</span><span class="s">`</span><span class="p">)</span>
+<span class="ln">17</span>
+<span class="ln">18</span>		<span class="nx">width</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nf">Query</span><span class="p">().</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;w&#34;</span><span class="p">))</span>
+<span class="ln">19</span>		<span class="nx">height</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nf">Query</span><span class="p">().</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;h&#34;</span><span class="p">))</span>
+<span class="ln">20</span>
+<span class="ln">21</span>		<span class="nx">rect</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Rect</span><span class="p">{</span><span class="nx">Width</span><span class="p">:</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">Height</span><span class="p">:</span> <span class="nx">height</span><span class="p">}</span>
+<span class="ln">22</span>
+<span class="ln">23</span>		<span class="nx">_</span> <span class="p">=</span> <span class="nx">temp</span><span class="p">.</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">rect</span><span class="p">)</span>
+<span class="ln">24</span>	<span class="p">})</span>
+<span class="ln">25</span>
+<span class="ln">26</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Starting HTTP server...&#34;</span><span class="p">)</span>
+<span class="ln">27</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;localhost:4000&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+<span class="ln">28</span><span class="p">}</span>
+</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-medal"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-fw fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/alipay.png" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/wechat.png" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
+  <div class="post-nav w-50"><div class="prev-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/golang/%E9%94%81/">Golang-锁
+</a>
+    </div></div>
+  <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/golang/%E9%97%AD%E5%8C%85/">Golang-闭包
+</a>
+    </div></div>
+</div><section class="related-posts">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%94%81/">Golang-锁
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">Golang-内存分配
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/channel/">Golang-Channel
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer/">Golang-Defer
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/string/">Golang-String
+</a></li></ul>
+  </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label=""
+  theme="github-dark"
+  crossorigin="anonymous"
+  async>
+</script></div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container"><section class="profile surface row text-center">
+  <div class="col-12 d-flex align-items-center justify-content-center">
+    <img class="profile-avatar rounded-circle" src="https://why9661.github.io/myblog/images/profile.webp" alt="why" loading="lazy">
+  </div>
+  <div class="col-12">
+    <h5 class="profile-name my-2">why</h5><div class="profile-bio mb-2">Gopher</div><div class="profile-meta"><span class="profile-company"><i class="fas fa-fw fa-building"></i>Null</span><span class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>Hubei</span></div>
+  </div>
+</section><section class="recent-posts row surface">
+  <h4>最近文章</h4>
+  <ul><li><a href="https://why9661.github.io/myblog/posts/golang/unsafe%E5%8C%85/">Golang-Unsafe包
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E8%81%94/">Golang-内联
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">Golang-GC
+</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/">Redis-持久化
+</a></li></ul>
+</section><section class="taxonomy-categories row surface">
+      <h4>
+        <a href="https://why9661.github.io/myblog/categories">分类</a>
+      </h4>
+      <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
+          Golang <span class="badge rounded-pill">18</span>
+        </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">4</span>
+        </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
+          algorithm <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
+          Redis <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/categories/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
+          Docker <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/categories/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
+          Protobuf <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/categories/rpc/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="RPC">
+          RPC <span class="badge rounded-pill">1</span>
+        </a></div>
+    </section><section class="taxonomy-tags row surface">
+      <h4>
+        <a href="https://why9661.github.io/myblog/tags">标签</a>
+      </h4>
+      <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
+          Golang <span class="badge rounded-pill">18</span>
+        </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">4</span>
+        </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
+          Redis <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="负载均衡">
+          负载均衡 <span class="badge rounded-pill">2</span>
+        </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
+          Protobuf <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="容器化">
+          容器化 <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="微服务">
+          微服务 <span class="badge rounded-pill">1</span>
+        </a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="缓存淘汰策略">
+          缓存淘汰策略 <span class="badge rounded-pill">1</span>
+        </a></div>
+    </section></div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"><li class="nav-item">
+    <a class="nav-link social-link" href="mailto:hy_world@126.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a>
+  </li><li class="nav-item">
+      <a class="nav-link social-link" target="_blank" href="https://github.com/why9661" title="GitHub">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a>
+    </li></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2021 why. All Rights Reserved.
+</div>
+<div class="powered-by mb-2">
+  Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> and the <a href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank">Bootstrap</a> theme.
+</div></footer>
+<a id="btnScrollToTop" class="btn-scroll-to-top">
+  <i class="fas fa-fw fa-chevron-circle-up fa-2x"></i>
+</a>
+</body>
+</html>
