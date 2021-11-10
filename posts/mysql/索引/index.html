@@ -9,12 +9,12 @@
 <link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
 <link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
 <meta name="keywords" content="" />
-<meta name="description" content="MySQL索引介绍" /><meta itemprop="name" content="MySQL-索引">
-<meta itemprop="description" content="MySQL索引介绍"><meta itemprop="datePublished" content="2021-02-22T14:40:37+08:00" />
+<meta name="description" content="索引" /><meta itemprop="name" content="MySQL-索引">
+<meta itemprop="description" content="索引"><meta itemprop="datePublished" content="2021-02-22T14:40:37+08:00" />
 <meta itemprop="dateModified" content="2021-02-22T14:40:37+08:00" />
-<meta itemprop="wordCount" content="1754">
+<meta itemprop="wordCount" content="1760">
 <meta itemprop="keywords" content="MySQL," /><meta property="og:title" content="MySQL-索引" />
-<meta property="og:description" content="MySQL索引介绍" />
+<meta property="og:description" content="索引" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://why9661.github.io/myblog/posts/mysql/%E7%B4%A2%E5%BC%95/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-02-22T14:40:37+08:00" />
@@ -22,7 +22,7 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="MySQL-索引"/>
-<meta name="twitter:description" content="MySQL索引介绍"/>
+<meta name="twitter:description" content="索引"/>
 <meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
 </head><body><header><nav class="navbar navbar-expand-xl fixed-top">
   <div class="container">
@@ -188,7 +188,7 @@
   <div class="offcanvas-body">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#数据结构选择">数据结构选择</a></li>
+    <li><a href="#数据结构">数据结构</a></li>
     <li><a href="#不同存储引擎的实现">不同存储引擎的实现</a>
       <ul>
         <li><a href="#myisam">MyISAM</a></li>
@@ -200,8 +200,8 @@
   </ul>
 </nav>
   </div>
-</div><div class="post-content mb-3"><p>索引是帮助MySQL高效获取数据的数据结构。不过索引本身也很大，会占据不少的磁盘空间；索引还会降低表的更新效率，因为每创建一个索引，就会对应生成一个索引文件，在表数据更新时，需要更新这些索引文件。</p>
-<h2 id="数据结构选择">数据结构选择</h2>
+</div><div class="post-content mb-3"><p>索引是帮助MySQL高效获取数据的数据结构。不过索引本身也很大，会占据不少的磁盘空间；索引还会降低表的更新效率，因为每创建一个索引，就会对应生成一个索引文件，在表数据更新时，需要同时更新这些索引文件。</p>
+<h2 id="数据结构">数据结构</h2>
 <ul>
 <li>
 <p>哈希表</p>
@@ -214,13 +214,13 @@
 <p>但在极端条件下会退化成链表。</p>
 </li>
 <li>
-<p>平衡二叉树</p>
+<p>平衡二叉搜索树</p>
 <p>平衡二叉树不会出现极端情况下退化成链表地情况，但随着数据量的增大树的高度还是会很高（磁盘IO次数增多），而且在插入、删除操作密集的场景中，平衡二叉树需要频繁地rebalance，增加性能开销。</p>
 </li>
 <li>
 <p>B树</p>
 <p>MySQL的数据文件是存储在磁盘上的，而磁盘的IO速度慢开销大，因此降低磁盘IO的次数能很大程度提高MySQL的性能。树越高，磁盘IO操作次数就会越多，因此需要尽量降低树的高度，这就要每个节点多存储元素。</p>
-<p>B树就是一种多叉平衡查找树。</p>
+<p>B树就是一种多叉平衡搜索树。</p>
 <p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/B%E6%A0%91.png" alt=""  loading="lazy" />
 </p>
 <p>为了降低树的高度，需要让每个节点尽可能多的存储索引，因此就有了B+树。</p>
@@ -228,6 +228,7 @@
 <li>
 <p>B+树</p>
 <p>B+树与B树的区别在于B树的非叶子节点和叶子节点都会存储数据，而B+树的非叶子节点只存储索引，叶子节点存储数据，并且叶子节点之间使用双向指针连接。</p>
+<p>等值查询</p>
 <p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/B%2B%E6%A0%91.png" alt=""  loading="lazy" />
 </p>
 <p>范围查询</p>
@@ -258,7 +259,7 @@
 <p>联合索引是指多个字段联合组成一个索引，也是一种辅助索引（叶子节点会存主键值）。</p>
 <p>联合索引的存储方式：按联合索引的第一列排序，在前面列相等的情况下进行局部排序。</p>
 <p>联合索引的检索方式：和存储方式一样，先比较第一列，在前面列相等的情况下比较后面的列。</p>
-<p>向下面这种创建了联合索引(a,b,c)相当于创建了3个索引:(a)、(a,b)、(a,b,c)</p>
+<p>像下面这种创建了联合索引(a,b,c)相当于创建了3个索引:(a)、(a,b)、(a,b,c)</p>
 <p><img class="img-fluid" src="https://github.com/why9661/myblog/raw/main/blogimages/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95.png" alt=""  loading="lazy" />
 </p>
 <p>最左前缀匹配：</p>
@@ -273,7 +274,7 @@
 <p>如果建立的索引顺序是 （a，b）那么直接采用 where b = 5 这种查询条件是无法利用到索引的，这一条最能体现最左匹配的特性。</p>
 </li>
 </ul>
-<p>索引下推：</p>
+<p><strong>索引下推</strong>：</p>
 <p>例如现在有一个联合索引(name,age)，需求是查出表中“姓王的10岁男孩”</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="ln">1</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;王%&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">age</span><span class="o">=</span><span class="mi">10</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ismale</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w">
 </span></code></pre></div><p>在这个查询中，能够使用到索引name。在MySQL5.6之前，找到name满足条件的主键后会一个一个回表，在主键索引上找到数据行，然后比对age和ismale的字段值。</p>
@@ -315,7 +316,7 @@
   </div>
 </div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
   <div class="post-nav w-50"><div class="prev-post btn btn-sm">
-      <a href="https://why9661.github.io/myblog/posts/mysql/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">MySQL-主从复制
+      <a href="https://why9661.github.io/myblog/posts/golang/channel/">Golang-Channel
 </a>
     </div></div>
   <div class="post-nav flex-row-reverse"><div class="next-post btn btn-sm">
@@ -324,11 +325,11 @@
     </div></div>
 </div><section class="related-posts">
     <h3>相关文章</h3>
-    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">MySQL-主从复制
-</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E7%BB%83%E4%B9%A0%E9%A2%98/">MySQL-基础练习题01
-</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">MySQL-事务隔离级别
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%BA%8B%E5%8A%A1/">MySQL-事务
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/channel/">Golang-Channel
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/defer/">Golang-Defer
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/string/">Golang-String
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">Golang-逃逸分析
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
@@ -349,10 +350,10 @@
 </section><section class="recent-posts row surface">
   <h4>最近文章</h4>
   <ul><li><a href="https://why9661.github.io/myblog/posts/golang/unsafe%E5%8C%85/">Golang-Unsafe包
+</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">MySQL-主从复制原理&amp;Dokcer部署
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E8%81%94/">Golang-内联
+</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E6%97%A5%E5%BF%97/">MySQL-日志
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
-</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">Golang-GC
-</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E6%8C%81%E4%B9%85%E5%8C%96/">Redis-持久化
 </a></li></ul>
 </section><section class="taxonomy-categories row surface">
       <h4>
@@ -361,7 +362,7 @@
       <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
           Golang <span class="badge rounded-pill">18</span>
         </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
-          MySQL <span class="badge rounded-pill">4</span>
+          MySQL <span class="badge rounded-pill">5</span>
         </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
           algorithm <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
@@ -380,15 +381,15 @@
       <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
           Golang <span class="badge rounded-pill">18</span>
         </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
-          MySQL <span class="badge rounded-pill">4</span>
+          MySQL <span class="badge rounded-pill">5</span>
         </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
           Redis <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="负载均衡">
           负载均衡 <span class="badge rounded-pill">2</span>
+        </a><a href="https://why9661.github.io/myblog/tags/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
+          Docker <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
           Protobuf <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="容器化">
-          容器化 <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="微服务">
           微服务 <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="缓存淘汰策略">

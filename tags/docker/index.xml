@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on why&#39;s blog</title>
+    <link>https://why9661.github.io/myblog/tags/docker/</link>
+    <description>Recent content in Docker on why&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
+    <lastBuildDate>Sun, 08 Aug 2021 23:12:10 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker使用手册</title>
+      <link>https://why9661.github.io/myblog/posts/docker/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</link>
+      <pubDate>Sun, 08 Aug 2021 23:12:10 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/docker/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
