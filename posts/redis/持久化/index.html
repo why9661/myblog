@@ -12,7 +12,7 @@
 <meta name="description" content="redis持久化" /><meta itemprop="name" content="Redis-持久化">
 <meta itemprop="description" content="redis持久化"><meta itemprop="datePublished" content="2021-08-28T09:44:22+08:00" />
 <meta itemprop="dateModified" content="2021-08-28T09:44:22+08:00" />
-<meta itemprop="wordCount" content="2492">
+<meta itemprop="wordCount" content="2508">
 <meta itemprop="keywords" content="Redis," /><meta property="og:title" content="Redis-持久化" />
 <meta property="og:description" content="redis持久化" />
 <meta property="og:type" content="article" />
@@ -176,7 +176,7 @@
     <i class="fas fa-fw fa-calendar-alt"></i>2021-08-28
   </span>
   <span class="post-reading-time me-2">
-    <i class="fas fa-fw fa-coffee"></i>5 分钟阅读
+    <i class="fas fa-fw fa-coffee"></i>6 分钟阅读
   </span><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy">#Redis</a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy">#Redis</a></div>
 <div class="offcanvas offcanvas-end surface" tabindex="-1" id="offcanvasTOC" aria-labelledby="offcanvasTOCLabel">
   <div class="offcanvas-header">
@@ -259,7 +259,7 @@
 <li>
 <p>其它触发</p>
 <ol>
-<li>如果从节点执行全量复制操作，主节点自动执行BGSAVE生成RDB文件并发送给从节点。</li>
+<li>如果从节点执行全量复制操作，主节点收到从结点的SYNC命令后自动执行BGSAVE生成RDB文件并发送给从节点。</li>
 <li>默认情况下执行shutdown命令时，如果没有开启AOF持久化功能则自动执行BGSAVE。</li>
 </ol>
 </li>
@@ -291,7 +291,7 @@
 <p>由于AOF持久化是Redis不断将写命令记录到 AOF 文件中，随着Redis不断的进行，AOF 的文件会越来越大，文件越大，占用服务器内存越大以及 AOF 恢复要求时间越长。为了解决这个问题，Redis新增了重写机制，当AOF文件的大小超过所设定的阈值时，Redis就会启动AOF文件的内容压缩，只保留可以恢复数据的最小指令集。</p>
 <p>重写过程可手动触发（redis-cli -h ip -p port bgrewriteaof）或自动触发（配置文件）。</p>
 <p>过程如下：</p>
-<p>①redis调用fork创建，现在有父子两个进程</p>
+<p>①redis调用fork创建子进程，现在有父子两个进程</p>
 <p>②子进程根据内存中的数据库快照，往临时文件中写入重建数据库状态的命令</p>
 <p>③父进程继续处理client请求，除了把写命令写入到原来的aof文件中。同时把收到的写命令缓存起来。这样就能保证如果子进程重写失败的话并不会出问题。</p>
 <p>④当子进程把快照内容写入已命令方式写到临时文件中后，子进程发信号通知父进程。然后父进程把缓存的写命令也写入到临时文件。</p>
@@ -353,8 +353,8 @@
     <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/redis/%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F/">Redis-主从模式
 </a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F/">Redis-哨兵模式
 </a></li><li><a href="https://why9661.github.io/myblog/posts/docker/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">Docker使用手册
-</a></li><li><a href="https://why9661.github.io/myblog/posts/algorithm/lru/">缓存淘汰策略-LRU
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/gpm%E8%B0%83%E5%BA%A6/">Golang-GPM调度
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%8E%A5%E5%8F%A3/">Golang-接口
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
@@ -385,17 +385,13 @@
         <a href="https://why9661.github.io/myblog/categories">分类</a>
       </h4>
       <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
-          Golang <span class="badge rounded-pill">18</span>
+          Golang <span class="badge rounded-pill">19</span>
         </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
           MySQL <span class="badge rounded-pill">5</span>
-        </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
-          algorithm <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
           Redis <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/categories/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
           Docker <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/categories/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
-          Protobuf <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/categories/rpc/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="RPC">
           RPC <span class="badge rounded-pill">1</span>
         </a></div>
@@ -404,21 +400,15 @@
         <a href="https://why9661.github.io/myblog/tags">标签</a>
       </h4>
       <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
-          Golang <span class="badge rounded-pill">18</span>
+          Golang <span class="badge rounded-pill">19</span>
         </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
           MySQL <span class="badge rounded-pill">5</span>
         </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
           Redis <span class="badge rounded-pill">3</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="负载均衡">
-          负载均衡 <span class="badge rounded-pill">2</span>
         </a><a href="https://why9661.github.io/myblog/tags/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
           Docker <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
-          Protobuf <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="微服务">
           微服务 <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="缓存淘汰策略">
-          缓存淘汰策略 <span class="badge rounded-pill">1</span>
         </a></div>
     </section></div>
 </aside>

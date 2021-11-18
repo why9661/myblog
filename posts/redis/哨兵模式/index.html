@@ -12,7 +12,7 @@
 <meta name="description" content="redis哨兵模式" /><meta itemprop="name" content="Redis-哨兵模式">
 <meta itemprop="description" content="redis哨兵模式"><meta itemprop="datePublished" content="2021-08-12T15:19:57+08:00" />
 <meta itemprop="dateModified" content="2021-08-12T15:19:57+08:00" />
-<meta itemprop="wordCount" content="1215">
+<meta itemprop="wordCount" content="1236">
 <meta itemprop="keywords" content="redis," /><meta property="og:title" content="Redis-哨兵模式" />
 <meta property="og:description" content="redis哨兵模式" />
 <meta property="og:type" content="article" />
@@ -198,13 +198,13 @@
 <p>Redis Sentinel是一个分布式架构，其中包含若干个Sentinel节点和Redis数据节点，每个Sentinel节点会对数据节点和其余Sentinel节点进行监控，当它发现节点不可达时，会对节点做下线标识。如果被标识的是主节点，它还会和其他Sentinel节点进行“协商”，当大多数Sentinel节点都认为主节点不可达时，它们会选举出一个Sentinel节点来完成自动故障转移的工作，如将一个从节点晋升为主节点，同时会将这个变化通知给Redis应用方。整个过程完全是自动的，不需要人工来介入，所以哨兵模式能效地解决Redis的高可用问题。</p>
 <h2 id="过程">过程</h2>
 <p><strong>三个定时监控任务</strong></p>
-<p>1）每隔10秒，每个Sentinel节点会向主节点和从节点发送info命令获取最新的拓扑结构。</p>
+<p>1）每隔10秒，每个Sentinel节点会向主节点和从节点发送info命令获取最新的拓扑结构（确定master和主从关系）。</p>
 <p>2）每隔2秒，每个Sentinel节点会向Redis数据节点的__sentinel__:hello频道上发送该Sentinel节点对于主节点的判断以及当前Sentinel节点的信息，同时每个Sentinel节点也会订阅该频道，来了解其他Sentinel节点以及它们对主节点的判断。</p>
 <p>3）每隔1秒，每个Sentinel节点会向主节点、从节点、其余Sentinel节点发送一条ping命令做一次心跳检测，来确认这些节点当前是否可达。</p>
 <p><strong>主观下线</strong>
 因为每隔一秒，每个Sentinel节点会向主节点、从节点、其余Sentinel节点发送一条ping命令做一次心跳检测，当这些节点超过down-after-milliseconds没有进行有效回复，Sentinel节点就会对该节点做失败判定，这个行为叫做主观下线。</p>
 <p><strong>客观下线</strong>
-当Sentinel主观下线的节点是主节点时，该Sentinel节点会向其他Sentinel节点询问对主节点的判断，当超过<!-- raw HTML omitted -->个数，那么意味着大部分的Sentinel节点都对这个主节点的下线做了同意的判定，于是该Sentinel节点认为主节点确实有问题，这时该Sentinel节点会做出客观下线的决定。</p>
+当Sentinel主观下线的节点是主节点时，该Sentinel节点会向其他Sentinel节点询问对主节点的判断，当超过quorum个数，那么意味着大部分的Sentinel节点都对这个主节点的下线做了同意的判定，于是该Sentinel节点认为主节点确实有问题，这时该Sentinel节点会做出客观下线的决定。</p>
 <p><strong>领导者Sentinel节点选举</strong>
 Raft算法。</p>
 <p><strong>故障转移</strong>
@@ -283,9 +283,9 @@ Raft算法。</p>
     <h3>相关文章</h3>
     <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/redis/%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F/">Redis-主从模式
 </a></li><li><a href="https://why9661.github.io/myblog/posts/docker/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">Docker使用手册
-</a></li><li><a href="https://why9661.github.io/myblog/posts/algorithm/lru/">缓存淘汰策略-LRU
 </a></li><li><a href="https://why9661.github.io/myblog/posts/golang/gpm%E8%B0%83%E5%BA%A6/">Golang-GPM调度
-</a></li><li><a href="https://why9661.github.io/myblog/posts/protobuf/protobuf01/">Protobuf基础
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%8E%A5%E5%8F%A3/">Golang-接口
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%95/">Golang-测试
 </a></li></ul>
   </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
   repo="razonyang/hugo-theme-bootstrap-comments"
@@ -316,17 +316,13 @@ Raft算法。</p>
         <a href="https://why9661.github.io/myblog/categories">分类</a>
       </h4>
       <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
-          Golang <span class="badge rounded-pill">18</span>
+          Golang <span class="badge rounded-pill">19</span>
         </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
           MySQL <span class="badge rounded-pill">5</span>
-        </a><a href="https://why9661.github.io/myblog/categories/algorithm/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="algorithm">
-          algorithm <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
           Redis <span class="badge rounded-pill">3</span>
         </a><a href="https://why9661.github.io/myblog/categories/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
           Docker <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/categories/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
-          Protobuf <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/categories/rpc/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="RPC">
           RPC <span class="badge rounded-pill">1</span>
         </a></div>
@@ -335,21 +331,15 @@ Raft算法。</p>
         <a href="https://why9661.github.io/myblog/tags">标签</a>
       </h4>
       <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
-          Golang <span class="badge rounded-pill">18</span>
+          Golang <span class="badge rounded-pill">19</span>
         </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
           MySQL <span class="badge rounded-pill">5</span>
         </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
           Redis <span class="badge rounded-pill">3</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="负载均衡">
-          负载均衡 <span class="badge rounded-pill">2</span>
         </a><a href="https://why9661.github.io/myblog/tags/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
           Docker <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/protobuf/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Protobuf">
-          Protobuf <span class="badge rounded-pill">1</span>
         </a><a href="https://why9661.github.io/myblog/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="微服务">
           微服务 <span class="badge rounded-pill">1</span>
-        </a><a href="https://why9661.github.io/myblog/tags/%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="缓存淘汰策略">
-          缓存淘汰策略 <span class="badge rounded-pill">1</span>
         </a></div>
     </section></div>
 </aside>
