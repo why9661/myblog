@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 02 Oct 2021 22:52:17 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Oct 2021 23:12:10 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker</title>
+      <link>https://why9661.github.io/myblog/categories/docker/</link>
+      <pubDate>Mon, 18 Oct 2021 23:12:10 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/categories/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>https://why9661.github.io/myblog/categories/redis/</link>
+      <pubDate>Mon, 11 Oct 2021 11:27:10 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/categories/redis/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Golang</title>
       <link>https://why9661.github.io/myblog/categories/golang/</link>
@@ -23,33 +41,6 @@
       <pubDate>Sat, 02 Oct 2021 22:41:46 +0800</pubDate>
       
       <guid>https://why9661.github.io/myblog/categories/mysql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Redis</title>
-      <link>https://why9661.github.io/myblog/categories/redis/</link>
-      <pubDate>Sat, 28 Aug 2021 09:44:22 +0800</pubDate>
-      
-      <guid>https://why9661.github.io/myblog/categories/redis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Docker</title>
-      <link>https://why9661.github.io/myblog/categories/docker/</link>
-      <pubDate>Sun, 08 Aug 2021 23:12:10 +0800</pubDate>
-      
-      <guid>https://why9661.github.io/myblog/categories/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>RPC</title>
-      <link>https://why9661.github.io/myblog/categories/rpc/</link>
-      <pubDate>Sat, 08 May 2021 16:39:19 +0800</pubDate>
-      
-      <guid>https://why9661.github.io/myblog/categories/rpc/</guid>
       <description></description>
     </item>
     
