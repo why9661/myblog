@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2016-{year} why. All Rights Reserved.</copyright>
-    <lastBuildDate>Mon, 18 Oct 2021 23:12:10 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 16 Nov 2021 23:52:24 +0800</lastBuildDate><atom:link href="https://why9661.github.io/myblog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang-Pool</title>
+      <link>https://why9661.github.io/myblog/posts/golang/sync.pool/</link>
+      <pubDate>Tue, 16 Nov 2021 23:52:24 +0800</pubDate>
+      
+      <guid>https://why9661.github.io/myblog/posts/golang/sync.pool/</guid>
+      <description>源码解析 1func init() { 2 // 注册了GC STW时清理Pool的函数poolCleanup 3 runtime_registerPoolCleanup(poolCleanup) 4} 5 6func poolCleanup() { 7 // 将每个P的victime清空 8 for _, p := range oldPools { 9</description>
+    </item>
+    
     <item>
       <title>Docker使用手册</title>
       <link>https://why9661.github.io/myblog/posts/docker/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</link>

@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Golang-Pool - why&#39;s blog</title><link rel="apple-touch-icon" href="https://why9661.github.io/myblog/images/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="https://why9661.github.io/myblog/images/favicons/manifest.json">
+<link rel="icon" href="https://why9661.github.io/myblog/images/favicons/favicon.ico">
+<meta name="keywords" content="" />
+<meta name="description" content="Pool解析" /><meta itemprop="name" content="Golang-Pool">
+<meta itemprop="description" content="Pool解析"><meta itemprop="datePublished" content="2021-11-16T23:52:24+08:00" />
+<meta itemprop="dateModified" content="2021-11-16T23:52:24+08:00" />
+<meta itemprop="wordCount" content="1104">
+<meta itemprop="keywords" content="Golang," /><meta property="og:title" content="Golang-Pool" />
+<meta property="og:description" content="Pool解析" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://why9661.github.io/myblog/posts/golang/sync.pool/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-11-16T23:52:24+08:00" />
+<meta property="article:modified_time" content="2021-11-16T23:52:24+08:00" /><meta property="og:site_name" content="why&#39;s blog" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang-Pool"/>
+<meta name="twitter:description" content="Pool解析"/>
+<meta data-name="palette" content="blue"><link rel=stylesheet href="https://why9661.github.io/myblog/css/bundle.min.7fa8002b01318588e1a082caef7dabcfccda323105ea2595e776667563f7e243.css" integrity="sha256-f6gAKwExhYjhoILK732rz8zaMjEF6iWV53ZmdWP34kM=" crossorigin="anonymous"><script src="https://why9661.github.io/myblog/js/bundle.min.323abd911ff58b828a6a3b3f3238f30c4a8c261c74b1e50ab0fe540e433d04f2.js" integrity="sha256-Mjq9kR/1i4KKajs/MjjzDEqMJhx0seUKsP5UDkM9BPI=" crossorigin="anonymous"></script>
+</head><body><header><nav class="navbar navbar-expand-xl fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="https://why9661.github.io/myblog">
+      <img class="logo" alt="Logo" src="https://why9661.github.io/myblog/images/logo.webp" loading="lazy">BOOTSTRAP</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-1 mb-2 mb-lg-0"><form class="search-bar d-flex ms-1" action="https://why9661.github.io/myblog/search">
+  <div class="input-group input-group-sm">
+    <button class="btn btn-search disabled position-absolute left-0" type="submit"><i class="fas fa-fw fa-search"></i></button>
+    <input class="form-control rounded-pill" id="searchQuery" name="q" type="search" aria-label="Search">
+  </div>
+</form></ul><ul class="navbar-nav me-1 mb-2 mb-lg-0 me-1 ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://why9661.github.io/myblog/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item dropdown">
+          <a class="nav-link" id="navbarDropdown-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-fw fa-chevron-circle-down"></i>下拉菜单
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown-dropdown"><li>
+              <a class="dropdown-item"
+                href="https://github.com/why9661" target="_blank">
+                Github
+              </a>
+            </li></ul>
+        </li><li class="nav-item">
+  <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasSettings" role="button"
+    aria-controls="offcanvasSettings">
+    <i class="fas fa-fw fa-sliders-h"></i> 设置
+  </a>
+</li>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings"
+  aria-labelledby="offcanvasSettingsLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" w id="offcanvasSettingsLabel"><i class="fas fa-fw fa-sliders-h"></i> 设置</h5>
+    <a role="button" data-bs-dismiss="offcanvas" aria-label="Close">
+      <span class="fas fa-2x fa-fw fa-times"></span>
+    </a>
+  </div>
+  <div class="offcanvas-body"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <span id="btnPalette" class="btn btn-sm"><i class="fas fa-eye-dropper"></i></span>
+    </div>
+  </form>
+  <div class="container mt-2 visually-hidden" id="palettePicker">
+    <div class="btn-group"><button type="button" id="palette-blue" title="蓝色" 
+          class="btn btn-sm palette bg-blue d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-blue-gray" title="蓝灰色" 
+          class="btn btn-sm palette bg-blue-gray d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-brown" title="棕色" 
+          class="btn btn-sm palette bg-brown d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-cyan" title="青色" 
+          class="btn btn-sm palette bg-cyan d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-green" title="绿色" 
+          class="btn btn-sm palette bg-green d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-indigo" title="靛青色" 
+          class="btn btn-sm palette bg-indigo d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-orange" title="橙色" 
+          class="btn btn-sm palette bg-orange d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-pink" title="粉色" 
+          class="btn btn-sm palette bg-pink d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-purple" title="紫色" 
+          class="btn btn-sm palette bg-purple d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-red" title="红色" 
+          class="btn btn-sm palette bg-red d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-teal" title="蓝绿色" 
+          class="btn btn-sm palette bg-teal d-flex align-items-center justify-content-center">
+        </button><button type="button" id="palette-yellow" title="黄色" 
+          class="btn btn-sm palette bg-yellow d-flex align-items-center justify-content-center">
+        </button></button>
+    </div>
+  </div>
+</section></div>
+</div></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row" aria-label="breadcrumb">
+  <ol class="breadcrumb surface"><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/">主页</a></li><li class="breadcrumb-item"><a href="https://why9661.github.io/myblog/posts/">文章</a></li><li class="breadcrumb-item active">Golang-Pool</li></ol>
+</nav><article class="post row surface"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-alt fa-rotate-45"></i>
+</a>
+  
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-medal"></i>
+</a>
+    <a class="action" data-bs-container="body" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom"
+  data-bs-trigger="focus" tabindex="0"
+  data-bs-content="&lt;a target=&#34;_blank&#34; rel=&#34;license&#34; href=&#34;https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh&#34;&gt;CC BY-NC-ND 4.0 &lt;i class=&#34;fab fa-fw fa-creative-commons&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-by&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nc&#34;&gt;&lt;/i&gt;&lt;i class=&#34;fab fa-fw fa-creative-commons-nd&#34;&gt;&lt;/i&gt;&lt;/a&gt;
+">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+  </div>
+</div>
+<h1 class="post-title my-3">Golang-Pool
+</h1><div class="post-meta mb-3">
+  <span class="post-date me-2">
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-11-16
+  </span>
+  <span class="post-reading-time me-2">
+    <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
+  </span><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy">#Golang</a><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy">#Golang</a></div>
+<div class="post-content mb-3"><h1 id="源码解析">源码解析</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">  1</span><span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">  2</span>    <span class="c1">// 注册了GC STW时清理Pool的函数poolCleanup
+</span><span class="ln">  3</span><span class="c1"></span>	<span class="nf">runtime_registerPoolCleanup</span><span class="p">(</span><span class="nx">poolCleanup</span><span class="p">)</span>
+<span class="ln">  4</span><span class="p">}</span>
+<span class="ln">  5</span>
+<span class="ln">  6</span><span class="kd">func</span> <span class="nf">poolCleanup</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">  7</span>	<span class="c1">// 将每个P的victime清空
+</span><span class="ln">  8</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">p</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">oldPools</span> <span class="p">{</span>
+<span class="ln">  9</span>		<span class="nx">p</span><span class="p">.</span><span class="nx">victim</span> <span class="p">=</span> <span class="kc">nil</span>
+<span class="ln"> 10</span>		<span class="nx">p</span><span class="p">.</span><span class="nx">victimSize</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="ln"> 11</span>	<span class="p">}</span>
+<span class="ln"> 12</span>
+<span class="ln"> 13</span>	<span class="c1">// 将local中的对象移动到victim中，清空local
+</span><span class="ln"> 14</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">p</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">allPools</span> <span class="p">{</span>
+<span class="ln"> 15</span>		<span class="nx">p</span><span class="p">.</span><span class="nx">victim</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">local</span>
+<span class="ln"> 16</span>		<span class="nx">p</span><span class="p">.</span><span class="nx">victimSize</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">localSize</span>
+<span class="ln"> 17</span>		<span class="nx">p</span><span class="p">.</span><span class="nx">local</span> <span class="p">=</span> <span class="kc">nil</span>
+<span class="ln"> 18</span>		<span class="nx">p</span><span class="p">.</span><span class="nx">localSize</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="ln"> 19</span>	<span class="p">}</span>
+<span class="ln"> 20</span>
+<span class="ln"> 21</span>	<span class="nx">oldPools</span><span class="p">,</span> <span class="nx">allPools</span> <span class="p">=</span> <span class="nx">allPools</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="ln"> 22</span><span class="p">}</span>
+<span class="ln"> 23</span>
+<span class="ln"> 24</span><span class="kd">type</span> <span class="nx">Pool</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 25</span>	<span class="nx">noCopy</span> <span class="nx">noCopy</span>
+<span class="ln"> 26</span>	<span class="nx">local</span>     <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> 
+<span class="ln"> 27</span>	<span class="nx">localSize</span> <span class="kt">uintptr</span>       
+<span class="ln"> 28</span>	<span class="nx">victim</span>     <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> 
+<span class="ln"> 29</span>	<span class="nx">victimSize</span> <span class="kt">uintptr</span>        
+<span class="ln"> 30</span>	<span class="nx">New</span> <span class="kd">func</span><span class="p">()</span> <span class="kd">interface</span><span class="p">{}</span>
+<span class="ln"> 31</span><span class="p">}</span>
+<span class="ln"> 32</span>
+<span class="ln"> 33</span><span class="c1">//每个P维护一个本地的poolLocal
+</span><span class="ln"> 34</span><span class="c1"></span><span class="kd">type</span> <span class="nx">poolLocalInternal</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 35</span>    <span class="c1">//poolLocal中维护一个private和一个shared队列
+</span><span class="ln"> 36</span><span class="c1"></span>    <span class="c1">//private只能给当前P上运行的goroutine使用
+</span><span class="ln"> 37</span><span class="c1"></span>    <span class="c1">//shared可以被其它P上运行的goroutine获取
+</span><span class="ln"> 38</span><span class="c1"></span>	<span class="nx">private</span> <span class="kd">interface</span><span class="p">{}</span> 
+<span class="ln"> 39</span>	<span class="nx">shared</span>  <span class="nx">poolChain</span>   
+<span class="ln"> 40</span><span class="p">}</span>
+<span class="ln"> 41</span>
+<span class="ln"> 42</span><span class="kd">type</span> <span class="nx">poolLocal</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 43</span>	<span class="nx">poolLocalInternal</span>
+<span class="ln"> 44</span>	<span class="nx">pad</span> <span class="p">[</span><span class="mi">128</span> <span class="o">-</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">poolLocalInternal</span><span class="p">{})</span><span class="o">%</span><span class="mi">128</span><span class="p">]</span><span class="kt">byte</span>
+<span class="ln"> 45</span><span class="p">}</span>
+<span class="ln"> 46</span>
+<span class="ln"> 47</span><span class="c1">// Get流程
+</span><span class="ln"> 48</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pool</span><span class="p">)</span> <span class="nf">Get</span><span class="p">()</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+<span class="ln"> 49</span>	<span class="o">...</span>
+<span class="ln"> 50</span>    <span class="c1">// 将goroutine绑定到当前P上，不能被抢占
+</span><span class="ln"> 51</span><span class="c1"></span>	<span class="nx">l</span><span class="p">,</span> <span class="nx">pid</span> <span class="o">:=</span> <span class="nx">p</span><span class="p">.</span><span class="nf">pin</span><span class="p">()</span>
+<span class="ln"> 52</span>	<span class="nx">x</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">private</span>
+<span class="ln"> 53</span>	<span class="nx">l</span><span class="p">.</span><span class="nx">private</span> <span class="p">=</span> <span class="kc">nil</span>
+<span class="ln"> 54</span>    <span class="c1">//1、尝试从本地P的pool的private获取
+</span><span class="ln"> 55</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">x</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 56</span>        <span class="c1">//2、如果本地P的pool的private为空，那么尝试从shared获取（从队列头部获取）
+</span><span class="ln"> 57</span><span class="c1"></span>		<span class="nx">x</span><span class="p">,</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">shared</span><span class="p">.</span><span class="nf">popHead</span><span class="p">()</span>
+<span class="ln"> 58</span>        <span class="c1">//3、如果本地的P的pool的shared队列也为空，那么进入getSlow流程
+</span><span class="ln"> 59</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">x</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 60</span>			<span class="nx">x</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nf">getSlow</span><span class="p">(</span><span class="nx">pid</span><span class="p">)</span>
+<span class="ln"> 61</span>		<span class="p">}</span>
+<span class="ln"> 62</span>	<span class="p">}</span>
+<span class="ln"> 63</span>    <span class="c1">// 解除抢占
+</span><span class="ln"> 64</span><span class="c1"></span>	<span class="nf">runtime_procUnpin</span><span class="p">()</span>
+<span class="ln"> 65</span>    
+<span class="ln"> 66</span>	<span class="o">...</span>
+<span class="ln"> 67</span>    <span class="c1">// 6、如果都没获取到，那么执行传入的New方法返回一个新的对象
+</span><span class="ln"> 68</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">x</span> <span class="o">==</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">New</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 69</span>		<span class="nx">x</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
+<span class="ln"> 70</span>	<span class="p">}</span>
+<span class="ln"> 71</span>	<span class="k">return</span> <span class="nx">x</span>
+<span class="ln"> 72</span><span class="p">}</span>
+<span class="ln"> 73</span>
+<span class="ln"> 74</span><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pool</span><span class="p">)</span> <span class="nf">getSlow</span><span class="p">(</span><span class="nx">pid</span> <span class="kt">int</span><span class="p">)</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+<span class="ln"> 75</span>	<span class="nx">size</span> <span class="o">:=</span> <span class="nf">runtime_LoadAcquintptr</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">p</span><span class="p">.</span><span class="nx">localSize</span><span class="p">)</span> 
+<span class="ln"> 76</span>	<span class="nx">locals</span> <span class="o">:=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">local</span>                            
+<span class="ln"> 77</span>	<span class="c1">// 4、尝试从其它P的pool的shared队列获取（从队列尾部获取）
+</span><span class="ln"> 78</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="nx">size</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln"> 79</span>		<span class="nx">l</span> <span class="o">:=</span> <span class="nf">indexLocal</span><span class="p">(</span><span class="nx">locals</span><span class="p">,</span> <span class="p">(</span><span class="nx">pid</span><span class="o">+</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="nb">int</span><span class="p">(</span><span class="nx">size</span><span class="p">))</span>
+<span class="ln"> 80</span>		<span class="k">if</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">shared</span><span class="p">.</span><span class="nf">popTail</span><span class="p">();</span> <span class="nx">x</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 81</span>			<span class="k">return</span> <span class="nx">x</span>
+<span class="ln"> 82</span>		<span class="p">}</span>
+<span class="ln"> 83</span>	<span class="p">}</span>
+<span class="ln"> 84</span>
+<span class="ln"> 85</span>	<span class="c1">// 5、尝试从victim获取
+</span><span class="ln"> 86</span><span class="c1"></span>	<span class="nx">size</span> <span class="p">=</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">LoadUintptr</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">p</span><span class="p">.</span><span class="nx">victimSize</span><span class="p">)</span>
+<span class="ln"> 87</span>	<span class="k">if</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">pid</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nx">size</span> <span class="p">{</span>
+<span class="ln"> 88</span>		<span class="k">return</span> <span class="kc">nil</span>
+<span class="ln"> 89</span>	<span class="p">}</span>
+<span class="ln"> 90</span>	<span class="nx">locals</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">victim</span>
+<span class="ln"> 91</span>	<span class="nx">l</span> <span class="o">:=</span> <span class="nf">indexLocal</span><span class="p">(</span><span class="nx">locals</span><span class="p">,</span> <span class="nx">pid</span><span class="p">)</span>
+<span class="ln"> 92</span>	<span class="k">if</span> <span class="nx">x</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">private</span><span class="p">;</span> <span class="nx">x</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 93</span>		<span class="nx">l</span><span class="p">.</span><span class="nx">private</span> <span class="p">=</span> <span class="kc">nil</span>
+<span class="ln"> 94</span>		<span class="k">return</span> <span class="nx">x</span>
+<span class="ln"> 95</span>	<span class="p">}</span>
+<span class="ln"> 96</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="nx">size</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln"> 97</span>		<span class="nx">l</span> <span class="o">:=</span> <span class="nf">indexLocal</span><span class="p">(</span><span class="nx">locals</span><span class="p">,</span> <span class="p">(</span><span class="nx">pid</span><span class="o">+</span><span class="nx">i</span><span class="p">)</span><span class="o">%</span><span class="nb">int</span><span class="p">(</span><span class="nx">size</span><span class="p">))</span>
+<span class="ln"> 98</span>		<span class="k">if</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">shared</span><span class="p">.</span><span class="nf">popTail</span><span class="p">();</span> <span class="nx">x</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 99</span>			<span class="k">return</span> <span class="nx">x</span>
+<span class="ln">100</span>		<span class="p">}</span>
+<span class="ln">101</span>	<span class="p">}</span>
+<span class="ln">102</span>
+<span class="ln">103</span>	<span class="nx">atomic</span><span class="p">.</span><span class="nf">StoreUintptr</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">p</span><span class="p">.</span><span class="nx">victimSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="ln">104</span>
+<span class="ln">105</span>	<span class="k">return</span> <span class="kc">nil</span>
+<span class="ln">106</span><span class="p">}</span>
+<span class="ln">107</span>
+<span class="ln">108</span><span class="c1">// Put流程
+</span><span class="ln">109</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pool</span><span class="p">)</span> <span class="nf">Put</span><span class="p">(</span><span class="nx">x</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
+<span class="ln">110</span>	<span class="k">if</span> <span class="nx">x</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">111</span>		<span class="k">return</span>
+<span class="ln">112</span>	<span class="p">}</span>
+<span class="ln">113</span>	<span class="o">...</span>
+<span class="ln">114</span>    <span class="c1">// 将goroutine绑定到当前P上，不能被抢占
+</span><span class="ln">115</span><span class="c1"></span>	<span class="nx">l</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">p</span><span class="p">.</span><span class="nf">pin</span><span class="p">()</span>
+<span class="ln">116</span>    <span class="c1">// 1、如果p的poolLocal的private为空，那么就存到private
+</span><span class="ln">117</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">l</span><span class="p">.</span><span class="nx">private</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">118</span>		<span class="nx">l</span><span class="p">.</span><span class="nx">private</span> <span class="p">=</span> <span class="nx">x</span>
+<span class="ln">119</span>		<span class="nx">x</span> <span class="p">=</span> <span class="kc">nil</span>
+<span class="ln">120</span>	<span class="p">}</span>
+<span class="ln">121</span>    <span class="c1">// 2、否则存到shared队列头部
+</span><span class="ln">122</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">x</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">123</span>		<span class="nx">l</span><span class="p">.</span><span class="nx">shared</span><span class="p">.</span><span class="nf">pushHead</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+<span class="ln">124</span>	<span class="p">}</span>
+<span class="ln">125</span>    <span class="c1">// 解除抢占
+</span><span class="ln">126</span><span class="c1"></span>	<span class="nf">runtime_procUnpin</span><span class="p">()</span>
+<span class="ln">127</span>	<span class="o">...</span>
+<span class="ln">128</span><span class="p">}</span>
+</code></pre></div><h1 id="测试">测试</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">var</span> <span class="nx">pool</span> <span class="p">=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Pool</span><span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">New</span><span class="p">:</span> <span class="kd">func</span><span class="p">()</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+<span class="ln"> 3</span>		<span class="k">return</span> <span class="s">&#34;A&#34;</span>
+<span class="ln"> 4</span>	<span class="p">},</span>
+<span class="ln"> 5</span><span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 8</span>	<span class="nx">str</span> <span class="o">:=</span> <span class="nx">pool</span><span class="p">.</span><span class="nf">Get</span><span class="p">().(</span><span class="kt">string</span><span class="p">)</span> <span class="c1">// New
+</span><span class="ln"> 9</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="c1">// A
+</span><span class="ln">10</span><span class="c1"></span>
+<span class="ln">11</span>	<span class="nx">pool</span><span class="p">.</span><span class="nf">Put</span><span class="p">(</span><span class="s">&#34;AB&#34;</span><span class="p">)</span> <span class="c1">// stored in local-private
+</span><span class="ln">12</span><span class="c1"></span>	<span class="nx">pool</span><span class="p">.</span><span class="nf">Put</span><span class="p">(</span><span class="s">&#34;ABC&#34;</span><span class="p">)</span> <span class="c1">// stored in local-shared (push head)
+</span><span class="ln">13</span><span class="c1"></span>	<span class="nx">pool</span><span class="p">.</span><span class="nf">Put</span><span class="p">(</span><span class="s">&#34;ABCD&#34;</span><span class="p">)</span> <span class="c1">// stored in local-shared (push head)
+</span><span class="ln">14</span><span class="c1"></span>
+<span class="ln">15</span>	<span class="nx">str</span> <span class="p">=</span> <span class="nx">pool</span><span class="p">.</span><span class="nf">Get</span><span class="p">().(</span><span class="kt">string</span><span class="p">)</span>
+<span class="ln">16</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="c1">// AB
+</span><span class="ln">17</span><span class="c1"></span>
+<span class="ln">18</span>	<span class="nx">str</span> <span class="p">=</span> <span class="nx">pool</span><span class="p">.</span><span class="nf">Get</span><span class="p">().(</span><span class="kt">string</span><span class="p">)</span>
+<span class="ln">19</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="c1">// ABCD (pop head)
+</span><span class="ln">20</span><span class="c1"></span><span class="p">}</span>
+<span class="ln">21</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">var</span> <span class="nx">pool</span> <span class="p">=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Pool</span><span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">New</span><span class="p">:</span> <span class="kd">func</span><span class="p">()</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+<span class="ln"> 3</span>		<span class="k">return</span> <span class="s">&#34;A&#34;</span>
+<span class="ln"> 4</span>	<span class="p">},</span>
+<span class="ln"> 5</span><span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 8</span>	<span class="nx">str</span> <span class="o">:=</span> <span class="nx">pool</span><span class="p">.</span><span class="nf">Get</span><span class="p">().(</span><span class="kt">string</span><span class="p">)</span> <span class="c1">// New
+</span><span class="ln"> 9</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="c1">// A
+</span><span class="ln">10</span><span class="c1"></span>
+<span class="ln">11</span>	<span class="nx">pool</span><span class="p">.</span><span class="nf">Put</span><span class="p">(</span><span class="s">&#34;AB&#34;</span><span class="p">)</span> <span class="c1">// stored in local-private
+</span><span class="ln">12</span><span class="c1"></span>	<span class="nx">pool</span><span class="p">.</span><span class="nf">Put</span><span class="p">(</span><span class="s">&#34;ABC&#34;</span><span class="p">)</span> <span class="c1">// stored in local-shared (push head)
+</span><span class="ln">13</span><span class="c1"></span>	<span class="nx">pool</span><span class="p">.</span><span class="nf">Put</span><span class="p">(</span><span class="s">&#34;ABCD&#34;</span><span class="p">)</span> <span class="c1">// stored in local-shared (push head)
+</span><span class="ln">14</span><span class="c1"></span>
+<span class="ln">15</span>	<span class="nx">runtime</span><span class="p">.</span><span class="nf">GC</span><span class="p">()</span> <span class="c1">// clear victim; move local to victim; clear local
+</span><span class="ln">16</span><span class="c1"></span>
+<span class="ln">17</span>	<span class="nx">str</span> <span class="p">=</span> <span class="nx">pool</span><span class="p">.</span><span class="nf">Get</span><span class="p">().(</span><span class="kt">string</span><span class="p">)</span>
+<span class="ln">18</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="c1">// AB (from victim-private)
+</span><span class="ln">19</span><span class="c1"></span>	<span class="nx">str</span> <span class="p">=</span> <span class="nx">pool</span><span class="p">.</span><span class="nf">Get</span><span class="p">().(</span><span class="kt">string</span><span class="p">)</span>
+<span class="ln">20</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="c1">// ABC (from victim-shared pop tail)
+</span><span class="ln">21</span><span class="c1"></span>	<span class="nx">str</span> <span class="p">=</span> <span class="nx">pool</span><span class="p">.</span><span class="nf">Get</span><span class="p">().(</span><span class="kt">string</span><span class="p">)</span>
+<span class="ln">22</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="c1">// ABCD (from victim-shared pop tail)
+</span><span class="ln">23</span><span class="c1"></span>
+<span class="ln">24</span>	<span class="nx">runtime</span><span class="p">.</span><span class="nf">GC</span><span class="p">()</span> <span class="c1">// clear victim; move local to victim; clear local   (local is empty)
+</span><span class="ln">25</span><span class="c1"></span>
+<span class="ln">26</span>	<span class="nx">str</span> <span class="p">=</span> <span class="nx">pool</span><span class="p">.</span><span class="nf">Get</span><span class="p">().(</span><span class="kt">string</span><span class="p">)</span> <span class="c1">// New
+</span><span class="ln">27</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="c1">// A
+</span><span class="ln">28</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-medal"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-fw fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/alipay.png" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://why9661.github.io/myblog/images/reward/wechat.png" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-between">
+  <div class="post-nav w-50"><div class="prev-post btn btn-sm">
+      <a href="https://why9661.github.io/myblog/posts/docker/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">Docker使用手册
+</a>
+    </div></div>
+  <div class="post-nav flex-row-reverse"></div>
+</div><section class="related-posts">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="https://why9661.github.io/myblog/posts/golang/gpm%E8%B0%83%E5%BA%A6/">Golang-GPM调度
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E7%BD%AEhandler/">Golang-内置Handler
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">Golang-GC
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%8E%A5%E5%8F%A3/">Golang-接口
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/%E6%B5%8B%E8%AF%95/">Golang-测试
+</a></li></ul>
+  </section></article><div class="post-comments surface row"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label=""
+  theme="github-dark"
+  crossorigin="anonymous"
+  async>
+</script></div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container"><section class="profile surface row text-center">
+  <div class="col-12 d-flex align-items-center justify-content-center">
+    <img class="profile-avatar rounded-circle" src="https://why9661.github.io/myblog/images/profile.webp" alt="why" loading="lazy">
+  </div>
+  <div class="col-12">
+    <h5 class="profile-name my-2">why</h5><div class="profile-bio mb-2">Gopher</div><div class="profile-meta"><span class="profile-company"><i class="fas fa-fw fa-building"></i>Null</span><span class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>Hubei</span></div>
+  </div>
+</section><section class="recent-posts row surface">
+  <h4>最近文章</h4>
+  <ul><li><a href="https://why9661.github.io/myblog/posts/golang/sync.pool/">Golang-Pool
+</a></li><li><a href="https://why9661.github.io/myblog/posts/docker/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">Docker使用手册
+</a></li><li><a href="https://why9661.github.io/myblog/posts/redis/%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F/">Redis-主从模式
+</a></li><li><a href="https://why9661.github.io/myblog/posts/mysql/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">MySQL-主从复制
+</a></li><li><a href="https://why9661.github.io/myblog/posts/golang/gpm%E8%B0%83%E5%BA%A6/">Golang-GPM调度
+</a></li></ul>
+</section><section class="taxonomy-categories row surface">
+      <h4>
+        <a href="https://why9661.github.io/myblog/categories">分类</a>
+      </h4>
+      <div><a href="https://why9661.github.io/myblog/categories/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
+          Golang <span class="badge rounded-pill">20</span>
+        </a><a href="https://why9661.github.io/myblog/categories/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">5</span>
+        </a><a href="https://why9661.github.io/myblog/categories/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
+          Redis <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/categories/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
+          Docker <span class="badge rounded-pill">1</span>
+        </a></div>
+    </section><section class="taxonomy-tags row surface">
+      <h4>
+        <a href="https://why9661.github.io/myblog/tags">标签</a>
+      </h4>
+      <div><a href="https://why9661.github.io/myblog/tags/golang/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Golang">
+          Golang <span class="badge rounded-pill">20</span>
+        </a><a href="https://why9661.github.io/myblog/tags/mysql/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="MySQL">
+          MySQL <span class="badge rounded-pill">5</span>
+        </a><a href="https://why9661.github.io/myblog/tags/redis/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Redis">
+          Redis <span class="badge rounded-pill">3</span>
+        </a><a href="https://why9661.github.io/myblog/tags/docker/" class="post-taxonomy rounded btn btn-sm me-2 mb-2" title="Docker">
+          Docker <span class="badge rounded-pill">1</span>
+        </a></div>
+    </section></div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"><li class="nav-item">
+    <a class="nav-link social-link" href="mailto:hy_world@126.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a>
+  </li><li class="nav-item">
+      <a class="nav-link social-link" target="_blank" href="https://github.com/why9661" title="GitHub">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a>
+    </li></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2021 why. All Rights Reserved.
+</div>
+<div class="powered-by mb-2">
+  Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> and the <a href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank">Bootstrap</a> theme.
+</div></footer>
+<a id="btnScrollToTop" class="btn-scroll-to-top">
+  <i class="fas fa-fw fa-chevron-circle-up fa-2x"></i>
+</a>
+</body>
+</html>
